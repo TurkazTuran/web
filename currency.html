@@ -1,134 +1,272 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Currency Rates by Date</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; }
-        .container { max-width: 800px; margin: 20px auto; padding: 15px; }
-        .controls { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
-        label { font-weight: 600; }
-        input[type="date"] { padding: 8px; font-size: 14px; border: 1px solid #dfe2e5; border-radius: 6px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #dfe2e5; text-align: left; padding: 8px; }
-        th { background-color: #f6f8fa; }
-        h1, h2 { color: #24292e; }
-        button { 
-            padding: 10px 16px; font-size: 14px; font-weight: 600; color: #fff;
-            background-color: #2ea44f; border: 1px solid rgba(27, 31, 35, 0.15);
-            border-radius: 6px; cursor: pointer;
-        }
-        button:hover { background-color: #2c974b; }
-        #error-box {
-            color: #d73a49; background-color: #fddfdf; border: 1px solid #d73a49;
-            padding: 15px; margin-top: 15px; border-radius: 6px; display: none;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <title>Azerbaijan Central Bank Currency Rates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --border:#d0d7de;
+      --bg:#f6f8fa;
+      --txt:#24292f;
+      --accent:#2ea44f;
+      --accent-hover:#2c974b;
+      --danger:#d73a49;
+    }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--txt); margin: 20px; }
+    h1 { margin-bottom: 10px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 12px 0 8px; }
+    input[type="date"] { padding: 8px; border: 1px solid var(--border); border-radius: 6px; }
+    button {
+      padding: 8px 14px; border-radius: 6px; border: 1px solid rgba(27,31,35,.15);
+      background: var(--accent); color: #fff; font-weight: 600; cursor: pointer;
+    }
+    button:hover { background: var(--accent-hover); }
+    .muted { color: #57606a; font-size: 14px; }
+    .error {
+      display:none; margin:12px 0; padding:12px; border:1px solid var(--danger);
+      background:#fff5f5; color:var(--danger); border-radius:6px;
+    }
+    .card {
+      border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: #fff; margin-top: 12px;
+    }
+    .pill {
+      display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border:1px solid var(--border);
+      border-radius:999px; background: var(--bg); margin: 4px 8px 4px 0;
+    }
+    .pill button {
+      background: transparent; color: var(--txt); border: none; padding: 0; font-weight: 600; cursor: pointer;
+    }
+    .pill a { color: #0969da; text-decoration: none; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { border: 1px solid var(--border); padding: 8px; text-align: left; }
+    th { background: var(--bg); }
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  </style>
 </head>
 <body>
+  <h1>Azerbaijan Central Bank Currency Rates</h1>
+  <p class="muted">This page loads XML files saved in this repository (kept for the latest 3 available dates).</p>
 
-<div class="container">
-    <h1>Azerbaijan Central Bank Currency Rates</h1>
+  <div class="controls">
+    <label for="dateInput"><strong>Select date:</strong></label>
+    <input type="date" id="dateInput" />
+    <button id="loadSelectedBtn">Load selected date</button>
+    <button id="refreshBtn" title="Re-scan repository for the latest 3 files">Refresh latest list</button>
+    <span id="status" class="muted"></span>
+  </div>
 
-    <div class="controls">
-        <label for="date-picker">Select Date:</label>
-        <input type="date" id="date-picker">
-        <button onclick="fetchAndDisplayCurrencies()">Get Currencies for Selected Date</button>
-    </div>
+  <div class="card">
+    <strong>Latest available files (up to 3):</strong>
+    <div id="latestList" class="row" style="margin-top:8px;"></div>
+  </div>
 
-    <h2 id="date-header"></h2>
-    <div id="error-box"></div>
-    <table id="currency-table" style="display:none;">
-        <thead>
-            <tr>
-                <th>Code</th>
-                <th>Nominal</th>
-                <th>Name</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Currency data will be inserted here -->
-        </tbody>
-    </table>
-</div>
+  <div id="errorBox" class="error"></div>
+
+  <h2 id="dateHeader" style="margin-top:18px;"></h2>
+  <div class="row muted" id="fileInfo" style="display:none;">
+    <span>File:</span><span id="fileName"></span>
+    <span>•</span>
+    <a id="downloadLink" href="#" download>Download XML</a>
+  </div>
+
+  <table id="currencyTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Nominal</th>
+        <th>Name</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
 <script>
-    // When the page loads, set the date picker's value to today
-    document.addEventListener('DOMContentLoaded', () => {
-        const today = new Date();
-        // Format to YYYY-MM-DD for the date input
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        document.getElementById('date-picker').value = `${yyyy}-${mm}-${dd}`;
+(function() {
+  const dateInput = document.getElementById('dateInput');
+  const loadSelectedBtn = document.getElementById('loadSelectedBtn');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const latestList = document.getElementById('latestList');
+  const statusEl = document.getElementById('status');
+  const errorBox = document.getElementById('errorBox');
+  const dateHeader = document.getElementById('dateHeader');
+  const currencyTable = document.getElementById('currencyTable');
+  const fileInfo = document.getElementById('fileInfo');
+  const fileNameEl = document.getElementById('fileName');
+  const downloadLink = document.getElementById('downloadLink');
+
+  // Init date input to today (YYYY-MM-DD)
+  document.addEventListener('DOMContentLoaded', () => {
+    const today = new Date();
+    dateInput.value = toYMD(today);
+    refreshLatest();
+  });
+
+  refreshBtn.addEventListener('click', refreshLatest);
+  loadSelectedBtn.addEventListener('click', async () => {
+    if (!dateInput.value) return showError('Please select a date.');
+    const filename = dateInput.value + '.xml';
+    await loadFile(filename, true);
+  });
+
+  // Helpers
+  function toYMD(d) { return d.toISOString().slice(0, 10); }
+  function showError(msg) {
+    errorBox.textContent = msg;
+    errorBox.style.display = 'block';
+  }
+  function clearError() {
+    errorBox.textContent = '';
+    errorBox.style.display = 'none';
+  }
+  function setStatus(msg) { statusEl.textContent = msg || ''; }
+
+  async function headOrGetExists(url) {
+    // Try HEAD first; if not allowed, fall back to GET
+    try {
+      let res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+      if (res.ok) return true;
+      if (res.status === 405 || res.status === 403) {
+        res = await fetch(url, { method: 'GET', cache: 'no-store' });
+        return res.ok;
+      }
+      return false;
+    } catch {
+      // Some static hosts block HEAD; attempt GET
+      try {
+        const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+        return res.ok;
+      } catch {
+        return false;
+      }
+    }
+  }
+
+  async function refreshLatest() {
+    clearError();
+    setStatus('Scanning for latest files...');
+    latestList.innerHTML = '';
+
+    // Find up to 3 most recent files in repo root by probing dates backward
+    const found = [];
+    const maxSearchDays = 21;
+    const today = new Date();
+
+    for (let i = 0; i < maxSearchDays && found.length < 3; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      const filename = toYMD(d) + '.xml';
+      const exists = await headOrGetExists('./' + filename);
+      if (exists) found.push(filename);
+    }
+
+    if (found.length === 0) {
+      setStatus('');
+      return showError('No XML files found in the repository root yet. Let the workflow run or run it manually in Actions.');
+    }
+
+    // Render pills
+    found.forEach(fn => {
+      const pill = document.createElement('span');
+      pill.className = 'pill';
+      const btn = document.createElement('button');
+      btn.textContent = fn.replace('.xml', '');
+      btn.title = 'View ' + fn;
+      btn.addEventListener('click', () => loadFile(fn, false));
+      const link = document.createElement('a');
+      link.href = './' + fn;
+      link.download = fn;
+      link.textContent = 'Download';
+      pill.appendChild(btn);
+      pill.appendChild(document.createTextNode(' '));
+      pill.appendChild(link);
+      latestList.appendChild(pill);
     });
 
-    async function fetchAndDisplayCurrencies() {
-        const datePicker = document.getElementById('date-picker');
-        const selectedDate = datePicker.value; // This will be in YYYY-MM-DD format
-        
-        const errorBox = document.getElementById("error-box");
-        const currencyTable = document.getElementById("currency-table");
-        const dateHeader = document.getElementById("date-header");
-        
-        errorBox.style.display = 'none';
-        currencyTable.style.display = 'none';
-        dateHeader.textContent = "Fetching...";
+    setStatus(`Found ${found.length} file(s).`);
+    // Auto-load the newest one
+    await loadFile(found[0], false);
+  }
 
-        if (!selectedDate) {
-            errorBox.textContent = "Please select a date first.";
-            errorBox.style.display = 'block';
-            dateHeader.textContent = "";
-            return;
-        }
+  async function loadFile(filename, warnIfMissing) {
+    clearError();
+    setStatus('Loading ' + filename + ' ...');
+    try {
+      const res = await fetch('./' + filename, { cache: 'no-store' });
+      if (!res.ok) {
+        if (warnIfMissing) showError(`File ${filename} not found in the repository root.`);
+        setStatus('');
+        return;
+      }
+      const xmlText = await res.text();
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
 
-        try {
-            // Pass the selected date to the PHP script
-            const response = await fetch(`download.php?date=${selectedDate}`);
-            
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText || `Server error: ${response.status}`);
-            }
+      const parseErr = xmlDoc.querySelector('parsererror');
+      if (parseErr) {
+        console.error('Parser error:', parseErr.textContent);
+        showError('Failed to parse XML (file may be invalid).');
+        setStatus('');
+        return;
+      }
 
-            const xmlString = await response.text();
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlString, "application/xml");
-
-            if (xmlDoc.querySelector("parsererror")) {
-                throw new Error("Failed to parse XML. The data received may not be in a valid format.");
-            }
-
-            const valCurs = xmlDoc.getElementsByTagName("ValCurs")[0];
-            if (!valCurs) {
-                throw new Error("The XML data is not in the expected format (missing '<ValCurs>' tag).");
-            }
-
-            const tableBody = currencyTable.getElementsByTagName("tbody")[0];
-            tableBody.innerHTML = "";
-
-            const displayDate = valCurs.getAttribute("Date");
-            dateHeader.textContent = `Rates for ${displayDate}`;
-
-            const valutes = xmlDoc.getElementsByTagName("Valute");
-            for (const valute of valutes) {
-                const row = tableBody.insertRow();
-                row.insertCell(0).textContent = valute.getAttribute("Code");
-                row.insertCell(1).textContent = valute.getElementsByTagName("Nominal")[0].textContent;
-                row.insertCell(2).textContent = valute.getElementsByTagName("Name")[0].textContent;
-                row.insertCell(3).textContent = valute.getElementsByTagName("Value")[0].textContent;
-            }
-
-            currencyTable.style.display = 'table';
-
-        } catch (err) {
-            console.error("Fetch Error Details:", err);
-            errorBox.textContent = `Error: ${err.message}`;
-            errorBox.style.display = 'block';
-            dateHeader.textContent = "";
-        }
+      renderRates(xmlDoc, filename);
+      setStatus('');
+    } catch (e) {
+      console.error(e);
+      showError('Unexpected error while loading the file.');
+      setStatus('');
     }
-</script>
+  }
 
+  function renderRates(xmlDoc, filename) {
+    // Reset UI
+    dateHeader.textContent = '';
+    currencyTable.style.display = 'none';
+    fileInfo.style.display = 'none';
+    fileNameEl.textContent = '';
+    downloadLink.href = '#';
+
+    const valCurs = xmlDoc.getElementsByTagName('ValCurs')[0];
+    if (!valCurs) {
+      return showError("XML doesn't contain <ValCurs> root.");
+    }
+
+    const displayDate = valCurs.getAttribute('Date'); // e.g., 07.11.2025
+    dateHeader.textContent = `Rates for ${displayDate || '(unknown date)'}`;
+
+    // Fill table
+    const tbody = currencyTable.querySelector('tbody');
+    tbody.innerHTML = '';
+    const valutes = xmlDoc.getElementsByTagName('Valute');
+
+    for (const valute of valutes) {
+      const tr = document.createElement('tr');
+      tr.appendChild(cell(valute.getAttribute('Code') || ''));
+      tr.appendChild(cell(getText(valute, 'Nominal')));
+      tr.appendChild(cell(getText(valute, 'Name')));
+      tr.appendChild(cell(getText(valute, 'Value')));
+      tbody.appendChild(tr);
+    }
+
+    currencyTable.style.display = 'table';
+    fileInfo.style.display = 'flex';
+    fileNameEl.textContent = filename;
+    downloadLink.href = './' + filename;
+    downloadLink.setAttribute('download', filename);
+
+    function getText(node, tag) {
+      const el = node.getElementsByTagName(tag)[0];
+      return el ? el.textContent : '';
+    }
+    function cell(text) {
+      const td = document.createElement('td');
+      td.textContent = text;
+      return td;
+    }
+  }
+})();
+</script>
 </body>
 </html>
