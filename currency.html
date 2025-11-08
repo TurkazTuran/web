@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ----- Design Tokens ----- */
+/* ----- Dizayn Tokenləri ----- */
 :root {
   --bg-gradient: radial-gradient(circle at 20% 20%, #5e8cff 0%, #4361ee 25%, #3a0ca3 55%, #240046 100%);
   --glass-bg: rgba(255,255,255,0.18);
@@ -46,7 +46,7 @@
   --shadow: 0 6px 22px -4px rgba(0,0,0,0.25);
   --focus-ring: 0 0 0 3px rgba(255,0,110,.4),0 0 0 6px rgba(255,190,11,.35);
 }
-/* ----- Global Layout ----- */
+/* ----- Ümumi Layihə ----- */
 html,body {
   height:100%;
   margin:0;
@@ -71,7 +71,7 @@ body::before {
   50% { transform: scale(1.15) translate(-3%,2%); }
   100% { transform: scale(1) translate(0,0); }
 }
-/* Floating particle dots */
+/* Hərəkətli hissəciklər */
 .particles { position:fixed; inset:0; pointer-events:none; z-index:-2; }
 .particles span {
   position:absolute; width:10px; height:10px;
@@ -85,7 +85,7 @@ body::before {
   50% { transform: translateY(-120vh) scale(1); }
   100% { transform: translateY(0) scale(0.8); }
 }
-/* ----- Containers ----- */
+/* Konteynerlər */
 .wrapper { max-width: 1320px; margin: clamp(12px,4vw,48px) auto 120px; padding: 0 clamp(12px,3vw,36px); }
 .header { display:flex; flex-direction:column; gap:12px; align-items:flex-start; margin-bottom: 32px; }
 h1 {
@@ -95,7 +95,7 @@ h1 {
   filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
   font-weight:700; letter-spacing:.5px;
 }
-/* ----- Glass Panels ----- */
+/* Şüşə Panel */
 .panel {
   background: var(--glass-bg); backdrop-filter: blur(18px) saturate(160%);
   border: 1px solid var(--glass-border); border-radius: var(--radius);
@@ -109,7 +109,7 @@ h1 {
   opacity:.15; filter: blur(55px); animation: swirl 22s linear infinite; pointer-events:none;
 }
 @keyframes swirl { to { transform: rotate(360deg); } }
-/* ----- Controls ----- */
+/* İdarəetmə Elementləri */
 .controls { display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-bottom: 14px; }
 .controls > * { flex: 0 0 auto; }
 .input-group { display:flex; flex-direction:column; gap:6px; }
@@ -135,14 +135,14 @@ input[type="date"]:focus, select:focus { box-shadow: var(--focus-ring); border-c
 .btn.secondary { background: linear-gradient(120deg,#4cc9f0,#4361ee 70%); }
 .btn.ghost { background: var(--glass-bg-solid); color: var(--text); box-shadow:none; border:1px solid var(--glass-border); }
 .btn.ghost:hover { background: var(--glass-bg); transform: translateY(-2px); }
-/* Theme toggle */
+/* Tema keçidi */
 .theme-toggle { position:relative; display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none; font-size:.68rem; font-weight:600; letter-spacing:.5px; color: var(--text-soft); }
 .theme-toggle input { display:none; }
 .toggle-pill { width:54px; height:26px; background: var(--glass-bg-solid); border-radius: 999px; position:relative; border:1px solid var(--glass-border); transition: background .4s; }
 .toggle-knob { position:absolute; top:50%; left:6px; width:18px; height:18px; background: linear-gradient(140deg,#fff,#e2e6ea); border-radius:50%; transform: translateY(-50%); box-shadow: 0 3px 10px -2px rgba(0,0,0,.4); transition:left .4s, background .4s; }
 .theme-toggle input:checked + .toggle-pill { background: linear-gradient(140deg,#ffbe0b 0%,#ff006e 55%,#8338ec); }
 .theme-toggle input:checked + .toggle-pill .toggle-knob { left: calc(100% - 24px); background: linear-gradient(140deg,#ffbe0b,#ff006e); }
-/* Status / Error */
+/* Status / Xəta */
 .status-line {
   font-size:.65rem; letter-spacing:.6px; text-transform:uppercase; margin-top:10px;
   color: var(--text-soft); display:flex; align-items:center; gap:8px;
@@ -151,7 +151,7 @@ input[type="date"]:focus, select:focus { box-shadow: var(--focus-ring); border-c
   display:none; margin-top:12px; padding:14px 18px; border:1px solid rgba(255,0,110,.45);
   background: rgba(255,0,110,.06); color: var(--danger); border-radius: 14px; font-size:.78rem;
 }
-/* ----- Converter ----- */
+/* ----- Valyuta Çevirici ----- */
 .converter {
   margin: 18px 4px 10px;
   padding: 14px 16px;
@@ -227,7 +227,7 @@ input[type="date"]:focus, select:focus { box-shadow: var(--focus-ring); border-c
   .swap-btn { width:100%; }
   .converter { padding:16px 14px; }
 }
-/* ----- Table ----- */
+/* ----- Cədvəl ----- */
 .table-wrap {
   margin-top: 18px; border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow);
   backdrop-filter: blur(16px); background: var(--glass-bg); border:1px solid var(--glass-border);
@@ -247,19 +247,19 @@ tbody tr { transition: background .25s; }
 tbody tr:nth-child(even){ background: rgba(255,255,255,.05); }
 tbody tr:hover { background: rgba(255,255,255,.15); }
 tbody td { font-weight:500; color: var(--text); font-size:.85rem; letter-spacing:.3px; text-transform:uppercase; }
-/* Column widths */
+/* Sütun ölçüləri */
 th:nth-child(1), td:nth-child(1){ width:15%; }
 th:nth-child(2), td:nth-child(2){ width:15%; }
 th:nth-child(3), td:nth-child(3){ width:50%; }
 th:nth-child(4), td:nth-child(4){ width:20%; }
-/* Filter bar */
+/* Filtr Paneli */
 .filter-bar { display:flex; flex-wrap:wrap; gap:16px; margin-top:8px; align-items:center; }
 .badge {
   background: linear-gradient(120deg,#ff006e,#8338ec);
   padding:6px 12px; border-radius: 999px; font-size:.6rem; letter-spacing:.7px; color:#fff; font-weight:600;
   box-shadow: 0 6px 18px -8px rgba(0,0,0,.6);
 }
-/* Loading spinner */
+/* Yükləmə Spinneri */
 .spinner {
   width:50px;height:50px; border: 5px solid rgba(255,255,255,.2); border-top:5px solid #ffbe0b; border-right:5px solid #ff006e;
   border-radius:50%; animation: spin 1s linear infinite, pulse 1.8s ease-in-out infinite; margin: 30px auto;
@@ -267,7 +267,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(.88); } }
-/* Responsive */
+/* Responsiv */
 @media (max-width: 860px) {
   .controls { flex-direction:column; align-items:stretch; }
   .buttons-bar { width:100%; }
@@ -279,7 +279,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
   tbody td { font-size:.88rem; }
   .table-wrap { overflow-x: auto; }
 }
-/* Focus visible */
+/* Fokus görünən */
 :focus-visible { outline:none; box-shadow: var(--focus-ring); }
 /* Scrollbar */
 ::-webkit-scrollbar { width:10px; }
@@ -304,7 +304,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     <h1>Valyuta Kursları</h1>
   </header>
 
-  <section class="panel" aria-labelledby="panelHeading">
+  <section class="panel">
     <div class="controls">
       <div class="input-group">
         <label for="dateInput">Tarix seç</label>
@@ -321,30 +321,30 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
         <button class="btn secondary" id="refreshBtn" title="Ən son XML-i yüklə">Ən son XML-i yüklə</button>
         <button class="btn ghost" id="clearFilterBtn">Filtri Təmizlə</button>
       </div>
-      <label class="theme-toggle" title="Light / Dark keçid">
+      <label class="theme-toggle" title="İşıq / Qaranlıq rejim">
         <input type="checkbox" id="themeToggle" />
         <div class="toggle-pill"><div class="toggle-knob"></div></div>
-        <span>Dark Mode</span>
+        <span>Qaranlıq Rejim</span>
       </label>
     </div>
 
     <div id="errorBox" role="alert"></div>
 
-    <!-- Neuer Währungs-Umrechner -->
+    <!-- Valyuta Çevirici -->
     <div class="converter" id="converter">
-      <h3>Valyuta Umrechner (Currency Converter)</h3>
+      <h3>Valyuta Çevirici</h3>
       <div class="conv-row">
         <div class="conv-group">
-          <label for="convAmount">Betrag</label>
+          <label for="convAmount">Məbləğ</label>
           <input id="convAmount" type="number" min="0" step="0.01" value="1" />
         </div>
         <div class="conv-group">
-          <label for="fromCurrency">Von</label>
+          <label for="fromCurrency">Giriş Valyutası</label>
           <select id="fromCurrency"></select>
         </div>
-        <button id="swapBtn" class="swap-btn" aria-label="Wechseln (↑↓)">⇅</button>
+        <button id="swapBtn" class="swap-btn" aria-label="Dəyiş (↑↓)">⇅</button>
         <div class="conv-group">
-          <label for="toCurrency">Nach</label>
+          <label for="toCurrency">Çıxış Valyutası</label>
           <select id="toCurrency"></select>
         </div>
       </div>
@@ -378,7 +378,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
 
 <script>
 /* =========================
-   Currency Dashboard Logic + Converter
+   Valyuta Paneli + Çevirici
 ========================= */
 (function() {
   const dateInput = document.getElementById('dateInput');
@@ -395,14 +395,14 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
   const rowCount = document.getElementById('rowCount');
   const themeToggle = document.getElementById('themeToggle');
 
-  /* Converter Elemente */
+  /* Çevirici elementləri */
   const convAmount = document.getElementById('convAmount');
   const fromCurrency = document.getElementById('fromCurrency');
   const toCurrency = document.getElementById('toCurrency');
   const swapBtn = document.getElementById('swapBtn');
   const convResult = document.getElementById('convResult');
 
-  const statusEl = null; // absichtlich kein Element
+  const statusEl = null;
 
   let currentData = [];
   let sortState = { key: null, dir: 1 };
@@ -414,7 +414,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     refreshLatest();
   });
 
-  /* -------- Event Handlers -------- */
+  /* Hadisələr */
   filterSelect.addEventListener('change', () => applyFilter());
   clearFilterBtn.addEventListener('click', () => {
     filterSelect.value = '__ALL__';
@@ -442,7 +442,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     th.setAttribute('aria-sort','none');
   });
 
-  /* Converter Events */
+  /* Çevirici hadisələri */
   convAmount.addEventListener('input', () => updateConversion());
   fromCurrency.addEventListener('change', () => updateConversion());
   toCurrency.addEventListener('change', () => updateConversion());
@@ -450,11 +450,11 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     const tmp = fromCurrency.value;
     fromCurrency.value = toCurrency.value;
     toCurrency.value = tmp;
-    convAmount.value = 1; // Reset Betrag
+    convAmount.value = 1;
     updateConversion();
   });
 
-  /* -------- Utility -------- */
+  /* Util funksiyalar */
   function toYMD(d) { return d.toISOString().slice(0, 10); }
   function setStatus(msg) {
     if (statusEl) statusEl.textContent = msg || '';
@@ -482,7 +482,6 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     }
   }
 
-  /* -------- Latest file (silent) -------- */
   async function refreshLatest() {
     clearError();
     setStatus('Ən son fayllar axtarılır...');
@@ -498,7 +497,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     }
     endLoading();
     if (!latestFilesCache.length) {
-      showError('XML faylı tapılmadı. GitHub Action işlə.');
+      showError('XML tapılmadı. GitHub Action işlədin.');
       setStatus('');
       return;
     }
@@ -506,7 +505,6 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     loadFile(latestFilesCache[0], false);
   }
 
-  /* -------- Load & Parse XML -------- */
   async function loadFile(filename, warnIfMissing) {
     clearError();
     setStatus('Yüklənir: ' + filename + ' ...');
@@ -526,7 +524,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       if (parseErr) {
         endLoading();
         console.error(parseErr.textContent);
-        showError('XML parse xətası.');
+        showError('XML oxuma xətası.');
         setStatus('');
         return;
       }
@@ -536,14 +534,14 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     } catch (err) {
       endLoading();
       console.error(err);
-      showError('Şəbəkə və ya parse xətası.');
+      showError('Şəbəkə və ya emal xətası.');
       setStatus('');
     }
   }
 
   function renderRates(xmlDoc) {
     const valCurs = xmlDoc.getElementsByTagName('ValCurs')[0];
-    if (!valCurs) { showError('XML kök <ValCurs> tapılmadı.'); return; }
+    if (!valCurs) { showError('Kök <ValCurs> yoxdur.'); return; }
     const xmlDate = valCurs.getAttribute('Date') || '(Tarix yoxdur)';
     dateHeader.textContent = 'Tarix: ' + xmlDate;
 
@@ -558,16 +556,15 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       });
     }
 
-    // Sicherstellen, dass AZN immer vorhanden ist (falls im Feed fehlt)
     if (!currentData.some(d => d.Code === 'AZN')) {
-      currentData.push({ Code: 'AZN', Nominal: '1', Name: 'AZERBAIJAN MANAT', Value: '1' });
+      currentData.push({ Code: 'AZN', Nominal: '1', Name: 'AZƏRBAYCAN MANATI', Value: '1' });
     }
 
     sortState = { key:null, dir:1 };
     table.querySelectorAll('th').forEach(th => th.setAttribute('aria-sort','none'));
     renderTableRows(currentData);
     populateFilterOptions();
-    populateConverterOptions(); // Neu
+    populateConverterOptions();
     tableWrap.classList.add('visible');
     applyFilter();
     updateConversion();
@@ -589,7 +586,6 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     if (optionsSet.has(prevValue)) filterSelect.value = prevValue; else filterSelect.value = '__ALL__';
   }
 
-  /* Converter Options */
   function populateConverterOptions() {
     const codes = currentData.map(d => d.Code).filter(Boolean).sort();
     fromCurrency.innerHTML = '';
@@ -602,7 +598,6 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       o2.value = c; o2.textContent = c;
       toCurrency.appendChild(o2);
     }
-    // Standard: Von EUR nach AZN falls verfügbar, sonst erste zwei
     if (codes.includes('EUR')) fromCurrency.value = 'EUR';
     if (codes.includes('AZN')) toCurrency.value = 'AZN';
     if (!fromCurrency.value) fromCurrency.selectedIndex = 0;
@@ -616,7 +611,6 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     return el ? el.textContent.trim() : '';
   }
 
-  /* -------- Filtering -------- */
   function applyFilter() {
     const selected = filterSelect.value;
     const rows = Array.from(tbody.querySelectorAll('tr'));
@@ -631,7 +625,6 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     rowCount.textContent = visibleCount + ' sətr';
   }
 
-  /* -------- Sorting -------- */
   function handleSort(key, th) {
     if (sortState.key === key) { sortState.dir = -sortState.dir; }
     else { sortState.key = key; sortState.dir = 1; }
@@ -647,7 +640,6 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     renderTableRows(sorted);
     populateFilterOptions();
     applyFilter();
-    // Nach Sortierung weiterhin Konverter aktuell halten
     updateConversion();
   }
   function compareValues(a,b) {
@@ -679,14 +671,14 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     })[c]);
   }
 
-  /* -------- Converter Logic -------- */
+  /* Çevirici məntiqi */
   function rateToAZN(code) {
     const item = currentData.find(d => d.Code === code);
     if (!item) return null;
     const nominal = parseFloat(String(item.Nominal).replace(',','.')) || 1;
     const value = parseFloat(String(item.Value).replace(',','.'));
     if (isNaN(value)) return null;
-    return value / nominal; // 1 Einheit der Fremdwährung in AZN
+    return value / nominal;
   }
 
   function updateConversion() {
@@ -704,30 +696,21 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     const rFrom = rateToAZN(from);
     const rTo = rateToAZN(to);
     if (rFrom == null || rTo == null) {
-      convResult.textContent = 'Kurs fehlt.';
+      convResult.textContent = 'Məzənnə mövcud deyil.';
       return;
     }
-    let result;
-    if (from === to) {
-      result = amount;
-    } else {
-      // amount * (AZN pro FROM) / (AZN pro TO)
-      result = amount * rFrom / rTo;
-    }
+    let result = from === to ? amount : amount * rFrom / rTo;
     const formatted = formatNumber(result);
-    const fromLabel = from;
-    const toLabel = to;
-    convResult.innerHTML = `Ergebnis: <strong>${formatted} ${toLabel}</strong><small>1 ${fromLabel} = ${formatNumber(rFrom / rTo)} ${toLabel}</small>`;
+    convResult.innerHTML = `Nəticə: <strong>${formatted} ${to}</strong><small>1 ${from} = ${formatNumber(rFrom / rTo)} ${to}</small>`;
   }
 
   function formatNumber(num) {
     if (!isFinite(num)) return '-';
-    if (num >= 1) return num.toLocaleString('de-DE', { minimumFractionDigits:2, maximumFractionDigits:4 });
-    // Für kleine Werte mehr Präzision
+    if (num >= 1) return num.toLocaleString('az-AZ', { minimumFractionDigits:2, maximumFractionDigits:4 });
     return num.toPrecision(6).replace(/0+$/,'').replace(/\.?$/,'');
   }
 
-  /* -------- Theme -------- */
+  /* Tema */
   function toggleTheme() {
     const isDark = themeToggle.checked;
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
