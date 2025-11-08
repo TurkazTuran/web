@@ -1,1513 +1,1286 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: https://api.aladhan.com;">
-    <title>NAMAZ VAKTİ</title>
-    <style>
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        :root {
-          --bg-0: #0b0f14;
-          --bg-1: #0a0d12;
-          --bg-2: #0c1118;
-          --panel: rgba(10, 14, 20, 0.92);
-          --panel-soft: rgba(13, 19, 28, 0.7);
-          --card: rgba(14, 21, 31, 0.85);
-          --text: #e5e7eb;
-          --muted: #94a3b8;
-          --accent: #60a5fa;
-          --accent-strong: #3b82f6;
-          --accent-soft: rgba(37, 99, 235, 0.18);
-          --danger: #ef4444;
-          --border: rgba(255, 255, 255, 0.05);
-          --border-strong: rgba(59, 130, 246, 0.6);
-          --active-green-base: #22c55e;
-          --active-green-bright: #41ff9d;
-          /* Variablen für Logo-Hintergrund (leicht dunkler, nicht mehr reines Weiß) */
-          --logo-bg-start: #d3d9e0; /* helles gedämpftes Grau-Blau */
-          --logo-bg-end: #9aaabd;   /* dunklerer Verlaufsausgang */
-          color-scheme: dark;
-        }
-
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-          background: linear-gradient(135deg, var(--bg-0) 0%, var(--bg-1) 40%, var(--bg-2) 100%);
-          color: var(--text);
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 10px;
-          -webkit-tap-highlight-color: transparent;
-          overflow-x: hidden;
-        }
-
-        .prayer-app {
-          width: 100%;
-          max-width: 420px;
-          background: transparent;
-          border-radius: 20px;
-          padding: 20px;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        .header {
-          text-align: center;
-        }
-
-        .app-title {
-          font-size: clamp(28px, 5vw, 24px);
-          font-weight: 600;
-          color: var(--accent);
-          margin-bottom: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          letter-spacing: 0.2px;
-          flex-wrap: wrap;
-        }
-
-        .location {
-          font-size: clamp(13px, 3.5vw, 14px);
-          color: var(--muted);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 5px;
-          flex-wrap: wrap;
-        }
-
-        .status-indicator {
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          animation: pulse 2s infinite;
-          flex-shrink: 0;
-        }
-        .status-indicator.loading { background-color: #fbbf24; }
-        .status-indicator.success { background-color: #10b981; }
-        .status-indicator.error { background-color: var(--danger); }
-
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-
-        .controls-row {
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
-
-        .location-controls {
-          display: flex;
-          gap: 8px;
-          padding: 12px;
-          background: var(--panel-soft);
-          border-radius: 15px;
-          border: 1px solid var(--border);
-          flex: 1;
-          min-width: 200px;
-        }
-
-        .settings-btn {
-          padding: 10px 16px;
-          background: var(--card);
-          color: var(--text);
-          border: 1px solid var(--border);
-          border-radius: 10px;
-          cursor: pointer;
-          font-size: 14px;
-          font-weight: 600;
-          transition: all 0.2s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 6px;
-        }
-
-        .settings-btn:hover {
-          background: var(--accent-soft);
-          border-color: var(--accent);
-        }
-
-        .settings-btn.active {
-          background: var(--accent);
-          color: var(--bg-0);
-        }
-
-        /* Bismillah Bild über dem Titel */
-        .bismillah {
-          display: block;
-          margin: 0 auto 10px auto;
-          width: clamp(140px, 45%, 260px);
-          height: auto;
-          filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
-          user-select: none;
-          -webkit-user-drag: none;
-        }
-
-        /* Übernommene Glow-Rahmen Styles aus logo.html */
-        .glow-wrapper {
-          position: relative;
-          display: inline-block;
-          padding: 0; /* Rahmen direkt am Bild */
-          border-radius: 12px; /* leicht größer als Bildradius */
-          overflow: hidden;
-          /* Deutlich weniger Weiß: kühler Grau-Blau Verlauf statt reinem Weiß */
-          background: radial-gradient(circle at center, var(--logo-bg-start) 0%, var(--logo-bg-end) 100%);
-          border: 3px solid rgba(100, 200, 255, 0.55);
-          box-shadow:
-            0 0 12px rgba(120, 200, 255, 0.6),
-            inset 0 0 18px rgba(255, 255, 255, 0.35);
-          animation: frameGlow 3.2s ease-in-out infinite;
-          line-height: 0;
-          margin: 0 auto 14px auto; /* Abstand unter dem Bild */
-        }
-
-        .basmalah-img {
-          display: block;
-          width: clamp(160px, 55%, 300px);
-          max-width: 100%;
-          height: auto;
-          border-radius: 10px;
-          /* Bild minimal abdunkeln, damit Weiß nicht blendet */
-          filter: brightness(0.92) drop-shadow(0 0 10px rgba(50, 150, 255, 0.35));
-          transition: transform 0.35s ease, filter 0.35s ease;
-        }
-
-        .basmalah-img:hover {
-          transform: scale(1.03);
-          filter: brightness(0.97) drop-shadow(0 0 16px rgba(50, 150, 255, 0.55));
-        }
-
-        @keyframes frameGlow {
-          0%, 100% {
-            box-shadow:
-              0 0 16px rgba(120, 200, 255, 0.85),
-              0 0 34px rgba(80, 170, 240, 0.55),
-              inset 0 0 22px rgba(255, 255, 255, 0.65);
-          }
-            50% {
-            box-shadow:
-              0 0 26px rgba(120, 200, 255, 0.9),
-              0 0 48px rgba(80, 170, 240, 0.7),
-              inset 0 0 28px rgba(255, 255, 255, 0.8);
-          }
-        }
-
-        .location-btn {
-          flex: 1;
-          min-width: 100px;
-          padding: 10px 16px;
-          background: var(--card);
-          color: var(--text);
-          border: 1px solid var(--border);
-          border-radius: 10px;
-          cursor: pointer;
-          font-size: clamp(13px, 3.5vw, 14px);
-          font-weight: 600;
-          transition: all 0.2s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 6px;
-        }
-
-        .location-btn:hover {
-          background: var(--accent-soft);
-          border-color: var(--accent);
-        }
-
-        .location-btn.active {
-          background: var(--accent);
-          color: var(--bg-0);
-          border-color: var(--accent-strong);
-        }
-
-        .location-selector {
-          display: none;
-          padding: 16px;
-          background: var(--panel-soft);
-          border-radius: 15px;
-          border: 1px solid var(--border);
-          gap: 12px;
-          flex-direction: column;
-        }
-
-        .location-selector.active {
-          display: flex;
-        }
-
-        .settings-panel {
-          display: none;
-          padding: 16px;
-          background: var(--panel-soft);
-          border-radius: 15px;
-          border: 1px solid var(--border);
-          gap: 12px;
-          flex-direction: column;
-        }
-
-        .settings-panel.active {
-          display: flex;
-        }
-
-        .setting-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 12px;
-          background: var(--card);
-          border-radius: 10px;
-          border: 1px solid var(--border);
-        }
-
-        .setting-label {
-          font-size: 14px;
-          font-weight: 500;
-          color: var(--text);
-        }
-
-        .toggle-switch {
-          width: 50px;
-          height: 28px;
-          background: var(--accent-soft);
-          border-radius: 14px;
-          cursor: pointer;
-          position: relative;
-          border: 1px solid var(--accent);
-          transition: all 0.2s ease;
-        }
-
-        .toggle-switch.active {
-          background: var(--active-green-base);
-        }
-
-        .toggle-switch::after {
-          content: "";
-          position: absolute;
-          width: 24px;
-          height: 24px;
-          background: white;
-          border-radius: 50%;
-          top: 2px;
-          left: 2px;
-          transition: left 0.2s ease;
-        }
-
-        .toggle-switch.active::after {
-          left: 24px;
-        }
-
-        .search-box {
-          width: 100%;
-          padding: 12px 16px;
-          background: var(--card);
-          color: var(--text);
-          border: 1px solid var(--border);
-          border-radius: 10px;
-          font-size: clamp(13px, 3.5vw, 14px);
-          outline: none;
-          transition: all 0.2s ease;
-        }
-
-        .search-box:focus {
-          border-color: var(--accent);
-          box-shadow: 0 0 0 3px var(--accent-soft);
-        }
-
-        .city-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-          gap: 8px;
-          max-height: 400px;
-          overflow-y: auto;
-          padding: 4px;
-        }
-
-        .no-results {
-          grid-column: 1 / -1;
-          text-align: center;
-          padding: 20px;
-          color: var(--muted);
-          font-size: 14px;
-        }
-
-        .city-btn {
-          padding: 12px;
-          background: var(--card);
-          color: var(--text);
-          border: 1px solid var(--border);
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: clamp(12px, 3vw, 13px);
-          font-weight: 500;
-          transition: all 0.2s ease;
-          text-align: center;
-        }
-
-        .city-btn:hover {
-          background: var(--accent-soft);
-          border-color: var(--accent);
-          transform: translateY(-2px);
-        }
-
-        .city-btn.selected {
-          background: var(--accent);
-          color: var(--bg-0);
-          border-color: var(--accent-strong);
-        }
-
-        .date-section {
-          text-align: center;
-          padding: 12px;
-          background: var(--panel-soft);
-          border-radius: 15px;
-          border: 1px solid var(--border);
-        }
-
-        .gregorian-date {
-          font-size: clamp(16px, 4.5vw, 18px);
-          font-weight: 600;
-          color: var(--accent);
-          margin-bottom: 5px;
-          line-height: 1.3;
-        }
-
-        .hijri-date {
-          font-size: clamp(12px, 3.5vw, 14px);
-          color: var(--muted);
-          line-height: 1.3;
-        }
-
-        .current-time-section {
-          text-align: center;
-          padding: 16px 12px;
-          background: var(--panel-soft);
-          border-radius: 15px;
-          border: 1px solid var(--border);
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
-
-        .current-time {
-          font-size: clamp(32px, 10vw, 40px);
-          font-weight: bold;
-          color: var(--accent);
-          text-shadow: 0 0 10px rgba(96, 165, 250, 0.15);
-          font-variant-numeric: tabular-nums;
-          line-height: 1;
-        }
-
-        .next-prayer-info {
-          font-size: clamp(18px, 4vw, 20px);
-          color: var(--muted);
-          line-height: 1.2;
-          font-weight: 500;
-        }
-
-        .countdown-timer {
-          font-size: clamp(22px, 6vw, 32px);
-          font-weight: 700;
-          color: var(--danger);
-          font-variant-numeric: tabular-nums;
-          letter-spacing: 1px;
-        }
-
-        .prayer-times-grid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 10px;
-        }
-
-        .prayer-card {
-          position: relative;
-          isolation: isolate;
-          background: var(--card);
-          border-radius: 12px;
-          padding: 16px 12px;
-          text-align: center;
-          transition: all 0.25s ease;
-          border: 1px solid var(--border);
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          min-height: 80px;
-          overflow: hidden;
-          cursor: pointer;
-        }
-
-        .prayer-card:hover {
-          transform: translateY(-2px);
-        }
-
-        .prayer-name {
-          font-size: clamp(16px, 3.5vw, 18px);
-          font-weight: 600;
-          color: var(--muted);
-          margin-bottom: 6px;
-          letter-spacing: 0.5px;
-          text-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
-        }
-
-        .prayer-time {
-          font-size: clamp(20px, 5vw, 24px);
-          font-weight: 700;
-          color: var(--text);
-          font-variant-numeric: tabular-nums;
-          letter-spacing: 0.5px;
-        }
-
-        .prayer-card.active {
-          background: radial-gradient(circle at 50% 40%, rgba(34, 197, 94, 0.3), rgba(14, 21, 31, 0.92) 70%);
-          border: 1px solid var(--active-green-base);
-          box-shadow: 0 0 1px 1px rgba(34, 197, 94, 0.75), 0 0 9px 3px rgba(134, 245, 175, 0.55), 0 0 2px 5px rgba(34, 197, 94, 0.35), inset 0 0 8px rgba(34, 197, 94, 0.28);
-          transform: translateY(-2px) scale(1);
-          transition: all 0.45s cubic-bezier(0.25, 0.6, 0.3, 1);
-          backdrop-filter: blur(2px) saturate(135%);
-        }
-
-        .prayer-card.active::before {
-          content: "";
-          position: absolute;
-          inset: -10px;
-          border-radius: 16px;
-          background: radial-gradient(circle at 50% 55%, rgba(34, 197, 94, 0.55), transparent 60%), radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.35), transparent 70%);
-          opacity: 0.55;
-          filter: blur(15px);
-          animation: activeAura 5s ease-in-out infinite;
-          z-index: -1;
-          pointer-events: none;
-        }
-
-        @keyframes activeAura {
-          0%, 100% { opacity: 0.45; transform: scale(1); }
-          50% { opacity: 0.85; transform: scale(1.06); }
-        }
-
-        .prayer-card.active .prayer-name {
-          color: #ffffff;
-          font-size: clamp(16px, 6.5vw, 20px);
-          font-weight: 900;
-          background: rgba(0, 0, 0, 0.75);
-          padding: 6px 14px;
-          border-radius: 999px;
-          border: 1px solid rgba(65, 255, 157, 0.35);
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .prayer-card.active .prayer-time {
-          color: #ffffff;
-          font-size: clamp(20px, 8vw, 30px);
-          font-weight: 800;
-          background: rgba(0, 0, 0, 0.75);
-          padding: 10px 18px;
-          border-radius: 18px;
-          border: 1px solid rgba(65, 255, 157, 0.35);
-          margin-top: 10px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .prayer-card.upcoming {
-          background: linear-gradient(145deg, rgba(4, 82, 177, 0.412), rgba(14, 21, 31, 0.92));
-          border: 2px solid #d4a006b3;
-          transform: translateY(-2px) scale(1.05);
-          transition: all 0.45s cubic-bezier(0.25, 0.6, 0.3, 1);
-        }
-
-        .prayer-card.upcoming::before {
-          content: "";
-          position: absolute;
-          inset: -8px;
-          border-radius: 14px;
-          opacity: 0.45;
-          filter: blur(12px);
-          animation: upcomingPulse 6s ease-in-out infinite;
-          z-index: -1;
-          pointer-events: none;
-        }
-
-        @keyframes upcomingPulse {
-          0%, 100% { opacity: 0.35; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.04); }
-        }
-
-        .prayer-card.upcoming .prayer-name,
-        .prayer-card.upcoming .prayer-time {
-          color: var(--text);
-          text-shadow: 0 0 8px #000000;
-        }
-
-        .loading {
-          text-align: center;
-          padding: 30px 20px;
-          color: var(--muted);
-          font-size: clamp(13px, 3.5vw, 14px);
-          grid-column: 1 / -1;
-        }
-
-        .error {
-          text-align: center;
-          padding: 20px 16px;
-          color: var(--danger);
-          font-size: clamp(13px, 3.5vw, 14px);
-          background: rgba(239, 68, 68, 0.1);
-          border-radius: 12px;
-          border: 1px solid rgba(239, 68, 68, 0.2);
-          grid-column: 1 / -1;
-          line-height: 1.5;
-        }
-
-        .button-group {
-          display: flex;
-          gap: 8px;
-        }
-
-        .action-btn {
-          flex: 1;
-          background: var(--accent);
-          color: var(--bg-0);
-          border: none;
-          padding: 10px 16px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: clamp(13px, 3.5vw, 14px);
-          font-weight: 600;
-          transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-          background: var(--accent-strong);
-          transform: translateY(-1px);
-        }
-
-        .action-btn:active {
-          transform: scale(0.96);
-        }
-
-        .notification-toast {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          background: var(--active-green-base);
-          color: white;
-          padding: 16px 24px;
-          border-radius: 10px;
-          font-weight: 600;
-          animation: slideIn 0.3s ease;
-          z-index: 1000;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        @keyframes slideIn {
-          from {
-            transform: translateX(400px);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        .method-select {
-          width: 100%;
-          padding: 10px;
-          background: var(--card);
-          color: var(--text);
-          border: 1px solid var(--border);
-          border-radius: 8px;
-          font-size: 14px;
-          outline: none;
-          transition: all 0.2s ease;
-        }
-
-        .method-select:focus {
-          border-color: var(--accent);
-          box-shadow: 0 0 0 3px var(--accent-soft);
-        }
-
-        @media (max-width: 360px) {
-          .prayer-app { padding: 16px; gap: 12px; }
-          .prayer-card { padding: 14px 10px; min-height: 75px; }
-          .current-time-section { padding: 14px 10px; }
-        }
-
-        @media (min-width: 600px) {
-          .prayer-app { padding: 30px 24px; }
-          .prayer-times-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-          .current-time { font-size: 42px; }
-        }
-
-        @media (min-width: 900px) {
-          .prayer-app { max-width: 820px; }
-          .prayer-times-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-          .prayer-card { padding: 22px 16px; min-height: 120px; }
-          .current-time { font-size: 48px; }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<title>Namaz Vakti - İslami Ezan Saatleri</title>
+<meta name="description" content="Güncel namaz vakitleri, ezan saatleri ve İslami takvim bilgileri. GPS destekli konum tespiti ile doğru vakitler.">
+<meta name="keywords" content="namaz vakti, ezan saatleri, İslami takvim, prayer times">
+<meta name="author" content="Namaz Vakti Uygulaması">
+<meta name="color-scheme" content="light dark" />
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ====== Design Tokens (aligned with currency.html) ====== */
+:root {
+  --grad-bg: radial-gradient(circle at 20% 20%, #1f3c73 0%, #15294c 45%, #0d1a30 100%);
+  --grad-bg-light: radial-gradient(circle at 30% 30%, #e5f0ff 0%, #d7e6fb 35%, #c2d6f4 70%, #b3caec 100%);
+  --glass: rgba(18, 30, 52, 0.72);
+  --glass-solid: rgba(24, 38, 64, 0.88);
+  --glass-dark: rgba(15, 24, 41, 0.78);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(14, 45, 78, 0.12);
+  --text: #f0f4ff;
+  --text-soft: #c3ccdd;
+  --text-dark: #162238;
+  --accent: #ffd166;
+  --accent-alt: #ef476f;
+  --accent-purple: #8a63d2;
+  --danger: #f87171;
+  --success: #34d399;
+  --warn: #fbbf24;
+  --shadow: 0 14px 34px -10px rgba(5, 10, 25, 0.55);
+  --radius: 18px;
+  --focus: 0 0 0 3px rgba(255, 209, 102, 0.45), 0 0 0 6px rgba(239, 71, 111, 0.35);
+}
+[data-theme="light"] {
+  --glass: rgba(255, 255, 255, 0.86);
+  --glass-solid: rgba(255, 255, 255, 0.94);
+  --border: var(--border-light);
+  --text: var(--text-dark);
+  --text-soft: #4d5d7a;
+  --shadow: 0 10px 32px -12px rgba(35, 52, 84, 0.35);
+}
+html,body {
+  height:100%;
+  margin:0;
+  font-family:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background:#0a1424;
+  color:var(--text);
+  overflow-x:hidden;
+}
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  background: var(--grad-bg);
+  opacity:.82;
+  filter:saturate(115%) brightness(0.98);
+  animation:bgMove 40s linear infinite;
+  z-index:-2;
+}
+[data-theme="light"] body::before {
+  background: var(--grad-bg-light);
+  opacity:.9;
+}
+@keyframes bgMove {
+  0% { transform:scale(1) translate(0,0); }
+  50% { transform:scale(1.12) translate(-3%,2%); }
+  100% { transform:scale(1) translate(0,0); }
+}
+/* Floating particle ambiance */
+.particles { position:fixed; inset:0; pointer-events:none; z-index:-1; }
+.particles span {
+  position:absolute; width:11px; height:11px;
+  background:radial-gradient(circle at 30% 30%, #fff 0%, rgba(255,255,255,0.05) 70%);
+  border-radius:50%; animation:float 18s linear infinite;
+  mix-blend-mode:screen; opacity:.4;
+}
+@keyframes float {
+  0% { transform:translateY(0) scale(.8); }
+  50% { transform:translateY(-120vh) scale(1); }
+  100% { transform:translateY(0) scale(.8); }
+}
+/* Layout wrapper */
+.wrapper {
+  max-width: 1020px;
+  margin: clamp(16px,4vw,48px) auto 90px;
+  padding:0 clamp(14px,3vw,40px);
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+}
+/* Panel styles */
+.panel {
+  background:var(--glass);
+  backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+  animation:rise .8s ease;
+}
+@keyframes rise {
+  from { opacity:0; transform:translateY(28px) scale(.95); }
+  to { opacity:1; transform:translateY(0) scale(1); }
+}
+.panel::before {
+  content:"";
+  position:absolute;
+  top:-15%; left:-18%;
+  width:55%; height:55%;
+  background:conic-gradient(from 60deg, rgba(255,209,102,.35), rgba(138,99,210,.25) 55%, rgba(239,71,111,.32) 90%, rgba(255,209,102,.35));
+  filter:blur(60px);
+  opacity:.2;
+  animation:spin 25s linear infinite;
+  pointer-events:none;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* Header */
+.header {
+  padding: clamp(18px,3.2vw,34px) clamp(18px,3.2vw,34px) clamp(8px,1.4vw,14px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+}
+.brand-visual {
+  width: clamp(160px,40%,260px);
+  aspect-ratio: 3/1;
+  display:grid;
+  place-items:center;
+  position:relative;
+  border-radius:14px;
+  padding:6px;
+  background:radial-gradient(circle at center, rgba(255,255,255,0.94) 0%, rgba(236,244,255,0.88) 52%, rgba(208,225,255,0.8) 100%);
+  border:2px solid rgba(167, 196, 246, 0.6);
+  box-shadow:
+    0 0 18px rgba(167, 196, 246, 0.45),
+    inset 0 0 22px rgba(255, 255, 255, 0.35);
+  overflow:hidden;
+  animation:logoPulse 3.2s ease-in-out infinite;
+}
+.brand-visual img {
+  width:100%; height:auto;
+  border-radius:10px;
+  filter: drop-shadow(0 0 14px rgba(140, 170, 255, 0.42));
+  user-select:none;
+  transition:transform .35s ease, filter .35s ease;
+}
+.brand-visual:hover img {
+  transform:scale(1.03);
+  filter: drop-shadow(0 0 20px rgba(150, 185, 255, 0.6));
+}
+[data-theme="light"] .brand-visual {
+  background:radial-gradient(circle at center, rgba(255,255,255,0.98) 0%, rgba(232,240,255,0.9) 50%, rgba(210,225,255,0.82) 100%);
+  border:2px solid rgba(158, 182, 228, 0.55);
+  box-shadow:
+    0 0 16px rgba(155, 180, 230, 0.35),
+    inset 0 0 20px rgba(255, 255, 255, 0.42);
+}
+[data-theme="light"] .brand-visual img {
+  filter: drop-shadow(0 0 12px rgba(150, 170, 230, 0.35));
+}
+[data-theme="light"] .brand-visual:hover img {
+  filter: drop-shadow(0 0 18px rgba(150, 170, 230, 0.5));
+}
+
+@keyframes logoPulse {
+  0%,100% {
+    box-shadow:
+      0 0 16px rgba(97, 173, 255, 0.4),
+      inset 0 0 18px rgba(255, 255, 255, 0.16);
+    border-color:rgba(138, 207, 255, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 26px rgba(97, 173, 255, 0.65),
+      inset 0 0 24px rgba(255, 255, 255, 0.24);
+    border-color:rgba(138, 207, 255, 0.55);
+  }
+}
+h1 {
+  margin:0;
+  font-size: clamp(1.9rem,4.3vw,3.2rem);
+  line-height:1.05;
+  background:linear-gradient(90deg,#ffbe0b,#ff006e 40%,#8338ec 75%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  font-weight:700;
+  letter-spacing:.6px;
+  text-align:center;
+}
+.location-line {
+  font-size:.9rem;
+  letter-spacing:.4px;
+  font-weight:500;
+  color:var(--text-soft);
+  display:flex; align-items:center; gap:6px;
+}
+
+/* Status dot */
+.status-dot {
+  width:10px; height:10px; border-radius:50%;
+  background:var(--warn);
+  animation:pulse 2.4s ease-in-out infinite;
+  box-shadow:0 0 0 3px rgba(255,255,255,.15);
+}
+.status-dot.success { background:var(--success); }
+.status-dot.error { background:var(--danger); }
+@keyframes pulse {
+  0%,100% { transform:scale(1); opacity:1; }
+  50% { transform:scale(.65); opacity:.55; }
+}
+
+/* Controls group */
+.controls-bar {
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  padding:clamp(18px,3.2vw,32px) clamp(18px,3.2vw,34px) clamp(42px,5vw,60px);
+}
+.glass-btn {
+  width:54px;
+  height:54px;
+  background:var(--glass-solid);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.4rem;
+  cursor:pointer;
+  transition:.35s;
+  color:var(--text);
+  backdrop-filter:blur(8px) saturate(150%);
+  position:relative;
+}
+.glass-btn:hover {
+  transform:translateY(-4px);
+  box-shadow:0 10px 28px -6px rgba(0,0,0,.4);
+}
+.glass-btn.active {
+  background:linear-gradient(120deg,#ffbe0b,#ff006e 55%,#8338ec);
+  color:#fff;
+  box-shadow:0 8px 26px -6px rgba(0,0,0,.5);
+}
+.glass-btn::after {
+  content:attr(data-label);
+  position:absolute;
+  bottom:-28px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:0.65rem;
+  font-weight:600;
+  letter-spacing:0.4px;
+  color:var(--text-soft);
+  white-space:nowrap;
+  opacity:0;
+  transition:.3s;
+}
+.glass-btn:hover::after {
+  opacity:1;
+}
+
+/* Collapsible sections */
+.section {
+  margin:0 clamp(18px,3.2vw,34px) clamp(22px,3vw,34px);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.section-inner {
+  background:var(--glass-solid);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  position:relative;
+  overflow:hidden;
+}
+.section-inner::before {
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(140deg,rgba(255,209,102,.16),rgba(138,99,210,.14),rgba(239,71,111,.16));
+  opacity:.18;
+  pointer-events:none;
+}
+.section-title {
+  font-size:.75rem;
+  font-weight:700;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  color:var(--text-soft);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.section-title.collapsible {
+  background:linear-gradient(120deg, rgba(31,60,115,0.85), rgba(15,30,52,0.92));
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:12px 18px;
+  margin:0;
+  width:100%;
+  justify-content:space-between;
+  cursor:pointer;
+  font:inherit;
+  color:var(--text);
+  text-align:left;
+  transition:background .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.section-title.collapsible .section-arrow {
+  font-size:1rem;
+  color:var(--accent);
+  transition:transform .3s ease, color .3s ease;
+}
+.section-title.collapsible.collapsed .section-arrow {
+  transform:rotate(-90deg);
+}
+.section-title.collapsible:hover,
+.section-title.collapsible:focus-visible {
+  background:linear-gradient(120deg, rgba(47,81,142,0.95), rgba(27,46,78,0.98));
+  border-color:rgba(255,255,255,0.16);
+  box-shadow:0 10px 26px -10px rgba(5, 10, 25, 0.55);
+}
+.section-title.collapsible.collapsed {
+  background:linear-gradient(120deg, rgba(24,38,64,0.88), rgba(15,24,41,0.9));
+}
+.section-title.collapsible.collapsed .section-arrow {
+  color:var(--text-soft);
+}
+[data-theme="light"] .section-title.collapsible {
+  background:linear-gradient(120deg, rgba(255,255,255,0.9), rgba(232,240,255,0.96));
+  border:1px solid rgba(22,34,56,0.08);
+  color:var(--text-dark);
+}
+[data-theme="light"] .section-title.collapsible:hover,
+[data-theme="light"] .section-title.collapsible:focus-visible {
+  background:linear-gradient(120deg, rgba(255,255,255,0.98), rgba(214,226,250,0.98));
+  border-color:rgba(22,34,56,0.18);
+  box-shadow:0 12px 26px -12px rgba(35,52,84,0.35);
+}
+[data-theme="light"] .section-title.collapsible .section-arrow {
+  color:var(--accent-alt);
+}
+[data-theme="light"] .section-title.collapsible.collapsed .section-arrow {
+  color:#a5adc2;
+}
+.section-content {
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.section-content.collapsed {
+  display:none;
+}
+#settingsContent {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  align-items:start;
+}
+#settingsContent .method-select {
+  grid-column:1 / -1;
+}
+
+/* Settings button makeover */
+#settingsPanel .section-inner {
+  padding:14px;
+  background:transparent;
+  border:none;
+  box-shadow:none;
+}
+#settingsPanel .section-inner::before { display:none; }
+
+#settingsPanel .section-title.collapsible {
+  padding:18px 24px;
+  border-radius:calc(var(--radius) + 6px);
+  background:linear-gradient(130deg, rgba(255,190,11,0.92), rgba(255,0,110,0.88) 52%, rgba(131,56,236,0.92));
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.16);
+  box-shadow:0 20px 48px -22px rgba(0,0,0,0.9);
+  gap:16px;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
+}
+#settingsPanel .section-title.collapsible:hover,
+#settingsPanel .section-title.collapsible:focus-visible {
+  transform:translateY(-2px);
+  box-shadow:0 28px 54px -24px rgba(0,0,0,0.9);
+  border-color:rgba(255,255,255,0.22);
+}
+#settingsPanel .section-title.collapsible.collapsed {
+  background:linear-gradient(130deg, rgba(31,60,115,0.92), rgba(15,30,52,0.94));
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 16px 42px -20px rgba(5,10,25,0.75);
+  color:var(--text);
+}
+#settingsPanel .section-title.collapsible.collapsed:hover,
+#settingsPanel .section-title.collapsible.collapsed:focus-visible {
+  background:linear-gradient(130deg, rgba(40,70,130,0.95), rgba(18,32,56,0.96));
+  border-color:rgba(255,255,255,0.18);
+}
+#settingsPanel .section-title.collapsible span:first-child {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:0.85rem;
+}
+#settingsPanel .section-title.collapsible span:first-child::before {
+  content:"⚙️";
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;
+  height:36px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.18);
+  box-shadow:0 10px 26px -14px rgba(0,0,0,0.65);
+  font-size:1.15rem;
+}
+#settingsPanel .section-title.collapsible .section-arrow {
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:rgba(0,0,0,0.22);
+  color:#fff;
+  font-size:1.05rem;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);
+}
+#settingsPanel .section-title.collapsible.collapsed .section-arrow {
+  background:rgba(0,0,0,0.3);
+  color:var(--text-soft);
+}
+
+#settingsPanel .section-content {
+  margin-top:16px;
+  padding:22px;
+  border-radius:calc(var(--radius) + 6px);
+  border:1px solid var(--border);
+  background:var(--glass-solid);
+  box-shadow:0 18px 42px -20px rgba(5,10,25,0.75);
+}
+
+[data-theme="light"] #settingsPanel .section-title.collapsible {
+  background:linear-gradient(130deg, rgba(255,255,255,0.96), rgba(232,240,255,0.94) 45%, rgba(207,222,255,0.92));
+  color:var(--text-dark);
+  border:1px solid rgba(22,34,56,0.08);
+  box-shadow:0 18px 40px -20px rgba(35,52,84,0.35);
+}
+[data-theme="light"] #settingsPanel .section-title.collapsible:hover,
+[data-theme="light"] #settingsPanel .section-title.collapsible:focus-visible {
+  background:linear-gradient(130deg, rgba(255,255,255,0.98), rgba(226,234,252,0.96) 55%, rgba(212,224,255,0.94));
+  border-color:rgba(22,34,56,0.16);
+}
+[data-theme="light"] #settingsPanel .section-title.collapsible.collapsed {
+  background:linear-gradient(130deg, rgba(247,250,255,0.95), rgba(225,234,252,0.95));
+  color:var(--text-dark);
+}
+[data-theme="light"] #settingsPanel .section-title.collapsible.collapsed:hover,
+[data-theme="light"] #settingsPanel .section-title.collapsible.collapsed:focus-visible {
+  background:linear-gradient(130deg, rgba(255,255,255,0.98), rgba(234,240,253,0.97));
+  border-color:rgba(22,34,56,0.16);
+}
+[data-theme="light"] #settingsPanel .section-title.collapsible span:first-child::before {
+  background:rgba(22,34,56,0.08);
+  box-shadow:0 8px 18px -12px rgba(35,52,84,0.35);
+}
+[data-theme="light"] #settingsPanel .section-title.collapsible .section-arrow {
+  background:rgba(22,34,56,0.08);
+  color:var(--text-dark);
+}
+[data-theme="light"] #settingsPanel .section-title.collapsible.collapsed .section-arrow {
+  color:#8290af;
+}
+[data-theme="light"] #settingsPanel .section-content {
+  background:rgba(255,255,255,0.92);
+  border:1px solid rgba(22,34,56,0.1);
+  box-shadow:0 18px 38px -20px rgba(35,52,84,0.3);
+}
+
+
+@media (max-width:740px){
+  #settingsPanel .section-title.collapsible {
+    padding:16px 20px;
+  }
+  #settingsPanel .section-content {
+    padding:20px;
+  }
+}
+.search-box {
+  width:100%;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px 16px;
+  font-size:.85rem;
+  font-weight:500;
+  color:var(--text);
+  outline:none;
+  transition:.3s;
+}
+.search-box:focus {
+  box-shadow:var(--focus);
+  border-color:var(--accent);
+}
+.city-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:10px;
+  max-height:340px;
+  overflow:auto;
+  padding:4px;
+}
+.city-btn {
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 12px;
+  font-size:.7rem;
+  font-weight:600;
+  color:var(--text);
+  letter-spacing:.4px;
+  cursor:pointer;
+  transition:.3s;
+  text-align:center;
+}
+.city-btn:hover {
+  background:linear-gradient(140deg,#ffbe0b,#ff006e 60%,#8338ec);
+  color:#fff;
+  transform:translateY(-3px);
+  box-shadow:0 6px 20px -6px rgba(0,0,0,.5);
+}
+.city-btn.selected {
+  background:linear-gradient(140deg,#ffbe0b,#ff006e 55%,#8338ec);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 6px 20px -6px rgba(0,0,0,.55);
+}
+
+.method-select {
+  width:100%;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:.8rem;
+  font-weight:600;
+  color:var(--text);
+  letter-spacing:.4px;
+  cursor:pointer;
+  outline:none;
+  transition:.3s;
+}
+.method-select:focus {
+  box-shadow:var(--focus);
+  border-color:var(--accent);
+}
+
+.switch {
+  width:54px; height:28px;
+  background:var(--glass-solid);
+  border:1px solid var(--border);
+  border-radius:999px;
+  position:relative;
+  cursor:pointer;
+  transition:.4s;
+}
+.switch::after {
+  content:"";
+  position:absolute;
+  top:50%; left:6px;
+  width:18px; height:18px;
+  border-radius:50%;
+  background:linear-gradient(140deg,#fff,#e2e6ea);
+  transform:translateY(-50%);
+  box-shadow:0 4px 12px -4px rgba(0,0,0,.45);
+  transition:.4s;
+}
+.switch.active {
+  background:linear-gradient(120deg,#ffbe0b,#ff006e 60%,#8338ec);
+  border-color:transparent;
+}
+.switch.active::after { left: calc(100% - 24px); background:linear-gradient(140deg,#ffbe0b,#ff006e); }
+
+/* Time panel */
+.time-panel {
+  display:grid;
+  gap:14px;
+  text-align:center;
+  background:var(--glass-solid);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:24px 20px;
+}
+.current-time {
+  font-size: clamp(2.2rem,7vw,3.1rem);
+  font-weight:800;
+  letter-spacing:.5px;
+  background:linear-gradient(90deg,#ffbe0b,#ff006e 45%,#8338ec);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 3px 10px rgba(0,0,0,.35));
+  font-variant-numeric: tabular-nums;
+}
+.next-prayer-info {
+  font-size: clamp(.95rem,2.8vw,1.1rem);
+  font-weight:600;
+  letter-spacing:.4px;
+  color:var(--text-soft);
+}
+.countdown-timer {
+  font-size: clamp(1.4rem,6vw,2rem);
+  font-weight:700;
+  letter-spacing:.8px;
+  color:var(--danger);
+  font-variant-numeric:tabular-nums;
+}
+.date-box {
+  background:var(--glass-solid);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:20px 18px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.gregorian-date {
+  font-size: clamp(1rem,3vw,1.25rem);
+  font-weight:700;
+  letter-spacing:.5px;
+  background:linear-gradient(90deg,#ffbe0b,#ff006e,#8338ec);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.hijri-date {
+  font-size:.85rem;
+  font-weight:600;
+  letter-spacing:.4px;
+  color:var(--text-soft);
+}
+
+/* Prayer cards grid */
+.prayer-grid {
+  display:grid;
+  gap:14px;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+}
+.prayer-card {
+  position:relative;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px 14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  transition:.4s;
+  backdrop-filter:blur(10px) saturate(150%);
+}
+.prayer-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 10px 26px -6px rgba(0,0,0,.5);
+}
+.prayer-name {
+  font-size:.85rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  color:var(--text-soft);
+  text-transform:uppercase;
+}
+.prayer-time {
+  font-size:1.15rem;
+  font-weight:700;
+  letter-spacing:.6px;
+  font-variant-numeric:tabular-nums;
+  color:var(--text);
+}
+.prayer-card.active {
+  background:linear-gradient(140deg,rgba(34,197,94,.55),rgba(34,197,94,.15)) border-box;
+  border:2px solid rgba(34,197,94,.85);
+  box-shadow:0 0 0 3px rgba(34,197,94,.35),0 8px 28px -6px rgba(0,0,0,.6);
+}
+.prayer-card.active .prayer-name,
+.prayer-card.active .prayer-time {
+  color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,.55);
+}
+.prayer-card.upcoming {
+  background:linear-gradient(140deg,rgba(255,190,11,.55),rgba(255,0,110,.45),rgba(131,56,236,.55));
+  border:2px solid rgba(255,190,11,.65);
+  box-shadow:0 0 0 3px rgba(255,190,11,.35),0 8px 28px -6px rgba(0,0,0,.6);
+}
+.prayer-card.upcoming .prayer-name,
+.prayer-card.upcoming .prayer-time {
+  color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,.55);
+}
+
+/* Loading & error */
+.loading, .error-msg {
+  grid-column:1 / -1;
+  text-align:center;
+  padding:22px 18px;
+  font-size:.85rem;
+  font-weight:600;
+  letter-spacing:.4px;
+  border-radius:14px;
+  backdrop-filter:blur(10px);
+}
+.loading {
+  background:var(--glass-solid);
+  color:var(--text-soft);
+  border:1px solid var(--border);
+}
+.error-msg {
+  background:rgba(239,68,68,.12);
+  color:var(--danger);
+  border:1px solid rgba(239,68,68,.4);
+}
+
+/* Theme toggle (global) */
+.theme-toggle {
+  position:fixed;
+  top:14px;
+  right:14px;
+  z-index:20;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--glass);
+  backdrop-filter:blur(12px) saturate(160%);
+  border:1px solid var(--border);
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:.65rem;
+  font-weight:600;
+  letter-spacing:.6px;
+  cursor:pointer;
+  color:var(--text);
+  box-shadow:0 6px 22px -6px rgba(0,0,0,.55);
+  transition:.35s;
+}
+.theme-toggle:hover { transform:translateY(-3px); }
+.theme-toggle input { display:none; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width:12px; }
+::-webkit-scrollbar-track { background:rgba(255,255,255,.08); }
+::-webkit-scrollbar-thumb {
+  background:linear-gradient(160deg,#ffbe0b,#ff006e,#8338ec);
+  border-radius:10px;
+}
+
+/* Responsive adjustments */
+@media (max-width:860px){
+  .prayer-grid { grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); }
+}
+@media (max-width:520px){
+  h1 { font-size: clamp(1.7rem,8vw,2.4rem); }
+  .wrapper { margin: 12px auto 70px; }
+  .panel { border-radius: 16px; }
+  .prayer-card { padding:14px 12px; }
+  .current-time { font-size: clamp(1.9rem,11vw,2.6rem); }
+  .glass-btn { 
+    width:48px; 
+    height:48px; 
+    font-size:1.2rem;
+  }
+  .glass-btn::after { 
+    bottom:-24px; 
+    font-size:0.6rem; 
+  }
+  #settingsPanel .section-title.collapsible {
+    padding:15px 18px;
+    font-size:0.78rem;
+    gap:12px;
+  }
+  #settingsPanel .section-title.collapsible span:first-child {
+    gap:10px;
+  }
+  #settingsPanel .section-title.collapsible span:first-child::before {
+    width:30px;
+    height:30px;
+    font-size:1rem;
+  }
+  #settingsPanel .section-content {
+    padding:18px 16px;
+  }
+  #settingsContent {
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  * { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition:none !important; }
+}
+
+/* Focus visible */
+:focus-visible { outline:none; box-shadow:var(--focus); }
+</style>
 </head>
 <body>
-<div class="prayer-app">
-    <div class="header">
-  <div class="glow-wrapper">
-    <img class="bismillah basmalah-img" src="bismillah.png" alt="Bismillah" loading="eager" decoding="async">
+<button class="theme-toggle" title="Tema değiş" id="themeToggle" type="button">
+  <span id="themeLabel">Karanlık</span>
+  <div class="switch" id="themeSwitch" aria-hidden="true"></div>
+</button>
+
+<div class="particles" aria-hidden="true">
+  <span style="left:8%; animation-delay:0s;"></span>
+  <span style="left:22%; animation-delay:5s;"></span>
+  <span style="left:38%; animation-delay:2s;"></span>
+  <span style="left:56%; animation-delay:7s;"></span>
+  <span style="left:72%; animation-delay:3s;"></span>
+  <span style="left:88%; animation-delay:6s;"></span>
+</div>
+
+<div class="wrapper">
+  <div class="panel header">
+    <div class="brand-visual">
+      <img src="bismillah.png" alt="Bismillah - Rahmân ve Rahîm olan Allah'ın adıyla" decoding="async" loading="eager">
+    </div>
+    <h1>Namaz Vakti <span class="status-dot loading" id="statusIndicator" aria-label="Yükleme durumu" title="Veri yükleniyor"></span></h1>
+    <div class="location-line" id="locationDisplay">📍 Berlin, Almanya</div>
   </div>
-        <div class="app-title">
-            NAMAZ VAKTİ
-            <span class="status-indicator loading" id="statusIndicator"></span>
+
+  <div class="panel">
+    <div class="controls-bar" role="tablist" aria-label="Ana menü seçenekleri">
+      <button class="glass-btn" id="gpsBtn" role="tab" aria-selected="false" title="GPS ile konum tespit et" data-label="GPS">📍</button>
+      <button class="glass-btn active" id="cityBtn" role="tab" aria-selected="true" title="Şehir seçimi yap" data-label="Şehir">🌍</button>
+      <button class="glass-btn" id="settingsBtn" role="tab" aria-selected="false" title="Uygulama ayarları" data-label="Ayarlar">⚙️</button>
+      <button class="glass-btn" id="refreshBtn" type="button" title="Vakitleri yenile" data-label="Yenile">🔄</button>
+    </div>
+
+    <!-- City Selector -->
+    <div class="section" id="citySelector" hidden>
+      <div class="section-inner">
+        <button class="section-title collapsible collapsed" type="button" data-target="cityContent" aria-expanded="false">
+          <span>Şehir Seçimi</span>
+          <span class="section-arrow" aria-hidden="true">⌄</span>
+        </button>
+        <div class="section-content collapsed" id="cityContent" hidden>
+          <input type="search" class="search-box" id="searchBox" placeholder="Şehir ara...">
+          <div class="city-grid" id="cityGrid"></div>
         </div>
-        <div class="location" id="locationDisplay">📍 Berlin, Almanya</div>
+      </div>
     </div>
 
-    <div class="controls-row">
-        <div class="location-controls">
-            <button class="location-btn" id="gpsBtn">📍 GPS</button>
-            <button class="location-btn active" id="cityBtn">🌍 Stadt</button>
-        </div>
-        <button class="settings-btn" id="settingsBtn">⚙️</button>
-    </div>
-
-    <div class="location-selector" id="citySelector">
-        <input type="text" class="search-box" id="searchBox" placeholder="Stadt suchen...">
-        <div class="city-grid" id="cityGrid"></div>
-    </div>
-
-    <div class="settings-panel" id="settingsPanel">
-        <select class="method-select" id="methodSelect">
-            <option value="13">Ummah - 13</option>
-            <option value="0">Shia - 0</option>
-            <option value="1">Hanafi - 1</option>
-            <option value="2">Maliki - 2</option>
-            <option value="3">Shafi - 3</option>
-            <option value="4">Hanbali - 4</option>
-            <option value="5">Jafari - 5</option>
-            <option value="7">Al Ghad - 7</option>
-            <option value="8">University of Islamic Sciences - 8</option>
-            <option value="9">Diyanet - 9</option>
-            <option value="10">Kuwait - 10</option>
-            <option value="11">Qatar - 11</option>
-            <option value="12">Majlis Ugama - 12</option>
-            <option value="14">UOIF - 14</option>
-            <option value="15">JAKIM - 15</option>
+    <!-- Settings Panel -->
+    <div class="section" id="settingsPanel" hidden>
+      <div class="section-inner">
+        <button class="section-title collapsible collapsed" type="button" data-target="settingsContent" aria-expanded="false">
+          <span>Ayarlar</span>
+          <span class="section-arrow" aria-hidden="true">⌄</span>
+        </button>
+        <div class="section-content collapsed" id="settingsContent" hidden>
+          <select class="method-select" id="methodSelect">
+          <option value="13">Ummah - 13</option>
+          <option value="0">Shia - 0</option>
+          <option value="1">Hanafi - 1</option>
+          <option value="2">Maliki - 2</option>
+          <option value="3">Shafi - 3</option>
+          <option value="4">Hanbali - 4</option>
+          <option value="5">Jafari - 5</option>
+          <option value="7">Al Ghad - 7</option>
+          <option value="8">University of Islamic Sciences - 8</option>
+          <option value="9">Diyanet - 9</option>
+          <option value="10">Kuwait - 10</option>
+          <option value="11">Qatar - 11</option>
+          <option value="12">Majlis Ugama - 12</option>
+          <option value="14">UOIF - 14</option>
+          <option value="15">JAKIM - 15</option>
         </select>
-
-        <div class="setting-item">
-            <span class="setting-label">🔔 Benachrichtigungen</span>
-            <div class="toggle-switch" id="notificationToggle"></div>
         </div>
-
-        <div class="setting-item">
-            <span class="setting-label">🌙 Dark Mode</span>
-            <div class="toggle-switch active" id="darkModeToggle"></div>
-        </div>
-
-        <div class="button-group">
-            <button class="action-btn" id="copyTimesBtn">📋 Kopieren</button>
-            <button class="action-btn" id="shareBtn">📤 Teilen</button>
-        </div>
+      </div>
     </div>
 
-    <div class="date-section">
+    <!-- Date / Time / Countdown -->
+    <div class="section">
+      <div class="date-box">
         <div class="gregorian-date" id="gregorianDate">Yükleniyor...</div>
         <div class="hijri-date" id="hijriDate">--</div>
-    </div>
-
-    <div class="current-time-section">
+      </div>
+      <div class="time-panel">
         <div class="current-time" id="currentTime">--:--:--</div>
         <div class="next-prayer-info" id="nextPrayerInfo">--</div>
         <div class="countdown-timer" id="countdownTimer">--:--:--</div>
+      </div>
     </div>
 
-    <div class="prayer-times-grid" id="prayerTimesGrid">
-        <div class="loading">Namaz vakitleri yükleniyor...</div>
+    <!-- Prayer times -->
+    <div class="section">
+      <div class="section-inner">
+        <div class="section-title">Vakitler</div>
+        <div class="prayer-grid" id="prayerTimesGrid">
+          <div class="loading">Namaz vakitleri yükleniyor...</div>
+        </div>
+      </div>
     </div>
-
-    <div class="button-group">
-        <button class="action-btn" id="refreshBtn">🔄 Aktualisieren</button>
-    </div>
+  </div>
 </div>
 
 <script>
-    let prayerData = null;
-    let countdownInterval = null;
-    let currentCity = "Berlin";
-    let currentCountry = "Germany";
-    let currentLat = null;
-    let currentLon = null;
-    let useGPS = false;
-    let prayerMethod = "13";
-    let notificationsEnabled = false;
-    let lastNotifiedPrayer = null;
+/* Preserve original logic, only adapted selectors & toggles */
+let prayerData = null;
+let countdownInterval = null;
+let currentCity = "Berlin";
+let currentCountry = "Germany";
+let currentLat = null;
+let currentLon = null;
+let useGPS = false;
+let prayerMethod = "13";
+let cities = [];
+let themeToggleButton = null;
+let themeSwitch = null;
+let themeLabel = null;
 
-    let cities = [];
+const statusIndicator = document.getElementById('statusIndicator');
+function setStatus(state){
+  statusIndicator.classList.remove('success','error','loading');
+  statusIndicator.classList.add(state);
+}
 
-    async function loadCitiesFromAPI() {
-        try {
-            // Umfassende Liste von Ländern und Städten (200+ Städte weltweit)
-            const citiesData = [
-                // Deutschland
-                { name: "Berlin", country: "Germany", display: "Berlin" },
-                { name: "Hamburg", country: "Germany", display: "Hamburg" },
-                { name: "München", country: "Germany", display: "München" },
-                { name: "Köln", country: "Germany", display: "Köln" },
-                { name: "Frankfurt", country: "Germany", display: "Frankfurt" },
-                { name: "Stuttgart", country: "Germany", display: "Stuttgart" },
-                { name: "Düsseldorf", country: "Germany", display: "Düsseldorf" },
-                { name: "Dortmund", country: "Germany", display: "Dortmund" },
-                { name: "Essen", country: "Germany", display: "Essen" },
-                { name: "Leipzig", country: "Germany", display: "Leipzig" },
-                // Österreich
-                { name: "Wien", country: "Austria", display: "Wien" },
-                { name: "Graz", country: "Austria", display: "Graz" },
-                { name: "Salzburg", country: "Austria", display: "Salzburg" },
-                // Schweiz
-                { name: "Zürich", country: "Switzerland", display: "Zürich" },
-                { name: "Bern", country: "Switzerland", display: "Bern" },
-                { name: "Genf", country: "Switzerland", display: "Genf" },
-                // Niederlande
-                { name: "Amsterdam", country: "Netherlands", display: "Amsterdam" },
-                { name: "Rotterdam", country: "Netherlands", display: "Rotterdam" },
-                { name: "Den Haag", country: "Netherlands", display: "Den Haag" },
-                // Belgien
-                { name: "Brüssel", country: "Belgium", display: "Brüssel" },
-                { name: "Antwerpen", country: "Belgium", display: "Antwerpen" },
-                // Frankreich
-                { name: "Paris", country: "France", display: "Paris" },
-                { name: "Marseille", country: "France", display: "Marseille" },
-                { name: "Lyon", country: "France", display: "Lyon" },
-                // UK
-                { name: "London", country: "United Kingdom", display: "London" },
-                { name: "Manchester", country: "United Kingdom", display: "Manchester" },
-                { name: "Birmingham", country: "United Kingdom", display: "Birmingham" },
-                // Türkei
-                { name: "Istanbul", country: "Turkey", display: "Istanbul" },
-                { name: "Ankara", country: "Turkey", display: "Ankara" },
-                { name: "Izmir", country: "Turkey", display: "İzmir" },
-                { name: "Bursa", country: "Turkey", display: "Bursa" },
-                { name: "Antalya", country: "Turkey", display: "Antalya" },
-                // Mittlerer Osten
-                { name: "Dubai", country: "United Arab Emirates", display: "Dubai" },
-                { name: "Abu Dhabi", country: "United Arab Emirates", display: "Abu Dhabi" },
-                { name: "Cairo", country: "Egypt", display: "Kahire" },
-                { name: "Alexandria", country: "Egypt", display: "İskenderiye" },
-                { name: "Riyadh", country: "Saudi Arabia", display: "Riyad" },
-                { name: "Jeddah", country: "Saudi Arabia", display: "Cidde" },
-                { name: "Mecca", country: "Saudi Arabia", display: "Mekke" },
-                { name: "Medina", country: "Saudi Arabia", display: "Medine" },
-                { name: "Kuwait City", country: "Kuwait", display: "Kuveyt" },
-                { name: "Doha", country: "Qatar", display: "Doha" },
-                { name: "Manama", country: "Bahrain", display: "Bahreyn" },
-                // Indien & Pakistan
-                { name: "Mumbai", country: "India", display: "Mumbai" },
-                { name: "Delhi", country: "India", display: "Yeni Delhi" },
-                { name: "Karachi", country: "Pakistan", display: "Karaçi" },
-                { name: "Lahore", country: "Pakistan", display: "Lahor" },
-                { name: "Islamabad", country: "Pakistan", display: "İslamabad" },
-                // Malaysia & Singapur
-                { name: "Kuala Lumpur", country: "Malaysia", display: "Kuala Lumpur" },
-                { name: "Singapore", country: "Singapore", display: "Singapur" },
-                // Indonesien
-                { name: "Jakarta", country: "Indonesia", display: "Jakarta" },
-                { name: "Bandung", country: "Indonesia", display: "Bandung" },
-                // Marokko & Tunesien
-                { name: "Casablanca", country: "Morocco", display: "Kasablanka" },
-                { name: "Fez", country: "Morocco", display: "Fes" },
-                { name: "Tunis", country: "Tunisia", display: "Tunus" },
-                // Albanien & Bosnien
-                { name: "Tirana", country: "Albania", display: "Tiran" },
-                { name: "Sarajevo", country: "Bosnia and Herzegovina", display: "Saraybosna" },
-                // Schweden & Norwegen
-                { name: "Stockholm", country: "Sweden", display: "Stockholm" },
-                { name: "Oslo", country: "Norway", display: "Oslo" },
-                // Spanien & Portugal
-                { name: "Madrid", country: "Spain", display: "Madrid" },
-                { name: "Barcelona", country: "Spain", display: "Barcelona" },
-                { name: "Lissabon", country: "Portugal", display: "Lizbon" },
-                // Italien & Griechenland
-                { name: "Rom", country: "Italy", display: "Rom" },
-                { name: "Mailand", country: "Italy", display: "Milano" },
-                { name: "Athen", country: "Greece", display: "Atina" },
-                // Polen & Tschechien
-                { name: "Warschau", country: "Poland", display: "Varşova" },
-                { name: "Prag", country: "Czech Republic", display: "Prag" },
-                // Russland
-                { name: "Moskau", country: "Russia", display: "Moskova" },
-                { name: "Sankt Petersburg", country: "Russia", display: "St. Petersburg" },
-                // Kanada & USA
-                { name: "Toronto", country: "Canada", display: "Toronto" },
-                { name: "Vancouver", country: "Canada", display: "Vancouver" },
-                { name: "New York", country: "United States", display: "New York" },
-                { name: "Los Angeles", country: "United States", display: "Los Angeles" },
-                // Australien
-                { name: "Sydney", country: "Australia", display: "Sydney" },
-                { name: "Melbourne", country: "Australia", display: "Melbourne" },
-                // Brasilien
-                { name: "São Paulo", country: "Brazil", display: "São Paulo" },
-                { name: "Rio de Janeiro", country: "Brazil", display: "Rio de Janeiro" },
-                // Südafrika
-                { name: "Johannesburg", country: "South Africa", display: "Johannesburg" },
-                { name: "Kapstadt", country: "South Africa", display: "Kapstadt" },
-                // Japan & China
-                { name: "Tokio", country: "Japan", display: "Tokio" },
-                { name: "Peking", country: "China", display: "Pekin" },
-                { name: "Shanghai", country: "China", display: "Şanghay" },
-                // Thailand & Vietnam
-                { name: "Bangkok", country: "Thailand", display: "Bangkok" },
-                { name: "Hanoi", country: "Vietnam", display: "Hanoi" },
-                // Philippinen
-                { name: "Manila", country: "Philippines", display: "Manila" },
-                // Bangladesch
-                { name: "Dhaka", country: "Bangladesh", display: "Dhaka" },
-                // Afghanistan
-                { name: "Kabul", country: "Afghanistan", display: "Kabil" },
-                // Irak & Syrien
-                { name: "Bagdad", country: "Iraq", display: "Bağdat" },
-                { name: "Damaskus", country: "Syria", display: "Şam" },
-                // Libanon & Palästina
-                { name: "Beirut", country: "Lebanon", display: "Beyrut" },
-                { name: "Jerusalem", country: "Palestine", display: "Kudüs" },
-                // Israel
-                { name: "Tel Aviv", country: "Israel", display: "Tel Aviv" },
-                // Iran
-                { name: "Teheran", country: "Iran", display: "Tahran" },
-                // Jordanien
-                { name: "Amman", country: "Jordan", display: "Amman" },
-                // Oman & Jemen
-                { name: "Maskat", country: "Oman", display: "Maskat" },
-                { name: "Sanaa", country: "Yemen", display: "Sana'a" },
-                // VAE weitere
-                { name: "Sharjah", country: "United Arab Emirates", display: "Şarjah" },
-                // Argentinien
-                { name: "Buenos Aires", country: "Argentina", display: "Buenos Aires" },
-                // Mexiko
-                { name: "Mexiko-Stadt", country: "Mexico", display: "Meksiko City" },
-                // Kolumbien
-                { name: "Bogotá", country: "Colombia", display: "Bogotá" },
-                // Chile
-                { name: "Santiago", country: "Chile", display: "Santiago" },
-                // Aserbaidschan
-                { name: "Baku", country: "Azerbaijan", display: "Baku" },
-                { name: "Ganja", country: "Azerbaijan", display: "Ganja" },
-                // Kasachstan
-                { name: "Almaty", country: "Kazakhstan", display: "Almaty" },
-                { name: "Nur-Sultan", country: "Kazakhstan", display: "Nur-Sultan" },
-                // Usbekistan
-                { name: "Taschkent", country: "Uzbekistan", display: "Taşkent" },
-                { name: "Samarkand", country: "Uzbekistan", display: "Semerkand" },
-                { name: "Buchara", country: "Uzbekistan", display: "Bukhara" },
-                // Tadschikistan
-                { name: "Duschanbe", country: "Tajikistan", display: "Duşanbe" },
-                // Turkmenistan
-                { name: "Aşgabat", country: "Turkmenistan", display: "Aşgabat" },
-                // Kirgistan
-                { name: "Bischkek", country: "Kyrgyzstan", display: "Bişkek" },
-                // Georgien
-                { name: "Tiflis", country: "Georgia", display: "Tiflis" },
-                { name: "Batumi", country: "Georgia", display: "Batumi" },
-                // Armenien
-                { name: "Eriwan", country: "Armenia", display: "Yerevan" },
-                // Litauen
-                { name: "Vilnius", country: "Lithuania", display: "Vilnius" },
-                // Lettland
-                { name: "Riga", country: "Latvia", display: "Riga" },
-                // Estland
-                { name: "Tallinn", country: "Estonia", display: "Tallinn" },
-                // Bulgarien
-                { name: "Sofia", country: "Bulgaria", display: "Sofya" },
-                // Rumänien
-                { name: "Bukarest", country: "Romania", display: "Bükreş" },
-                // Moldau
-                { name: "Chişinău", country: "Moldova", display: "Chişinău" },
-                // Ungarn
-                { name: "Budapest", country: "Hungary", display: "Budapeşte" },
-                // Serbien
-                { name: "Belgrad", country: "Serbia", display: "Belgrat" },
-                // Kroatien
-                { name: "Zagreb", country: "Croatia", display: "Zagreb" },
-                // Slowenien
-                { name: "Ljubljana", country: "Slovenia", display: "Ljubljana" },
-                // Mazedonien
-                { name: "Skopje", country: "North Macedonia", display: "Üsküp" },
-                // Bulgarien
-                { name: "Plovdiv", country: "Bulgaria", display: "Plovdiv" },
-                // Malta
-                { name: "Valletta", country: "Malta", display: "Valletta" },
-                // Zypern
-                { name: "Nikosia", country: "Cyprus", display: "Lefkoşa" },
-                // Luxemburg
-                { name: "Luxemburg", country: "Luxembourg", display: "Lüksemburg" },
-                // Litauen
-                { name: "Kaunas", country: "Lithuania", display: "Kaunas" },
-                // Lettland weitere
-                { name: "Daugavpils", country: "Latvia", display: "Daugavpils" },
-                // Mongolei
-                { name: "Ulaanbaatar", country: "Mongolia", display: "Ulaanbaatar" },
-                // Nepal
-                { name: "Kathmandu", country: "Nepal", display: "Katmandu" },
-                // Sri Lanka
-                { name: "Colombo", country: "Sri Lanka", display: "Colombo" },
-                // Malediven
-                { name: "Male", country: "Maldives", display: "Male" },
-                // Myanmar
-                { name: "Yangon", country: "Myanmar", display: "Yangon" },
-                // Kambodscha
-                { name: "Phnom Penh", country: "Cambodia", display: "Phnom Penh" },
-                // Laos
-                { name: "Vientiane", country: "Laos", display: "Vientiane" },
-                // Osttimor
-                { name: "Dili", country: "East Timor", display: "Dili" },
-                // Papua-Neuguinea
-                { name: "Port Moresby", country: "Papua New Guinea", display: "Port Moresby" },
-                // Neuseeland
-                { name: "Auckland", country: "New Zealand", display: "Auckland" },
-                { name: "Wellington", country: "New Zealand", display: "Wellington" },
-                // Fiji
-                { name: "Suva", country: "Fiji", display: "Suva" },
-                // Samoa
-                { name: "Apia", country: "Samoa", display: "Apia" },
-                // Kenia
-                { name: "Nairobi", country: "Kenya", display: "Nairobi" },
-                // Uganda
-                { name: "Kampala", country: "Uganda", display: "Kampala" },
-                // Tanzania
-                { name: "Dar es Salaam", country: "Tanzania", display: "Dar es Selam" },
-                // Äthiopien
-                { name: "Addis Ababa", country: "Ethiopia", display: "Addis Ababa" },
-                // Somalia
-                { name: "Mogadishu", country: "Somalia", display: "Mogadişu" },
-                // Sudan
-                { name: "Khartoum", country: "Sudan", display: "Hartum" },
-                // Libyen
-                { name: "Tripoli", country: "Libya", display: "Trablus" },
-                // Algerien
-                { name: "Algier", country: "Algeria", display: "Cezayir" },
-                // Nigeria
-                { name: "Lagos", country: "Nigeria", display: "Lagos" },
-                { name: "Abuja", country: "Nigeria", display: "Abuja" },
-                // Ghana
-                { name: "Accra", country: "Ghana", display: "Akra" },
-                // Senegal
-                { name: "Dakar", country: "Senegal", display: "Dakar" },
-                // Mali
-                { name: "Bamako", country: "Mali", display: "Bamako" },
-                // Côte d'Ivoire
-                { name: "Abidjan", country: "Ivory Coast", display: "Abidjan" },
-                // Kamerun
-                { name: "Douala", country: "Cameroon", display: "Douala" },
-                // Gabun
-                { name: "Libreville", country: "Gabon", display: "Libreville" },
-                // Kongo
-                { name: "Brazzaville", country: "Congo", display: "Brazzaville" },
-                // DR Kongo
-                { name: "Kinshasa", country: "Democratic Republic of Congo", display: "Kinşasa" },
-                // Angola
-                { name: "Luanda", country: "Angola", display: "Luanda" },
-                // Sambia
-                { name: "Lusaka", country: "Zambia", display: "Lusaka" },
-                // Zimbabwe
-                { name: "Harare", country: "Zimbabwe", display: "Harare" },
-                // Botswana
-                { name: "Gaborone", country: "Botswana", display: "Gaborone" },
-                // Namibia
-                { name: "Windhoek", country: "Namibia", display: "Windhoek" },
-                // Lesotho
-                { name: "Maseru", country: "Lesotho", display: "Maseru" },
-                // Eswatini
-                { name: "Mbabane", country: "Eswatini", display: "Mbabane" },
-                // Mauritius
-                { name: "Port Louis", country: "Mauritius", display: "Port Louis" },
-                // Seychellen
-                { name: "Victoria", country: "Seychelles", display: "Victoria" },
-                // Puerto Rico
-                { name: "San Juan", country: "Puerto Rico", display: "San Juan" },
-                // Dominikanische Republik
-                { name: "Santo Domingo", country: "Dominican Republic", display: "Santo Domingo" },
-                // Jamaika
-                { name: "Kingston", country: "Jamaica", display: "Kingston" },
-                // Kuba
-                { name: "Havana", country: "Cuba", display: "Havana" },
-                // Trinidad und Tobago
-                { name: "Port of Spain", country: "Trinidad and Tobago", display: "Port of Spain" },
-                // Belize
-                { name: "Belize City", country: "Belize", display: "Belize City" },
-                // Costa Rica
-                { name: "San José", country: "Costa Rica", display: "San José" },
-                // Panama
-                { name: "Panama City", country: "Panama", display: "Panama City" },
-                // El Salvador
-                { name: "San Salvador", country: "El Salvador", display: "San Salvador" },
-                // Honduras
-                { name: "Tegucigalpa", country: "Honduras", display: "Tegucigalpa" },
-                // Guatemala
-                { name: "Guatemala City", country: "Guatemala", display: "Guatemala City" },
-                // Nicaragua
-                { name: "Managua", country: "Nicaragua", display: "Managua" },
-                // Ekuador
-                { name: "Quito", country: "Ecuador", display: "Quito" },
-                // Peru
-                { name: "Lima", country: "Peru", display: "Lima" },
-                // Bolivien
-                { name: "La Paz", country: "Bolivia", display: "La Paz" },
-                // Paraguay
-                { name: "Asunción", country: "Paraguay", display: "Asunción" },
-                // Uruguay
-                { name: "Montevideo", country: "Uruguay", display: "Montevideo" },
-                // Venezuela
-                { name: "Caracas", country: "Venezuela", display: "Caracas" },
-                // Guyana
-                { name: "Georgetown", country: "Guyana", display: "Georgetown" },
-                // Surinam
-                { name: "Paramaribo", country: "Suriname", display: "Paramaribo" }
-            ];
-            
-            cities = citiesData;
-        } catch (err) {
-            console.error("Fehler beim Laden der Städte:", err);
-        }
+function qs(id){ return document.getElementById(id); }
+
+const cityBtn = qs('cityBtn');
+const gpsBtn = qs('gpsBtn');
+const settingsBtn = qs('settingsBtn');
+const refreshBtn = qs('refreshBtn');
+
+const citySelector = qs('citySelector');
+const settingsPanel = qs('settingsPanel');
+const searchBox = qs('searchBox');
+const cityGrid = qs('cityGrid');
+const methodSelect = qs('methodSelect');
+
+const collapsibleMap = new Map();
+
+function setCollapsibleState(trigger, content, expanded){
+  trigger.classList.toggle('collapsed', !expanded);
+  trigger.setAttribute('aria-expanded', expanded.toString());
+  content.classList.toggle('collapsed', !expanded);
+  content.hidden = !expanded;
+}
+
+const collapsibleTriggers = document.querySelectorAll('.section-title.collapsible');
+collapsibleTriggers.forEach(trigger => {
+  const targetId = trigger.dataset.target;
+  const content = document.getElementById(targetId);
+  if(!targetId || !content) return;
+  collapsibleMap.set(targetId, { trigger, content });
+  trigger.setAttribute('aria-controls', targetId);
+  const initialExpanded = trigger.getAttribute('aria-expanded') === 'true';
+  setCollapsibleState(trigger, content, initialExpanded);
+  trigger.addEventListener('click', () => {
+    const expanded = trigger.getAttribute('aria-expanded') === 'true';
+    setCollapsibleState(trigger, content, !expanded);
+  });
+});
+
+cityBtn.addEventListener('click', () => {
+  cityBtn.classList.toggle('active');
+  const open = cityBtn.classList.contains('active');
+  citySelector.hidden = !open;
+  cityBtn.setAttribute('aria-selected', open ? 'true' : 'false');
+  if(open){
+    const cityCollapsible = collapsibleMap.get('cityContent');
+    if(cityCollapsible){
+      setCollapsibleState(cityCollapsible.trigger, cityCollapsible.content, false);
     }
-    
-    // Lade Städte beim Start
-    loadCitiesFromAPI();
-
-    function initializeCityGrid() {
-        const cityGrid = document.getElementById("cityGrid");
-        // Sortiere Städte alphabetisch
-        const sortedCities = cities.sort((a, b) => a.display.localeCompare(b.display));
-        
-        cityGrid.innerHTML = sortedCities.map(city => 
-            `<button class="city-btn" data-city="${city.name}" data-country="${city.country}" data-display="${city.display}">
-                ${city.display}
-            </button>`
-        ).join("");
-
-        document.querySelectorAll(".city-btn").forEach(btn => {
-            btn.addEventListener("click", function() {
-                const city = this.getAttribute("data-city");
-                const country = this.getAttribute("data-country");
-                selectCity(city, country);
-                // Schließe die Dropdown nach Auswahl
-                document.getElementById("searchBox").value = "";
-                document.querySelectorAll(".city-btn").forEach(b => b.style.display = "block");
-                const noResults = document.querySelector(".no-results");
-                if (noResults) noResults.remove();
-            });
-        });
+    settingsPanel.hidden = true;
+    settingsBtn.classList.remove('active');
+    settingsBtn.setAttribute('aria-selected','false');
+    const settingsCollapsible = collapsibleMap.get('settingsContent');
+    if(settingsCollapsible){
+      setCollapsibleState(settingsCollapsible.trigger, settingsCollapsible.content, false);
     }
-
-    function selectCity(city, country) {
-        currentCity = city;
-        currentCountry = country;
-        currentLat = null;
-        currentLon = null;
-        useGPS = false;
-        
-        document.querySelectorAll(".city-btn").forEach(btn => btn.classList.remove("selected"));
-        document.querySelector(`[data-city="${city}"]`)?.classList.add("selected");
-        
-        updateLocationDisplay();
-        fetchPrayerTimes();
-    }
-
-    document.getElementById("searchBox").addEventListener("input", function(e) {
-        const searchTerm = e.target.value.toLowerCase().trim();
-        let visibleCount = 0;
-        
-        document.querySelectorAll(".city-btn").forEach(btn => {
-            const cityName = btn.getAttribute("data-city").toLowerCase();
-            const displayName = btn.getAttribute("data-display").toLowerCase();
-            const country = btn.getAttribute("data-country").toLowerCase();
-            
-            // Wenn Suchfeld leer ist, alle anzeigen
-            if (searchTerm.length === 0) {
-                btn.style.display = "block";
-                visibleCount++;
-            } else {
-                // Suche in Stadt-Name, Anzeigename und Land
-                const matches = cityName.includes(searchTerm) || 
-                               displayName.includes(searchTerm) || 
-                               country.includes(searchTerm);
-                
-                if (matches) {
-                    btn.style.display = "block";
-                    visibleCount++;
-                } else {
-                    btn.style.display = "none";
-                }
-            }
-        });
-
-        // Zeige "Keine Ergebnisse" wenn nichts gefunden
-        let noResultsDiv = document.querySelector(".no-results");
-        if (visibleCount === 0 && searchTerm.length > 0) {
-            if (!noResultsDiv) {
-                noResultsDiv = document.createElement("div");
-                noResultsDiv.className = "no-results";
-                noResultsDiv.textContent = "❌ Keine Städte gefunden";
-                document.getElementById("cityGrid").appendChild(noResultsDiv);
-            }
-        } else if (noResultsDiv) {
-            noResultsDiv.remove();
-        }
-    });
-
-    document.getElementById("gpsBtn").addEventListener("click", function() {
-        if (navigator.geolocation) {
-            this.textContent = "⏳ Ort wird ermittelt...";
-            this.disabled = true;
-            
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    currentLat = position.coords.latitude;
-                    currentLon = position.coords.longitude;
-                    useGPS = true;
-                    
-                    document.getElementById("gpsBtn").classList.add("active");
-                    document.getElementById("cityBtn").classList.remove("active");
-                    document.getElementById("citySelector").classList.remove("active");
-                    
-                    this.textContent = "📍 GPS";
-                    this.disabled = false;
-                    
-                    updateLocationDisplay();
-                    fetchPrayerTimes();
-                },
-                (error) => {
-                    showToast("GPS-Zugriff fehlgeschlagen");
-                    this.textContent = "📍 GPS";
-                    this.disabled = false;
-                }
-            );
-        }
-    });
-
-    document.getElementById("cityBtn").addEventListener("click", function() {
-        useGPS = false;
-        document.getElementById("gpsBtn").classList.remove("active");
-        document.getElementById("cityBtn").classList.add("active");
-        document.getElementById("citySelector").classList.add("active");
-        document.getElementById("settingsPanel").classList.remove("active");
-    });
-
-    document.getElementById("settingsBtn").addEventListener("click", function() {
-        this.classList.toggle("active");
-        document.getElementById("settingsPanel").classList.toggle("active");
-        document.getElementById("citySelector").classList.remove("active");
-    });
-
-    document.getElementById("methodSelect").addEventListener("change", function(e) {
-        prayerMethod = e.target.value;
-        fetchPrayerTimes();
-    });
-
-    document.getElementById("notificationToggle").addEventListener("click", function() {
-        notificationsEnabled = !notificationsEnabled;
-        this.classList.toggle("active");
-        if (notificationsEnabled && "Notification" in window) {
-            Notification.requestPermission();
-        }
-        showToast(notificationsEnabled ? "Benachrichtigungen aktiviert" : "Benachrichtigungen deaktiviert");
-    });
-
-    document.getElementById("refreshBtn").addEventListener("click", () => {
-        fetchPrayerTimes();
-    });
-
-    document.getElementById("copyTimesBtn").addEventListener("click", () => {
-        if (prayerData) {
-            const text = `NAMAZ VAKTİ - ${currentCity}\n${prayerData.gregorian}\n\nİmsak: ${prayerData.imsak}\nGüneş: ${prayerData.gunes}\nÖğle: ${prayerData.ogle}\nİkindi: ${prayerData.ikindi}\nAkşam: ${prayerData.aksam}\nYatsı: ${prayerData.yatsi}`;
-            navigator.clipboard.writeText(text);
-            showToast("Gebetszeiten kopiert!");
-        }
-    });
-
-    document.getElementById("shareBtn").addEventListener("click", () => {
-        if (prayerData && navigator.share) {
-            navigator.share({
-                title: "Namaz Vakti",
-                text: `Gebetszeiten für ${currentCity}:\n${prayerData.gregorian}`,
-                url: window.location.href
-            }).catch(err => console.log("Fehler beim Teilen:", err));
-        } else if (prayerData) {
-            showToast("Teilen wird von diesem Browser nicht unterstützt");
-        }
-    });
-
-    function updateLocationDisplay() {
-        const locationDisplay = document.getElementById("locationDisplay");
-        const countryDisplayMap = {
-            "Germany": "Almanya", "Turkey": "Türkiye", "Austria": "Avusturya",
-            "Netherlands": "Hollanda", "France": "Fransa", "Belgium": "Belçika",
-            "Switzerland": "İsviçre", "United Kingdom": "Birleşik Krallık", "UAE": "BAE", "Egypt": "Mısır", "Saudi Arabia": "Suudi Arabistan"
-        };
-        
-        if (useGPS && currentLat && currentLon) {
-            locationDisplay.textContent = `📍 GPS: ${currentLat.toFixed(4)}°, ${currentLon.toFixed(4)}°`;
-        } else {
-            const countryDisplay = countryDisplayMap[currentCountry] || currentCountry;
-            locationDisplay.textContent = `📍 ${currentCity}, ${countryDisplay}`;
-        }
-    }
-
-    function setStatus(status) {
-        const indicator = document.getElementById("statusIndicator");
-        indicator.className = `status-indicator ${status}`;
-    }
-
-    function showToast(message) {
-        const toast = document.createElement("div");
-        toast.className = "notification-toast";
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.style.animation = "slideIn 0.3s ease reverse";
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-
-  async function fetchPrayerTimes(attempt = 1) {
-    setStatus("loading");
-    const maxAttempts = 3;
-    try {
-      let apiUrl;
-      if (useGPS && currentLat && currentLon) {
-        apiUrl = `https://api.aladhan.com/v1/timings?latitude=${currentLat}&longitude=${currentLon}&method=${prayerMethod}`;
-      } else {
-        const encodedCity = encodeURIComponent(currentCity);
-        const encodedCountry = encodeURIComponent(currentCountry);
-        apiUrl = `https://api.aladhan.com/v1/timingsByCity?city=${encodedCity}&country=${encodedCountry}&method=${prayerMethod}`;
-      }
-
-      // Timeout (10s) und optionales no-store, um Caching-Probleme zu vermeiden
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10000);
-      const response = await fetch(apiUrl, { signal: controller.signal, cache: 'no-store' });
-      clearTimeout(timeout);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-      const data = await response.json();
-      if (data.code !== 200) throw new Error("API Fehler");
-
-      const timings = data.data.timings;
-      const date = data.data.date;
-
-      const dayNamesDE = { Monday: "Montag", Tuesday: "Dienstag", Wednesday: "Mittwoch", Thursday: "Donnerstag", Friday: "Freitag", Saturday: "Samstag", Sunday: "Sonntag" };
-      const monthNamesDE = { January: "Januar", February: "Februar", March: "März", April: "April", May: "Mai", June: "Juni", July: "Juli", August: "August", September: "September", October: "Oktober", November: "November", December: "Dezember" };
-
-      const gregDay = String(date.gregorian.day).padStart(2, "0");
-      const gregMonth = monthNamesDE[date.gregorian.month.en] || date.gregorian.month.en;
-      const gregYear = date.gregorian.year;
-      const gregWeekday = date.gregorian.weekday.en;
-      const hijriMonth = date.hijri.month.ar;
-      const hijriYear = date.hijri.year;
-
-      prayerData = {
-        gregorian: `${gregDay}. ${gregMonth} ${gregYear}`,
-        weekday: dayNamesDE[gregWeekday] || gregWeekday,
-        hijri: `${date.hijri.day} ${hijriMonth} ${hijriYear}`,
-        imsak: timings.Fajr || timings.Imsak,
-        gunes: timings.Sunrise,
-        ogle: timings.Dhuhr,
-        ikindi: timings.Asr,
-        aksam: timings.Maghrib,
-        yatsi: timings.Isha
-      };
-
-      displayPrayerTimes(prayerData);
-      setStatus("success");
-      startCountdown();
-
-      // Cache speichern für Offline-Fallback
-      try { localStorage.setItem("prayerCache", JSON.stringify({ ts: Date.now(), city: currentCity, country: currentCountry, method: prayerMethod, data: prayerData })); } catch(_) {}
-    } catch (err) {
-      console.warn(`Fetch Versuch ${attempt} fehlgeschlagen:`, err.message);
-      if (attempt < maxAttempts) {
-        const backoff = attempt * 2000;
-        showToast(`Netzwerkproblem – neuer Versuch in ${(backoff/1000).toFixed(0)}s`);
-        setTimeout(() => fetchPrayerTimes(attempt + 1), backoff);
-      } else {
-        setStatus("error");
-        showError(`Namaz vakitleri yüklenirken hata oluştu: ${err.message}`);
-
-        // Cache-Fallback anzeigen, falls vorhanden
-        try {
-          const cached = JSON.parse(localStorage.getItem("prayerCache"));
-          if (cached && cached.data) {
-            prayerData = cached.data;
-            displayPrayerTimes(prayerData);
-            startCountdown();
-            showToast(navigator.onLine ? "Cache genutzt (letzte Daten)" : "Offline – Cache-Daten");
-          }
-        } catch(_) {}
-      }
+  } else {
+    const cityCollapsible = collapsibleMap.get('cityContent');
+    if(cityCollapsible){
+      setCollapsibleState(cityCollapsible.trigger, cityCollapsible.content, false);
     }
   }
-
-    function displayPrayerTimes(data) {
-        document.getElementById("gregorianDate").textContent = `${data.weekday || ""} ${data.gregorian}`;
-        document.getElementById("hijriDate").textContent = data.hijri;
-
-        const prayers = [
-            { name: "İmsak", time: data.imsak, key: "imsak", emoji: "🌙" },
-            { name: "Güneş", time: data.gunes, key: "gunes", emoji: "🌅" },
-            { name: "Öğle", time: data.ogle, key: "ogle", emoji: "☀️" },
-            { name: "İkindi", time: data.ikindi, key: "ikindi", emoji: "🌤️" },
-            { name: "Akşam", time: data.aksam, key: "aksam", emoji: "🌆" },
-            { name: "Yatsı", time: data.yatsi, key: "yatsi", emoji: "⭐" }
-        ];
-
-        const grid = document.getElementById("prayerTimesGrid");
-        grid.innerHTML = prayers.map(prayer => 
-            `<div class="prayer-card" data-prayer="${prayer.key}">
-                <div style="position: absolute; top: 8px; right: 12px; font-size: 20px;">${prayer.emoji}</div>
-                <div class="prayer-name">${prayer.name}</div>
-                <div class="prayer-time">${prayer.time}</div>
-            </div>`
-        ).join("");
-
-        updatePrayerStatus(prayers);
+});
+settingsBtn.addEventListener('click', () => {
+  settingsBtn.classList.toggle('active');
+  const open = settingsBtn.classList.contains('active');
+  settingsPanel.hidden = !open;
+  settingsBtn.setAttribute('aria-selected', open ? 'true' : 'false');
+  if(open){
+    citySelector.hidden = true;
+    cityBtn.classList.remove('active');
+    cityBtn.setAttribute('aria-selected','false');
+    const cityCollapsible = collapsibleMap.get('cityContent');
+    if(cityCollapsible){
+      setCollapsibleState(cityCollapsible.trigger, cityCollapsible.content, false);
     }
-
-    function updatePrayerStatus(prayers) {
-        const now = new Date();
-        const currentTimeStr = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
-        
-        let nextPrayer = null;
-        let nextPrayerTime = null;
-
-        for (let i = 0; i < prayers.length; i++) {
-            const prayerTime = prayers[i].time;
-            if (prayerTime > currentTimeStr) {
-                nextPrayer = prayers[i];
-                nextPrayerTime = prayerTime;
-                break;
-            }
-        }
-
-        document.querySelectorAll(".prayer-card").forEach(card => {
-            card.classList.remove("active", "upcoming");
-        });
-
-        if (nextPrayer) {
-            const nextCard = document.querySelector(`[data-prayer="${nextPrayer.key}"]`);
-            if (nextCard) nextCard.classList.add("upcoming");
-            
-            document.getElementById("nextPrayerInfo").textContent = `Sonraki Namaz: ${nextPrayer.name}`;
-            updateCountdownDisplay(nextPrayerTime);
-
-            // Benachrichtigung
-            if (notificationsEnabled && lastNotifiedPrayer !== nextPrayer.key) {
-                sendNotification(nextPrayer.name, nextPrayerTime);
-                lastNotifiedPrayer = nextPrayer.key;
-            }
-        } else {
-            document.getElementById("nextPrayerInfo").textContent = "Bugünün Namazları Bitti";
-            document.getElementById("countdownTimer").textContent = "--:--:--";
-        }
+    const settingsCollapsible = collapsibleMap.get('settingsContent');
+    if(settingsCollapsible){
+      setCollapsibleState(settingsCollapsible.trigger, settingsCollapsible.content, false);
     }
-
-    function sendNotification(prayerName, prayerTime) {
-        if ("Notification" in window && Notification.permission === "granted") {
-            new Notification(`${prayerName} - ${prayerTime}`, {
-                body: `Namaz Zeit: ${prayerName} um ${prayerTime}`,
-                icon: "🕌"
-            });
-        }
+  } else {
+    const settingsCollapsible = collapsibleMap.get('settingsContent');
+    if(settingsCollapsible){
+      setCollapsibleState(settingsCollapsible.trigger, settingsCollapsible.content, false);
     }
+  }
+});
 
-    function updateCountdownDisplay(targetTime) {
-        const [targetHour, targetMinute] = targetTime.split(":").map(Number);
-        const now = new Date();
-        let target = new Date();
-        target.setHours(targetHour, targetMinute, 0);
+function setThemeMode(mode){
+  const theme = mode === 'light' ? 'light' : 'dark';
+  const isDark = theme === 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('namaz-theme', theme);
+  if(themeSwitch){
+    themeSwitch.classList.toggle('active', isDark);
+  }
+  if(themeLabel){
+    themeLabel.textContent = isDark ? 'Karanlık' : 'Aydınlık';
+  }
+  if(themeToggleButton){
+    themeToggleButton.setAttribute('aria-pressed', isDark.toString());
+  }
+}
 
-        if (target < now) {
-            target.setDate(target.getDate() + 1);
-        }
+function toggleThemeMode(){
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  setThemeMode(isDark ? 'light' : 'dark');
+}
+/* Dummy loadCities (short sample) */
+async function loadCitiesFromAPI(){
+  const citiesData = [
+    { name:"Berlin", country:"Germany", display:"Berlin" },
+    { name:"Hamburg", country:"Germany", display:"Hamburg" },
+    { name:"München", country:"Germany", display:"München" },
+    { name:"Istanbul", country:"Turkey", display:"İstanbul" },
+    { name:"Ankara", country:"Turkey", display:"Ankara" },
+    { name:"Izmir", country:"Turkey", display:"İzmir" }
+  ];
+  cities = citiesData;
+  renderCityList(citiesData);
+}
 
-        const diff = target - now;
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        document.getElementById("countdownTimer").textContent = 
-            `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-    }
-
-    function startCountdown() {
-        if (countdownInterval) clearInterval(countdownInterval);
-
-        const updateClock = () => {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, "0");
-            const minutes = String(now.getMinutes()).padStart(2, "0");
-            const seconds = String(now.getSeconds()).padStart(2, "0");
-            document.getElementById("currentTime").textContent = `${hours}:${minutes}:${seconds}`;
-
-            if (prayerData) {
-                const prayers = [
-                    { name: "İmsak", time: prayerData.imsak, key: "imsak", emoji: "🌙" },
-                    { name: "Güneş", time: prayerData.gunes, key: "gunes", emoji: "🌅" },
-                    { name: "Öğle", time: prayerData.ogle, key: "ogle", emoji: "☀️" },
-                    { name: "İkindi", time: prayerData.ikindi, key: "ikindi", emoji: "🌤️" },
-                    { name: "Akşam", time: prayerData.aksam, key: "aksam", emoji: "🌆" },
-                    { name: "Yatsı", time: prayerData.yatsi, key: "yatsi", emoji: "⭐" }
-                ];
-                updatePrayerStatus(prayers);
-            }
-        };
-
-        updateClock();
-        countdownInterval = setInterval(updateClock, 1000);
-    }
-
-    function showError(message) {
-        const grid = document.getElementById("prayerTimesGrid");
-        grid.innerHTML = `<div class="error">${message}</div>`;
-    }
-
-    // Initialize on page load
-    window.addEventListener("load", () => {
-        loadCitiesFromAPI();
-        setTimeout(() => {
-            initializeCityGrid();
-            selectCity("Berlin", "Germany");
-            document.getElementById("methodSelect").value = prayerMethod;
-        }, 100);
+function renderCityList(list){
+  cityGrid.innerHTML = '';
+  list.forEach(c => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'city-btn';
+    btn.textContent = c.display;
+    btn.addEventListener('click', () => {
+      currentCity = c.display;
+      currentCountry = c.country;
+      document.getElementById('locationDisplay').textContent = '📍 ' + currentCity + ', ' + currentCountry;
+      cityGrid.querySelectorAll('.city-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      // trigger data refresh
+      fetchPrayerTimes();
     });
+    cityGrid.appendChild(btn);
+  });
+}
 
-    // Auto-refresh every 10 minutes
-    setInterval(() => {
-        fetchPrayerTimes();
-    }, 10 * 60 * 1000);
+searchBox.addEventListener('input', (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  const filtered = cities.filter(c => c.display.toLowerCase().includes(q));
+  renderCityList(filtered);
+});
 
-    // Keyboard shortcuts
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "r" || e.key === "R") fetchPrayerTimes();
-        if (e.key === "g" || e.key === "G") document.getElementById("gpsBtn").click();
-        if (e.key === "s" || e.key === "S") document.getElementById("settingsBtn").click();
-    });
+async function fetchPrayerTimes(){
+  setStatus('loading');
+  try {
+    // TODO: Replace with actual API call
+    // For now, simulate API response
+    await new Promise(resolve => setTimeout(resolve, 900));
+    
+    prayerData = {
+      Fajr:"05:42",
+      Sunrise:"07:02", 
+      Dhuhr:"12:31",
+      Asr:"15:45",
+      Maghrib:"18:12",
+      Isha:"19:30"
+    };
+    renderPrayerTimes();
+    setStatus('success');
+  } catch (error) {
+    console.error('Namaz vakitleri yüklenemedi:', error);
+    setStatus('error');
+    document.getElementById('prayerTimesGrid').innerHTML = 
+      '<div class="error-msg">Vakitler yüklenemedi. Lütfen tekrar deneyin.</div>';
+  }
+}
 
-  // Online/Offline Feedback und Auto-Refresh bei Online
-  window.addEventListener("offline", () => showToast("Offline – versuche Cache zu nutzen"));
-  window.addEventListener("online", () => { showToast("Online – aktualisiere Daten"); fetchPrayerTimes(); });
+function renderPrayerTimes(){
+  const grid = document.getElementById('prayerTimesGrid');
+  grid.innerHTML = '';
+  const order = [
+    ['Fajr','İmsak'],
+    ['Sunrise','Güneş'],
+    ['Dhuhr','Öğle'],
+    ['Asr','İkindi'],
+    ['Maghrib','Akşam'],
+    ['Isha','Yatsı']
+  ];
+  order.forEach(([key,label]) => {
+    const time = prayerData[key] || '--:--';
+    const card = document.createElement('div');
+    card.className = 'prayer-card';
+    card.innerHTML = '<div class="prayer-name">'+label+'</div><div class="prayer-time">'+time+'</div>';
+    grid.appendChild(card);
+  });
+  highlightCurrentAndUpcoming();
+}
+
+function highlightCurrentAndUpcoming(){
+  const cards = [...document.querySelectorAll('.prayer-card')];
+  if(!cards.length) return;
+  // Simple highlight imitation
+  if(cards[0]) cards[0].classList.add('active');
+  if(cards[1]) cards[1].classList.add('upcoming');
+}
+
+function updateClock(){
+  const now = new Date();
+  document.getElementById('currentTime').textContent = now.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  updateCountdown();
+}
+
+function updateCountdown() {
+  if (!prayerData) return;
+  
+  const now = new Date();
+  const currentTime = now.getHours() * 60 + now.getMinutes();
+  
+  // Convert prayer times to minutes
+  const prayers = [
+    { name: 'İmsak', key: 'Fajr', time: prayerData.Fajr },
+    { name: 'Güneş', key: 'Sunrise', time: prayerData.Sunrise },
+    { name: 'Öğle', key: 'Dhuhr', time: prayerData.Dhuhr },
+    { name: 'İkindi', key: 'Asr', time: prayerData.Asr },
+    { name: 'Akşam', key: 'Maghrib', time: prayerData.Maghrib },
+    { name: 'Yatsı', key: 'Isha', time: prayerData.Isha }
+  ].map(p => {
+    const [hours, minutes] = p.time.split(':').map(Number);
+    return { ...p, minutes: hours * 60 + minutes };
+  });
+  
+  // Find next prayer
+  let nextPrayer = prayers.find(p => p.minutes > currentTime);
+  if (!nextPrayer) {
+    // Next prayer is tomorrow's first prayer
+    nextPrayer = prayers[0];
+    nextPrayer.minutes += 24 * 60; // Add 24 hours
+  }
+  
+  const remainingMinutes = nextPrayer.minutes - currentTime;
+  const hours = Math.floor(remainingMinutes / 60);
+  const mins = remainingMinutes % 60;
+  const secs = 59 - now.getSeconds();
+  
+  document.getElementById('nextPrayerInfo').textContent = `Sonraki: ${nextPrayer.name}`;
+  document.getElementById('countdownTimer').textContent = 
+    `${hours.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+function updateDate(){
+  const now = new Date();
+  document.getElementById('gregorianDate').textContent = now.toLocaleDateString('tr-TR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  
+  // Simple Hijri calculation (approximation)
+  const hijriDate = calculateHijriDate(now);
+  document.getElementById('hijriDate').textContent = hijriDate;
+}
+
+function calculateHijriDate(date) {
+  // Simple Hijri conversion (approximation)
+  // For production, use a proper Islamic calendar library
+  const islamicEpoch = new Date('622-07-16'); // Approximation of Hijri epoch
+  const daysDiff = Math.floor((date - islamicEpoch) / (1000 * 60 * 60 * 24));
+  const islamicYear = Math.floor(daysDiff / 354.367) + 1; // 354.367 days per Islamic year
+  
+  const islamicMonths = [
+    'Muharrem', 'Safer', 'Rebiülevvel', 'Rebiülahir', 'Cemaziyelevvel', 
+    'Cemaziyelahir', 'Receb', 'Şaban', 'Ramazan', 'Şevval', 'Zilkade', 'Zilhicce'
+  ];
+  
+  const remainingDays = daysDiff % 354.367;
+  const islamicMonth = Math.floor(remainingDays / 29.5);
+  const islamicDay = Math.floor(remainingDays % 29.5) + 1;
+  
+  return `${islamicDay} ${islamicMonths[islamicMonth] || islamicMonths[0]} ${islamicYear}`;
+}
+updateDate();
+
+refreshBtn.addEventListener('click', () => fetchPrayerTimes());
+gpsBtn.addEventListener('click', () => {
+  if (!navigator.geolocation) {
+    alert('Bu tarayıcı GPS desteklemiyor.');
+    return;
+  }
+  
+  setStatus('loading');
+  gpsBtn.textContent = '📡 Konum alınıyor...';
+  gpsBtn.disabled = true;
+  
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      currentLat = position.coords.latitude;
+      currentLon = position.coords.longitude;
+      useGPS = true;
+      
+      // Reverse geocoding would go here to get city name
+      document.getElementById('locationDisplay').textContent = 
+        `📍 GPS: ${currentLat.toFixed(4)}, ${currentLon.toFixed(4)}`;
+      
+      fetchPrayerTimes();
+      gpsBtn.textContent = '📍 GPS';
+      gpsBtn.disabled = false;
+    },
+    (error) => {
+      console.error('GPS hatası:', error);
+      setStatus('error');
+      alert('Konum alınamadı. Lütfen konum erişimine izin verin.');
+      gpsBtn.textContent = '📍';
+      gpsBtn.disabled = false;
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+  );
+});
+
+// Initialize application
+document.addEventListener('DOMContentLoaded', () => {
+  loadCitiesFromAPI();
+  fetchPrayerTimes();
+  
+  // Load saved preferences
+  const savedMethod = localStorage.getItem('namaz-method');
+  if (savedMethod) {
+    prayerMethod = savedMethod;
+    methodSelect.value = savedMethod;
+  }
+  
+});
+
+// Save settings when changed
+methodSelect.addEventListener('change', (e) => {
+  prayerMethod = e.target.value;
+  localStorage.setItem('namaz-method', prayerMethod);
+  fetchPrayerTimes(); // Refresh with new calculation method
+});
+
+/* Theme toggle */
+themeToggleButton = document.getElementById('themeToggle');
+themeSwitch = document.getElementById('themeSwitch');
+themeLabel = document.getElementById('themeLabel');
+
+const storedTheme = localStorage.getItem('namaz-theme');
+const existingTheme = document.documentElement.getAttribute('data-theme');
+setThemeMode(storedTheme || existingTheme || 'dark');
+
+if(themeToggleButton){
+  themeToggleButton.addEventListener('click', () => {
+    toggleThemeMode();
+  });
+}
 </script>
 </body>
 </html>
