@@ -139,7 +139,7 @@ input[type="date"]:focus, select:focus { box-shadow: var(--focus-ring); border-c
 .theme-toggle { position:relative; display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none; font-size:.68rem; font-weight:600; letter-spacing:.5px; color: var(--text-soft); }
 .theme-toggle input { display:none; }
 .toggle-pill { width:54px; height:26px; background: var(--glass-bg-solid); border-radius: 999px; position:relative; border:1px solid var(--glass-border); transition: background .4s; }
-.toggle-knob { position:absolute; top:50%; left:6px; width:18px; height:18px; background: linear-gradient(140deg,#fff,#e2e6ea); border-radius:50%; transform: translateY(-50%); box-shadow: 0 3px 10px -2px rgba(0,0,0,.35); transition: left .35s, background .35s; }
+.toggle-knob { position:absolute; top:50%; left:6px; width:18px; height:18px; background: linear-gradient(140deg,#fff,#e2e6ea); border-radius:50%; transform: translateY(-50%); box-shadow: 0 3px 10px -2px rgba(0,0,0,.4); transition:left .4s, background .4s; }
 .theme-toggle input:checked + .toggle-pill { background: linear-gradient(140deg,#ffbe0b 0%,#ff006e 55%,#8338ec); }
 .theme-toggle input:checked + .toggle-pill .toggle-knob { left: calc(100% - 24px); background: linear-gradient(140deg,#ffbe0b,#ff006e); }
 /* Status / Error */
@@ -150,6 +150,82 @@ input[type="date"]:focus, select:focus { box-shadow: var(--focus-ring); border-c
 #errorBox {
   display:none; margin-top:12px; padding:14px 18px; border:1px solid rgba(255,0,110,.45);
   background: rgba(255,0,110,.06); color: var(--danger); border-radius: 14px; font-size:.78rem;
+}
+/* ----- Converter ----- */
+.converter {
+  margin: 18px 4px 10px;
+  padding: 14px 16px;
+  background: var(--glass-bg-solid);
+  backdrop-filter: blur(10px) saturate(140%);
+  border:1px solid var(--glass-border);
+  border-radius: 14px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  box-shadow: 0 6px 22px -6px rgba(0,0,0,.35);
+}
+.converter h3 {
+  margin:0 0 4px;
+  font-size: .95rem;
+  letter-spacing:.6px;
+  font-weight:600;
+  background: linear-gradient(120deg,#ff006e,#8338ec,#ffbe0b);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.conv-row {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:flex-end;
+}
+.conv-row .conv-group { display:flex; flex-direction:column; gap:6px; }
+#convAmount {
+  padding:8px 12px;
+  font-size:.8rem;
+  border-radius:10px;
+  border:1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text);
+  min-width:110px;
+  font-weight:600;
+}
+#convAmount:focus { box-shadow: var(--focus-ring); border-color: var(--accent); }
+.swap-btn {
+  height:40px;
+  width:46px;
+  border-radius:12px;
+  border:1px solid var(--glass-border);
+  background: linear-gradient(140deg,#ffbe0b,#ff006e 60%,#8338ec);
+  color:#fff;
+  font-size:1.1rem;
+  cursor:pointer;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 4px 14px -6px rgba(0,0,0,.55);
+  transition: transform .3s;
+}
+.swap-btn:hover { transform: translateY(-3px); }
+.swap-btn:active { transform: translateY(0); }
+.converter select {
+  min-width:150px;
+}
+.result-line {
+  font-size:.8rem;
+  letter-spacing:.5px;
+  font-weight:600;
+  background: linear-gradient(90deg,#ff006e,#8338ec,#ffbe0b);
+  -webkit-background-clip:text;
+  color:transparent;
+  padding-top:4px;
+}
+.result-line small { display:block; font-weight:500; opacity:.65; }
+@media (max-width:760px) {
+  .conv-row { flex-direction:column; align-items:stretch; }
+  .swap-btn { width:100%; }
+  .converter { padding:16px 14px; }
 }
 /* ----- Table ----- */
 .table-wrap {
@@ -254,6 +330,27 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
 
     <div id="errorBox" role="alert"></div>
 
+    <!-- Neuer Währungs-Umrechner -->
+    <div class="converter" id="converter">
+      <h3>Valyuta Umrechner (Currency Converter)</h3>
+      <div class="conv-row">
+        <div class="conv-group">
+          <label for="convAmount">Betrag</label>
+          <input id="convAmount" type="number" min="0" step="0.01" value="1" />
+        </div>
+        <div class="conv-group">
+          <label for="fromCurrency">Von</label>
+          <select id="fromCurrency"></select>
+        </div>
+        <button id="swapBtn" class="swap-btn" aria-label="Wechseln (↑↓)">⇅</button>
+        <div class="conv-group">
+          <label for="toCurrency">Nach</label>
+          <select id="toCurrency"></select>
+        </div>
+      </div>
+      <div class="result-line" id="convResult" aria-live="polite"></div>
+    </div>
+
     <h2 id="dateHeader" style="margin:20px 4px 6px; font-size:1.2rem; letter-spacing:.5px;"></h2>
 
     <div class="filter-bar">
@@ -281,7 +378,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
 
 <script>
 /* =========================
-   Currency Dashboard Logic
+   Currency Dashboard Logic + Converter
 ========================= */
 (function() {
   const dateInput = document.getElementById('dateInput');
@@ -298,11 +395,17 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
   const rowCount = document.getElementById('rowCount');
   const themeToggle = document.getElementById('themeToggle');
 
+  /* Converter Elemente */
+  const convAmount = document.getElementById('convAmount');
+  const fromCurrency = document.getElementById('fromCurrency');
+  const toCurrency = document.getElementById('toCurrency');
+  const swapBtn = document.getElementById('swapBtn');
+  const convResult = document.getElementById('convResult');
+
   const statusEl = null; // absichtlich kein Element
 
   let currentData = [];
   let sortState = { key: null, dir: 1 };
-  let latestFilesCache = [];
 
   document.addEventListener('DOMContentLoaded', () => {
     const today = new Date();
@@ -339,6 +442,18 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     th.setAttribute('aria-sort','none');
   });
 
+  /* Converter Events */
+  convAmount.addEventListener('input', () => updateConversion());
+  fromCurrency.addEventListener('change', () => updateConversion());
+  toCurrency.addEventListener('change', () => updateConversion());
+  swapBtn.addEventListener('click', () => {
+    const tmp = fromCurrency.value;
+    fromCurrency.value = toCurrency.value;
+    toCurrency.value = tmp;
+    convAmount.value = 1; // Reset Betrag
+    updateConversion();
+  });
+
   /* -------- Utility -------- */
   function toYMD(d) { return d.toISOString().slice(0, 10); }
   function setStatus(msg) {
@@ -372,7 +487,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     clearError();
     setStatus('Ən son fayllar axtarılır...');
     startLoading();
-    latestFilesCache = [];
+    const latestFilesCache = [];
     const maxSearchDays = 30;
     const today = new Date();
     for (let i = 0; i < maxSearchDays && latestFilesCache.length < 3; i++) {
@@ -443,12 +558,19 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       });
     }
 
+    // Sicherstellen, dass AZN immer vorhanden ist (falls im Feed fehlt)
+    if (!currentData.some(d => d.Code === 'AZN')) {
+      currentData.push({ Code: 'AZN', Nominal: '1', Name: 'AZERBAIJAN MANAT', Value: '1' });
+    }
+
     sortState = { key:null, dir:1 };
     table.querySelectorAll('th').forEach(th => th.setAttribute('aria-sort','none'));
     renderTableRows(currentData);
     populateFilterOptions();
+    populateConverterOptions(); // Neu
     tableWrap.classList.add('visible');
     applyFilter();
+    updateConversion();
   }
 
   function populateFilterOptions() {
@@ -465,6 +587,28 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       filterSelect.appendChild(o);
     });
     if (optionsSet.has(prevValue)) filterSelect.value = prevValue; else filterSelect.value = '__ALL__';
+  }
+
+  /* Converter Options */
+  function populateConverterOptions() {
+    const codes = currentData.map(d => d.Code).filter(Boolean).sort();
+    fromCurrency.innerHTML = '';
+    toCurrency.innerHTML = '';
+    for (const c of codes) {
+      const o1 = document.createElement('option');
+      o1.value = c; o1.textContent = c;
+      fromCurrency.appendChild(o1);
+      const o2 = document.createElement('option');
+      o2.value = c; o2.textContent = c;
+      toCurrency.appendChild(o2);
+    }
+    // Standard: Von EUR nach AZN falls verfügbar, sonst erste zwei
+    if (codes.includes('EUR')) fromCurrency.value = 'EUR';
+    if (codes.includes('AZN')) toCurrency.value = 'AZN';
+    if (!fromCurrency.value) fromCurrency.selectedIndex = 0;
+    if (!toCurrency.value || toCurrency.value === fromCurrency.value) {
+      toCurrency.selectedIndex = Math.min(1, toCurrency.options.length - 1);
+    }
   }
 
   function getText(node, tag) {
@@ -503,6 +647,8 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     renderTableRows(sorted);
     populateFilterOptions();
     applyFilter();
+    // Nach Sortierung weiterhin Konverter aktuell halten
+    updateConversion();
   }
   function compareValues(a,b) {
     const sa = String(a);
@@ -531,6 +677,54 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     return String(str).replace(/[&<>"']/g, c => ({
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
     })[c]);
+  }
+
+  /* -------- Converter Logic -------- */
+  function rateToAZN(code) {
+    const item = currentData.find(d => d.Code === code);
+    if (!item) return null;
+    const nominal = parseFloat(String(item.Nominal).replace(',','.')) || 1;
+    const value = parseFloat(String(item.Value).replace(',','.'));
+    if (isNaN(value)) return null;
+    return value / nominal; // 1 Einheit der Fremdwährung in AZN
+  }
+
+  function updateConversion() {
+    if (!currentData.length) {
+      convResult.textContent = '';
+      return;
+    }
+    const from = fromCurrency.value;
+    const to = toCurrency.value;
+    const amount = parseFloat(convAmount.value);
+    if (!from || !to || isNaN(amount)) {
+      convResult.textContent = '';
+      return;
+    }
+    const rFrom = rateToAZN(from);
+    const rTo = rateToAZN(to);
+    if (rFrom == null || rTo == null) {
+      convResult.textContent = 'Kurs fehlt.';
+      return;
+    }
+    let result;
+    if (from === to) {
+      result = amount;
+    } else {
+      // amount * (AZN pro FROM) / (AZN pro TO)
+      result = amount * rFrom / rTo;
+    }
+    const formatted = formatNumber(result);
+    const fromLabel = from;
+    const toLabel = to;
+    convResult.innerHTML = `Ergebnis: <strong>${formatted} ${toLabel}</strong><small>1 ${fromLabel} = ${formatNumber(rFrom / rTo)} ${toLabel}</small>`;
+  }
+
+  function formatNumber(num) {
+    if (!isFinite(num)) return '-';
+    if (num >= 1) return num.toLocaleString('de-DE', { minimumFractionDigits:2, maximumFractionDigits:4 });
+    // Für kleine Werte mehr Präzision
+    return num.toPrecision(6).replace(/0+$/,'').replace(/\.?$/,'');
   }
 
   /* -------- Theme -------- */
