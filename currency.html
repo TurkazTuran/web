@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>AZ Central Bank Currency Rates</title>
 <meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ----- Design Tokens ----- */
 :root {
@@ -16,12 +19,13 @@
   --warning: #f8961e;
   --ok: #2ea44f;
   --text: #1f2d3d;
-  --text-soft: #495869;
+  --text-soft: #5a6b7f;
   --accent: #ffbe0b;
   --accent-alt: #ff006e;
   --shadow: 0 8px 28px -6px rgba(0,0,0,0.35);
   --radius: 18px;
   --focus-ring: 0 0 0 3px rgba(255,190,11,.55), 0 0 0 6px rgba(255,0,110,.35);
+  --header-gradient: linear-gradient(90deg,#ffbe0b,#ff006e 45%,#8338ec 80%);
 }
 [data-theme="dark"] {
   --glass-bg: rgba(22,25,37,0.35);
@@ -30,12 +34,23 @@
   --text: #f3f6f9;
   --text-soft: #a8b2c0;
   --shadow: 0 8px 32px -6px rgba(0,0,0,0.65);
+  --header-gradient: linear-gradient(90deg,#ffbe0b,#ff006e 40%,#8338ec 75%);
+}
+[data-theme="light"] {
+  --bg-gradient: radial-gradient(circle at 30% 30%, #ffe8a0 0%, #ffd36b 22%, #ff9fb2 52%, #b089f1 85%);
+  --glass-bg: rgba(255,255,255,0.55);
+  --glass-bg-solid: rgba(255,255,255,0.75);
+  --glass-border: rgba(0,0,0,0.08);
+  --text: #1c2030;
+  --text-soft: #4d5667;
+  --shadow: 0 6px 22px -4px rgba(0,0,0,0.25);
+  --focus-ring: 0 0 0 3px rgba(255,0,110,.4),0 0 0 6px rgba(255,190,11,.35);
 }
 /* ----- Global Layout ----- */
 html,body {
   height:100%;
   margin:0;
-  font-family: system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+  font-family: "Poppins", system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   background: linear-gradient(115deg,#0f0c29,#302b63,#24243e);
@@ -92,10 +107,12 @@ h1 {
   font-size: clamp(1.9rem,4.2vw,3.4rem);
   line-height:1.08;
   margin:0;
-  background: linear-gradient(90deg,#ffbe0b,#ff006e 40%,#8338ec 75%);
+  background: var(--header-gradient);
   -webkit-background-clip:text;
   color: transparent;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
+  font-weight:700;
+  letter-spacing:.5px;
 }
 .sub {
   font-size: clamp(.95rem,1.2vw,1.07rem);
@@ -151,18 +168,25 @@ h1 {
   flex-direction:column;
   gap:6px;
 }
-label { font-weight:600; font-size:.78rem; letter-spacing:.5px; text-transform:uppercase; color: var(--text-soft); }
-input[type="date"], input[type="text"] {
-  padding: 12px 14px;
-  font-size: .95rem;
-  border-radius: 12px;
+label { font-weight:600; font-size:.72rem; letter-spacing:.5px; text-transform:uppercase; color: var(--text-soft); }
+input[type="date"], select {
+  padding: 8px 12px;
+  font-size: .75rem;
+  border-radius: 10px;
   border: 1px solid var(--glass-border);
   background: var(--glass-bg-solid);
   color: var(--text);
   outline:none;
+  min-width:140px;
+  max-width:160px;
   transition: box-shadow .25s, border-color .25s, background .25s;
+  font-weight:500;
 }
-input[type="date"]:focus, input[type="text"]:focus {
+select {
+  height:34px;
+  cursor:pointer;
+}
+input[type="date"]:focus, select:focus {
   box-shadow: var(--focus-ring);
   border-color: var(--accent);
 }
@@ -176,9 +200,9 @@ input[type="date"]:focus, input[type="text"]:focus {
   position:relative;
   border:none;
   border-radius: 14px;
-  padding: 14px 20px;
+  padding: 12px 18px;
   font-weight:600;
-  font-size:.95rem;
+  font-size:.85rem;
   letter-spacing:.5px;
   cursor:pointer;
   color:#fff;
@@ -215,14 +239,14 @@ input[type="date"]:focus, input[type="text"]:focus {
   gap:10px;
   cursor:pointer;
   user-select:none;
-  font-size:.78rem;
+  font-size:.68rem;
   font-weight:600;
   letter-spacing:.5px;
   color: var(--text-soft);
 }
 .theme-toggle input { display:none; }
 .toggle-pill {
-  width:54px; height:28px;
+  width:54px; height:26px;
   background: var(--glass-bg-solid);
   border-radius: 999px;
   position:relative;
@@ -255,40 +279,25 @@ input[type="date"]:focus, input[type="text"]:focus {
   display:flex;
   align-items:center;
   gap:10px;
-  padding:10px 16px;
+  padding:10px 18px;
   background: var(--glass-bg-solid);
   border:1px solid var(--glass-border);
   border-radius: 50px;
   backdrop-filter: blur(6px);
-  font-size:.85rem;
-  letter-spacing:.4px;
+  font-size:.75rem;
+  letter-spacing:.35px;
   color: var(--text);
   transition: background .4s, transform .4s;
   cursor:pointer;
+  font-weight:600;
 }
 .pill:hover {
   background: var(--glass-bg);
   transform: translateY(-3px);
 }
-.pill a {
-  text-decoration:none;
-  color: var(--accent-alt);
-  font-weight:600;
-  font-size:.75rem;
-  background: rgba(255,255,255,.5);
-  padding:6px 10px;
-  border-radius: 999px;
-  backdrop-filter: blur(4px);
-  border:1px solid var(--glass-border);
-  transition: background .35s,color .35s;
-}
-.pill a:hover {
-  background: var(--accent-alt);
-  color:#fff;
-}
 /* Status / Error */
 .status-line {
-  font-size:.75rem;
+  font-size:.65rem;
   letter-spacing:.6px;
   text-transform:uppercase;
   margin-top:10px;
@@ -305,12 +314,12 @@ input[type="date"]:focus, input[type="text"]:focus {
   background: rgba(255,0,110,.06);
   color: var(--danger);
   border-radius: 14px;
-  font-size:.9rem;
+  font-size:.78rem;
 }
 #fileMeta {
   display:none;
   margin-top:14px;
-  font-size:.78rem;
+  font-size:.65rem;
   letter-spacing:.5px;
   color: var(--text-soft);
   gap:10px;
@@ -337,45 +346,63 @@ input[type="date"]:focus, input[type="text"]:focus {
 table {
   width:100%;
   border-collapse:collapse;
-  font-size:.9rem;
+  font-size:.78rem;
+  table-layout:fixed;
 }
 thead {
-  background: linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,.04));
+  background: linear-gradient(90deg,rgba(255,255,255,.18),rgba(255,255,255,.06));
   backdrop-filter: blur(6px);
 }
 th,td {
-  padding: 14px 18px;
-  text-align:left;
+  padding: 6px 10px;
+  text-align:center;
   white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 th {
   position:relative;
-  font-size:.72rem;
+  font-size:.9rem;
   text-transform:uppercase;
-  letter-spacing:.7px;
+  letter-spacing:.9px;
   font-weight:700;
-  color: var(--text-soft);
+  color: #fff;
+  background: linear-gradient(135deg,#ff006e,#8338ec 55%,#ffbe0b);
+  -webkit-background-clip:text;
+  color:transparent;
   cursor:pointer;
   user-select:none;
+  font-family:"Poppins",sans-serif;
 }
 th span.sort-indicator {
   position:absolute;
-  right:10px; top:50%; transform:translateY(-50%);
+  right:8px; top:50%; transform:translateY(-50%);
   font-size:.65rem;
-  opacity:.65;
+  opacity:.75;
+  color:#ff006e;
+  background: none;
 }
 tbody tr {
-  transition: background .35s;
+  transition: background .25s;
+}
+tbody tr:nth-child(even){
+  background: rgba(255,255,255,.05);
 }
 tbody tr:hover {
-  background: rgba(255,255,255,.06);
+  background: rgba(255,255,255,.15);
 }
 tbody td {
   font-weight:500;
   color: var(--text);
-  font-size:.85rem;
+  font-size:.72rem;
+  letter-spacing:.3px;
 }
-/* Filter box overlay */
+/* Column widths */
+th:nth-child(1), td:nth-child(1){ width:90px; }
+th:nth-child(2), td:nth-child(2){ width:90px; }
+th:nth-child(3), td:nth-child(3){ width:180px; }
+th:nth-child(4), td:nth-child(4){ width:110px; }
+/* Filter bar */
 .filter-bar {
   display:flex;
   flex-wrap:wrap;
@@ -383,14 +410,11 @@ tbody td {
   margin-top:10px;
   align-items:center;
 }
-#filterInput {
-  flex:1 1 220px;
-}
 .badge {
   background: linear-gradient(120deg,#ff006e,#8338ec);
   padding:6px 12px;
   border-radius: 999px;
-  font-size:.65rem;
+  font-size:.6rem;
   letter-spacing:.7px;
   color:#fff;
   font-weight:600;
@@ -398,23 +422,18 @@ tbody td {
 }
 /* Loading spinner */
 .spinner {
-  width:60px;height:60px;
-  border: 6px solid rgba(255,255,255,.2);
-  border-top:6px solid #ffbe0b;
-  border-right:6px solid #ff006e;
+  width:50px;height:50px;
+  border: 5px solid rgba(255,255,255,.2);
+  border-top:5px solid #ffbe0b;
+  border-right:5px solid #ff006e;
   border-radius:50%;
   animation: spin 1s linear infinite, pulse 1.8s ease-in-out infinite;
-  margin: 40px auto;
+  margin: 30px auto;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
   display:none;
 }
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-@keyframes pulse {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(.88); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(.88); } }
 /* Responsive adjustments */
 @media (max-width: 860px) {
   .controls { flex-direction:column; align-items:stretch; }
@@ -424,13 +443,14 @@ tbody td {
   .filter-bar { flex-direction:column; align-items:stretch; }
   #latestList { gap:10px; }
   .pill { width:100%; justify-content:space-between; }
+  th,td { padding:8px 8px; }
 }
 /* Focus visible */
 :focus-visible {
   outline:none;
   box-shadow: var(--focus-ring);
 }
-/* Hide scrollbars for aesthetic (still scrollable) */
+/* Scrollbar */
 ::-webkit-scrollbar { width:10px; }
 ::-webkit-scrollbar-track { background: rgba(255,255,255,.05); }
 ::-webkit-scrollbar-thumb {
@@ -442,7 +462,7 @@ tbody td {
 <body>
 
 <div class="particles" aria-hidden="true">
-  <!-- Generate decorative particles -->
+  <!-- Decorative particles -->
   <span style="left:8%; animation-delay:0s;"></span>
   <span style="left:22%; animation-delay:4s;"></span>
   <span style="left:41%; animation-delay:2s;"></span>
@@ -455,8 +475,7 @@ tbody td {
   <header class="header">
     <h1>Currency Rates • Azerbaijan</h1>
     <div class="sub">
-      This dashboard displays up to the latest three published currency XML datasets fetched daily by an automation workflow.
-      Use search, sorting, and theme toggle for a tailored experience. Files older than the newest three are automatically removed.
+      Latest three currency XML datasets. Select date, refresh, sort, and theme toggle. Older files are automatically removed.
     </div>
   </header>
 
@@ -467,8 +486,10 @@ tbody td {
         <input id="dateInput" type="date" />
       </div>
       <div class="input-group">
-        <label for="filterInput">Filter (Code or Name)</label>
-        <input id="filterInput" type="text" placeholder="e.g. USD or Euro" />
+        <label for="filterSelect">Filter (Code or Name)</label>
+        <select id="filterSelect">
+          <option value="__ALL__">All</option>
+        </select>
       </div>
       <div class="buttons-bar">
         <button class="btn" id="loadSelectedBtn">Load Selected</button>
@@ -489,10 +510,9 @@ tbody td {
     <div id="fileMeta" class="status-line">
       <span class="badge">Loaded</span>
       <span id="fileName"></span>
-      <span>• <a id="downloadLink" href="#" download>Download XML</a></span>
     </div>
 
-    <h2 id="dateHeader" style="margin:24px 4px 6px;"></h2>
+    <h2 id="dateHeader" style="margin:24px 4px 6px; font-size:1.2rem; letter-spacing:.5px;"></h2>
 
     <div class="filter-bar">
       <span class="badge" id="rowCount" style="display:none;"></span>
@@ -519,11 +539,11 @@ tbody td {
 
 <script>
 /* =========================
-   Currency Dashboard Logic
+   Currency Dashboard Logic (Modified)
 ========================= */
 (function() {
   const dateInput = document.getElementById('dateInput');
-  const filterInput = document.getElementById('filterInput');
+  const filterSelect = document.getElementById('filterSelect');
   const loadSelectedBtn = document.getElementById('loadSelectedBtn');
   const refreshBtn = document.getElementById('refreshBtn');
   const clearFilterBtn = document.getElementById('clearFilterBtn');
@@ -533,17 +553,17 @@ tbody td {
   const dateHeader = document.getElementById('dateHeader');
   const fileMeta = document.getElementById('fileMeta');
   const fileNameEl = document.getElementById('fileName');
-  const downloadLink = document.getElementById('downloadLink');
   const spinner = document.getElementById('spinner');
   const tableWrap = document.getElementById('tableWrap');
   const table = document.getElementById('currencyTable');
   const tbody = table.querySelector('tbody');
   const rowCount = document.getElementById('rowCount');
   const themeToggle = document.getElementById('themeToggle');
+
   let currentData = [];
   let sortState = { key: null, dir: 1 };
   let latestFilesCache = [];
-  // Initialize date input
+
   document.addEventListener('DOMContentLoaded', () => {
     const today = new Date();
     dateInput.value = toYMD(today);
@@ -552,9 +572,9 @@ tbody td {
   });
 
   /* -------- Event Handlers -------- */
-  filterInput.addEventListener('input', () => applyFilter());
+  filterSelect.addEventListener('change', () => applyFilter());
   clearFilterBtn.addEventListener('click', () => {
-    filterInput.value = '';
+    filterSelect.value = '__ALL__';
     applyFilter();
   });
   loadSelectedBtn.addEventListener('click', () => {
@@ -644,8 +664,7 @@ tbody td {
     files.forEach(fn => {
       const pill = document.createElement('div');
       pill.className='pill'; pill.role='button'; pill.tabIndex=0;
-      pill.innerHTML = `<strong>${fn.replace('.xml','')}</strong>
-        <a href="./${fn}" download title="Download ${fn}">Download</a>`;
+      pill.innerHTML = `<strong>${fn.replace('.xml','')}</strong>`;
       pill.addEventListener('click', () => loadFile(fn,false));
       pill.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -711,12 +730,32 @@ tbody td {
     }
     fileMeta.style.display='flex';
     fileNameEl.textContent = filename;
-    downloadLink.href = './' + filename;
-    downloadLink.setAttribute('download', filename);
     sortState = { key:null, dir:1 };
     renderTableRows(currentData);
+    populateFilterOptions();
     tableWrap.classList.add('visible');
     applyFilter();
+  }
+
+  function populateFilterOptions() {
+    const prevValue = filterSelect.value;
+    filterSelect.innerHTML = '<option value="__ALL__">All</option>';
+    const optionsSet = new Set();
+    currentData.forEach(d => {
+      if (d.Code) optionsSet.add(d.Code);
+      if (d.Name) optionsSet.add(d.Name);
+    });
+    [...optionsSet].sort().forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt;
+      o.textContent = opt;
+      filterSelect.appendChild(o);
+    });
+    if (optionsSet.has(prevValue)) {
+      filterSelect.value = prevValue;
+    } else {
+      filterSelect.value = '__ALL__';
+    }
   }
 
   function getText(node, tag) {
@@ -726,17 +765,17 @@ tbody td {
 
   /* -------- Filtering -------- */
   function applyFilter() {
-    const q = filterInput.value.trim().toLowerCase();
+    const selected = filterSelect.value;
     let rows = Array.from(tbody.querySelectorAll('tr'));
     let visibleCount = 0;
     rows.forEach(r => {
-      const cells = Array.from(r.children).map(c => c.textContent.toLowerCase());
-      const match = !q || cells.some(txt => txt.includes(q));
+      const cells = Array.from(r.children).map(c => c.textContent);
+      const match = selected === '__ALL__' || cells.some(txt => txt === selected);
       r.style.display = match ? '' : 'none';
       if (match) visibleCount++;
     });
     rowCount.style.display='inline-block';
-    rowCount.textContent = visibleCount + ' row(s) match';
+    rowCount.textContent = visibleCount + ' row(s)';
   }
 
   /* -------- Sorting -------- */
@@ -747,12 +786,12 @@ tbody td {
       sortState.key = key;
       sortState.dir = 1;
     }
-    // Remove indicators
     table.querySelectorAll('th .sort-indicator').forEach(si => si.textContent='');
     const indicator = th.querySelector('.sort-indicator');
     indicator.textContent = sortState.dir === 1 ? '▲' : '▼';
     const sorted = currentData.slice().sort((a,b) => compareValues(a[key], b[key]) * sortState.dir);
     renderTableRows(sorted);
+    populateFilterOptions();
     applyFilter();
   }
   function compareValues(a,b) {
