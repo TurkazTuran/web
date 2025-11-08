@@ -52,14 +52,15 @@
 
 <script>
 async function fetchAndDisplayCurrencies() {
-    // Hide previous errors and table
     const errorBox = document.getElementById("error-box");
     const currencyTable = document.getElementById("currency-table");
+    const dateHeader = document.getElementById("date-header");
+    
     errorBox.style.display = 'none';
     currencyTable.style.display = 'none';
+    dateHeader.textContent = "Fetching...";
 
     try {
-        // We no longer need to send a date; the PHP script will figure out the latest.
         const response = await fetch(`download.php`);
         
         if (!response.ok) {
@@ -72,19 +73,20 @@ async function fetchAndDisplayCurrencies() {
         const xmlDoc = parser.parseFromString(xmlString, "application/xml");
 
         if (xmlDoc.querySelector("parsererror")) {
-            throw new Error("Failed to parse the XML data received from the server.");
+            console.error("Parser Error:", xmlDoc.querySelector("parsererror").textContent);
+            throw new Error("Failed to parse the XML data received from the server. The data may not be valid XML.");
         }
-
-        const tableBody = currencyTable.getElementsByTagName("tbody")[0];
-        tableBody.innerHTML = ""; // Clear previous data
 
         const valCurs = xmlDoc.getElementsByTagName("ValCurs")[0];
         if (!valCurs) {
-             throw new Error("The XML data is not in the expected format (missing 'ValCurs' tag).");
+            throw new Error("The XML data is not in the expected format (missing '<ValCurs>' tag).");
         }
 
+        const tableBody = currencyTable.getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = "";
+
         const displayDate = valCurs.getAttribute("Date");
-        document.getElementById("date-header").textContent = `Rates for ${displayDate}`;
+        dateHeader.textContent = `Rates for ${displayDate}`;
 
         const valutes = xmlDoc.getElementsByTagName("Valute");
         for (const valute of valutes) {
@@ -103,10 +105,10 @@ async function fetchAndDisplayCurrencies() {
         currencyTable.style.display = 'table';
 
     } catch (err) {
-        console.error("Fetch Error:", err);
+        console.error("Fetch Error Details:", err);
         errorBox.textContent = `Error: ${err.message}`;
         errorBox.style.display = 'block';
-        document.getElementById("date-header").textContent = "";
+        dateHeader.textContent = "";
     }
 }
 </script>
