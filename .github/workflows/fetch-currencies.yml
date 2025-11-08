@@ -1,0 +1,42 @@
+name: Manage Latest Currency Data
+
+on:
+  workflow_dispatch: # Run manually from the Actions tab
+  schedule:
+    - cron: '0 6 * * *' # Daily at 06:00 UTC
+
+permissions:
+  contents: write  # Allow committing changes
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Configure git safe directory (CI)
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Run currency management script
+        run: php .github/scripts/manage-currencies.php
+
+      - name: Commit and push changes (new/updated/deleted files)
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update currency archives: keep last 3 dates"
+            git push
+          fi
