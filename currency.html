@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AZ Central Bank Currency Rates</title>
+<title>Valyuta Kursları</title>
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -223,25 +223,26 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
 
 <div class="wrapper">
   <header class="header">
-    <h1>Currency Rates • Azerbaijan</h1>
+    <h1>MƏRKƏZİ BANK</h1>
+    <h1>Valyuta Kursları</h1>
   </header>
 
   <section class="panel" aria-labelledby="panelHeading">
     <div class="controls">
       <div class="input-group">
-        <label for="dateInput">Select Date</label>
+        <label for="dateInput">Tarix seç</label>
         <input id="dateInput" type="date" />
       </div>
       <div class="input-group">
-        <label for="filterSelect">Filter (Code or Name)</label>
+        <label for="filterSelect">Valyuta kodu və ya adını seç</label>
         <select id="filterSelect">
-          <option value="__ALL__">All</option>
+          <option value="__ALL__">Hamısı</option>
         </select>
       </div>
       <div class="buttons-bar">
-        <button class="btn" id="loadSelectedBtn">Load Selected</button>
-        <button class="btn secondary" id="refreshBtn" title="Load latest available XML">Refresh Latest</button>
-        <button class="btn ghost" id="clearFilterBtn">Clear Filter</button>
+        <button class="btn" id="loadSelectedBtn">Seçilən tarixi göstər</button>
+        <button class="btn secondary" id="refreshBtn" title="Ən son XML-i yüklə">Ən son XML-i yüklə</button>
+        <button class="btn ghost" id="clearFilterBtn">Filtri Təmizlə</button>
       </div>
       <label class="theme-toggle" title="Toggle light / dark mode">
         <input type="checkbox" id="themeToggle" />
@@ -250,7 +251,6 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       </label>
     </div>
 
-    <div class="status-line"><span id="status"></span></div>
     <div id="errorBox" role="alert"></div>
 
     <h2 id="dateHeader" style="margin:24px 4px 6px; font-size:1.2rem; letter-spacing:.5px;"></h2>
@@ -265,10 +265,10 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       <table id="currencyTable" role="table" aria-describedby="dateHeader">
         <thead>
           <tr>
-            <th data-key="Code">Code <span class="sort-indicator"></span></th>
+            <th data-key="Code">Kod<span class="sort-indicator"></span></th>
             <th data-key="Nominal">Nominal <span class="sort-indicator"></span></th>
-            <th data-key="Name">Name <span class="sort-indicator"></span></th>
-            <th data-key="Value">Value <span class="sort-indicator"></span></th>
+            <th data-key="Name">Adı <span class="sort-indicator"></span></th>
+            <th data-key="Value">Kurs <span class="sort-indicator"></span></th>
           </tr>
         </thead>
         <tbody></tbody>
