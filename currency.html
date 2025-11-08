@@ -3,25 +3,20 @@
 <head>
     <title>Currency Rates</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+        body { font-family: sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
+        th { background-color: #f2f2f2; }
+        h2 { margin-bottom: 5px; }
+        button { padding: 10px 15px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<button onclick="fetchAndDisplayCurrencies()">Fetch and Display Currencies</button>
+<h1>Azerbaijan Central Bank Currency Rates</h1>
+<button onclick="fetchAndDisplayCurrencies()">Get Latest Currencies</button>
 <h2 id="date-header"></h2>
-<table id="currency-table">
+<table id="currency-table" style="display:none;">
     <thead>
         <tr>
             <th>Code</th>
@@ -31,62 +26,67 @@
         </tr>
     </thead>
     <tbody>
-        <!-- Currency data will be inserted here -->
+        <!-- Currency data will be inserted here by JavaScript -->
     </tbody>
 </table>
 
 <script>
 async function fetchAndDisplayCurrencies() {
+    // Get today's date in dd.mm.yyyy format
     const today = new Date();
-    for (let i = 0; i < 4; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        const formattedDate = date.toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    const formattedDate = today.toLocaleDateString('de-DE', {
+        day: '2-digit', month: '2-digit', year: 'numeric'
+    });
 
-        try {
-            const response = await fetch(`download.php?date=${formattedDate}`);
-            if (!response.ok) {
-                throw new Error(`Server responded with status: ${response.status}`);
-            }
-            const xmlString = await response.text();
-            
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlString, "application/xml");
-
-            // Check for parsing errors
-            const parserError = xmlDoc.querySelector("parsererror");
-            if (parserError) {
-                console.error("Error parsing XML:", parserError.textContent);
-                throw new Error("Failed to parse XML.");
-            }
-            
-            const valutes = xmlDoc.getElementsByTagName("Valute");
-            const tableBody = document.getElementById("currency-table").getElementsByTagName("tbody")[0];
-            tableBody.innerHTML = ""; // Clear previous data
-
-            const valCurs = xmlDoc.getElementsByTagName("ValCurs")[0];
-            const displayDate = valCurs.getAttribute("Date");
-            document.getElementById("date-header").textContent = `Currency Rates for ${displayDate}`;
-
-            for (let i = 0; i < valutes.length; i++) {
-                const valute = valutes[i];
-                const code = valute.getAttribute("Code");
-                const nominal = valute.getElementsByTagName("Nominal")[0].textContent;
-                const name = valute.getElementsByTagName("Name")[0].textContent;
-                const value = valute.getElementsByTagName("Value")[0].textContent;
-
-                const row = tableBody.insertRow();
-                row.insertCell(0).textContent = code;
-                row.insertCell(1).textContent = nominal;
-                row.insertCell(2).textContent = name;
-                row.insertCell(3).textContent = value;
-            }
-            return; // Exit after successful fetch and display
-        } catch (err) {
-            console.warn(`Failed for ${formattedDate}: ${err.message}`);
+    try {
+        // Call our PHP script. It will handle finding the latest available XML.
+        const response = await fetch(`download.php?date=${formattedDate}`);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || `Server responded with status: ${response.status}`);
         }
+
+        const xmlString = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlString, "application/xml");
+
+        // Check if the XML is valid
+        if (xmlDoc.querySelector("parsererror")) {
+            throw new Error("Failed to parse the XML data.");
+        }
+
+        const table = document.getElementById("currency-table");
+        const tableBody = table.getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = ""; // Clear previous data
+
+        // Get the date from the XML file and display it
+        const valCurs = xmlDoc.getElementsByTagName("ValCurs")[0];
+        const displayDate = valCurs.getAttribute("Date");
+        document.getElementById("date-header").textContent = `Rates for ${displayDate}`;
+
+        // Populate the table with currency data
+        const valutes = xmlDoc.getElementsByTagName("Valute");
+        for (const valute of valutes) {
+            const code = valute.getAttribute("Code");
+            const nominal = valute.getElementsByTagName("Nominal")[0].textContent;
+            const name = valute.getElementsByTagName("Name")[0].textContent;
+            const value = valute.getElementsByTagName("Value")[0].textContent;
+
+            const row = tableBody.insertRow();
+            row.insertCell(0).textContent = code;
+            row.insertCell(1).textContent = nominal;
+            row.insertCell(2).textContent = name;
+            row.insertCell(3).textContent = value;
+        }
+
+        table.style.display = 'table'; // Show the table
+
+    } catch (err) {
+        console.error("Fetch Error:", err);
+        alert(`Failed to get currency data: ${err.message}`);
+        document.getElementById("date-header").textContent = "Could not load data.";
     }
-    alert('Failed to fetch currency data for the last 4 days');
 }
 </script>
 
