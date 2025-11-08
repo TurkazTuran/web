@@ -1,25 +1,94 @@
-<button onclick="downloadXML()">Download XML</button>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Currency Rates</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="fetchAndDisplayCurrencies()">Fetch and Display Currencies</button>
+<h2 id="date-header"></h2>
+<table id="currency-table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Nominal</th>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Currency data will be inserted here -->
+    </tbody>
+</table>
 
 <script>
-async function downloadXML() {
+async function fetchAndDisplayCurrencies() {
     const today = new Date();
     for (let i = 0; i < 4; i++) {
         const date = new Date(today);
         date.setDate(today.getDate() - i);
-        const formatted = date.toLocaleDateString('en-GB').split('/').reverse().join('.');
+        const formattedDate = date.toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
         try {
-            const response = await fetch(`download.php?date=${formatted}`);
-            if (!response.ok) throw new Error('Not found');
-            const blob = await response.blob();
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `${formatted}.xml`;
-            a.click();
-            return;
+            const response = await fetch(`download.php?date=${formattedDate}`);
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+            const xmlString = await response.text();
+            
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlString, "application/xml");
+
+            // Check for parsing errors
+            const parserError = xmlDoc.querySelector("parsererror");
+            if (parserError) {
+                console.error("Error parsing XML:", parserError.textContent);
+                throw new Error("Failed to parse XML.");
+            }
+            
+            const valutes = xmlDoc.getElementsByTagName("Valute");
+            const tableBody = document.getElementById("currency-table").getElementsByTagName("tbody")[0];
+            tableBody.innerHTML = ""; // Clear previous data
+
+            const valCurs = xmlDoc.getElementsByTagName("ValCurs")[0];
+            const displayDate = valCurs.getAttribute("Date");
+            document.getElementById("date-header").textContent = `Currency Rates for ${displayDate}`;
+
+            for (let i = 0; i < valutes.length; i++) {
+                const valute = valutes[i];
+                const code = valute.getAttribute("Code");
+                const nominal = valute.getElementsByTagName("Nominal")[0].textContent;
+                const name = valute.getElementsByTagName("Name")[0].textContent;
+                const value = valute.getElementsByTagName("Value")[0].textContent;
+
+                const row = tableBody.insertRow();
+                row.insertCell(0).textContent = code;
+                row.insertCell(1).textContent = nominal;
+                row.insertCell(2).textContent = name;
+                row.insertCell(3).textContent = value;
+            }
+            return; // Exit after successful fetch and display
         } catch (err) {
-            console.warn(`Failed for ${formatted}: ${err.message}`);
+            console.warn(`Failed for ${formattedDate}: ${err.message}`);
         }
     }
-    alert('Failed to download XML for the last 4 days');
+    alert('Failed to fetch currency data for the last 4 days');
 }
 </script>
+
+</body>
+</html>
