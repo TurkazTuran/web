@@ -1,25 +1,32 @@
 <?php
 // Purpose: Fetch the latest 3 available currency XMLs from cbar.az,
-// save them to the repo root as YYYY-MM-DD.xml, and delete older ones.
+// save them to the repo root as YYYY-MM-DD.xml, and delete older date-named XMLs.
 // Exit code 0 = success (at least one file found), 1 = none found in the window.
 
 declare(strict_types=1);
 
 date_default_timezone_set('Asia/Baku');
 
-daysToKeep   = 3;   // Keep this many most recent valid days
+// Ensure we operate from the repository root even if invoked from elsewhere.
+// This script lives in .github/scripts/, so repo root is two levels up.
+$repoRoot = dirname(__DIR__, 2);
+if (is_dir($repoRoot)) {
+    chdir($repoRoot);
+}
+
+$daysToKeep   = 3;   // Keep this many most recent valid days
 $searchWindow = 21;  // Look back up to this many days to find valid data
 $retained     = [];  // Filenames we will keep (YYYY-MM-DD.xml)
 $today        = new DateTime('today');
 
-fwrite(STDOUT, "Starting currency management. Need {"><>daysToKeep} valid day(s). Searching up to {$searchWindow} days back.\n");
+fwrite(STDOUT, "Starting currency management. Need {$daysToKeep} valid day(s). Searching up to {$searchWindow} days back.\n");
 
 for ($offset = 0; $offset < $searchWindow && count($retained) < $daysToKeep; $offset++) {
     $d = (clone $today)->modify("-{$offset} day");
     $dateForUrl  = $d->format('d.m.Y');   // cbar.az format
     $dateForFile = $d->format('Y-m-d');   // local filename
     $targetFile  = $dateForFile . '.xml';
-    $url         = "https://cbar.az/currencies/{<d>}\<d>.xml";
+    $url         = "https://cbar.az/currencies/{$dateForUrl}.xml";
 
     fwrite(STDOUT, "Attempting: {$url} ... ");
 
