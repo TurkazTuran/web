@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="az" data-theme="light">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -110,7 +110,7 @@ h1 {
 }
 @keyframes swirl { to { transform: rotate(360deg); } }
 /* ----- Controls ----- */
-.controls { display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-bottom: 20px; }
+.controls { display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-bottom: 14px; }
 .controls > * { flex: 0 0 auto; }
 .input-group { display:flex; flex-direction:column; gap:6px; }
 label { font-weight:600; font-size:.72rem; letter-spacing:.5px; text-transform:uppercase; color: var(--text-soft); }
@@ -139,7 +139,8 @@ input[type="date"]:focus, select:focus { box-shadow: var(--focus-ring); border-c
 .theme-toggle { position:relative; display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none; font-size:.68rem; font-weight:600; letter-spacing:.5px; color: var(--text-soft); }
 .theme-toggle input { display:none; }
 .toggle-pill { width:54px; height:26px; background: var(--glass-bg-solid); border-radius: 999px; position:relative; border:1px solid var(--glass-border); transition: background .4s; }
-.toggle-knob { position:absolute; top:50%; left:6px; width:18px; height:18px; background: linear-gradient(140deg,#fff,#e2e6ea); border-radius:50%; transform: translateY(-50%); box-shadow: 0 3px 10px -2px rgba(0,0,0,.45); transition: left .4s, background .4s; }
+.toggle-knob { position:absolute; top:50%; left:6px; width:18px; height:18px; background: linear-gradient(140deg,#fff,#e2e6ea); border-radius:50%; transform: translateY(-50%); box-shadow: 0 3px 10px -2px rgba(0,0,0,.35); transition: left .35s, background .35s; }
+.theme-toggle input:checked + .toggle-pill { background: linear-gradient(140deg,#ffbe0b 0%,#ff006e 55%,#8338ec); }
 .theme-toggle input:checked + .toggle-pill .toggle-knob { left: calc(100% - 24px); background: linear-gradient(140deg,#ffbe0b,#ff006e); }
 /* Status / Error */
 .status-line {
@@ -147,12 +148,12 @@ input[type="date"]:focus, select:focus { box-shadow: var(--focus-ring); border-c
   color: var(--text-soft); display:flex; align-items:center; gap:8px;
 }
 #errorBox {
-  display:none; margin-top:16px; padding:14px 18px; border:1px solid rgba(255,0,110,.45);
+  display:none; margin-top:12px; padding:14px 18px; border:1px solid rgba(255,0,110,.45);
   background: rgba(255,0,110,.06); color: var(--danger); border-radius: 14px; font-size:.78rem;
 }
 /* ----- Table ----- */
 .table-wrap {
-  margin-top: 22px; border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow);
+  margin-top: 18px; border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow);
   backdrop-filter: blur(16px); background: var(--glass-bg); border:1px solid var(--glass-border);
   transform: translateY(8px); opacity:0; transition: opacity .6s .1s, transform .6s .1s;
 }
@@ -176,7 +177,7 @@ th:nth-child(2), td:nth-child(2){ width:15%; }
 th:nth-child(3), td:nth-child(3){ width:50%; }
 th:nth-child(4), td:nth-child(4){ width:20%; }
 /* Filter bar */
-.filter-bar { display:flex; flex-wrap:wrap; gap:16px; margin-top:10px; align-items:center; }
+.filter-bar { display:flex; flex-wrap:wrap; gap:16px; margin-top:8px; align-items:center; }
 .badge {
   background: linear-gradient(120deg,#ff006e,#8338ec);
   padding:6px 12px; border-radius: 999px; font-size:.6rem; letter-spacing:.7px; color:#fff; font-weight:600;
@@ -244,7 +245,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
         <button class="btn secondary" id="refreshBtn" title="Ən son XML-i yüklə">Ən son XML-i yüklə</button>
         <button class="btn ghost" id="clearFilterBtn">Filtri Təmizlə</button>
       </div>
-      <label class="theme-toggle" title="Toggle light / dark mode">
+      <label class="theme-toggle" title="Light / Dark keçid">
         <input type="checkbox" id="themeToggle" />
         <div class="toggle-pill"><div class="toggle-knob"></div></div>
         <span>Dark Mode</span>
@@ -253,7 +254,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
 
     <div id="errorBox" role="alert"></div>
 
-    <h2 id="dateHeader" style="margin:24px 4px 6px; font-size:1.2rem; letter-spacing:.5px;"></h2>
+    <h2 id="dateHeader" style="margin:20px 4px 6px; font-size:1.2rem; letter-spacing:.5px;"></h2>
 
     <div class="filter-bar">
       <span class="badge" id="rowCount" style="display:none;"></span>
@@ -265,7 +266,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       <table id="currencyTable" role="table" aria-describedby="dateHeader">
         <thead>
           <tr>
-            <th data-key="Code">Kod<span class="sort-indicator"></span></th>
+            <th data-key="Code">Kod <span class="sort-indicator"></span></th>
             <th data-key="Nominal">Nominal <span class="sort-indicator"></span></th>
             <th data-key="Name">Adı <span class="sort-indicator"></span></th>
             <th data-key="Value">Kurs <span class="sort-indicator"></span></th>
@@ -288,7 +289,6 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
   const loadSelectedBtn = document.getElementById('loadSelectedBtn');
   const refreshBtn = document.getElementById('refreshBtn');
   const clearFilterBtn = document.getElementById('clearFilterBtn');
-  const statusEl = document.getElementById('status');
   const errorBox = document.getElementById('errorBox');
   const dateHeader = document.getElementById('dateHeader');
   const spinner = document.getElementById('spinner');
@@ -297,6 +297,8 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
   const tbody = table.querySelector('tbody');
   const rowCount = document.getElementById('rowCount');
   const themeToggle = document.getElementById('themeToggle');
+
+  const statusEl = null; // absichtlich kein Element
 
   let currentData = [];
   let sortState = { key: null, dir: 1 };
@@ -316,7 +318,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     applyFilter();
   });
   loadSelectedBtn.addEventListener('click', () => {
-    if (!dateInput.value) return showError('Please select a date.');
+    if (!dateInput.value) return showError('Tarix seçilməyib.');
     loadFile(dateInput.value + '.xml', true);
   });
   refreshBtn.addEventListener('click', refreshLatest);
@@ -334,15 +336,20 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       }
     });
     th.setAttribute('tabindex','0');
+    th.setAttribute('aria-sort','none');
   });
 
   /* -------- Utility -------- */
   function toYMD(d) { return d.toISOString().slice(0, 10); }
-  function setStatus(msg) { statusEl.textContent = msg || ''; }
+  function setStatus(msg) {
+    if (statusEl) statusEl.textContent = msg || '';
+    else console.debug('[status]', msg || '');
+  }
   function showError(msg) { errorBox.textContent = msg; errorBox.style.display = 'block'; }
   function clearError() { errorBox.textContent = ''; errorBox.style.display = 'none'; }
   function startLoading() { spinner.style.display='block'; tableWrap.classList.remove('visible'); }
   function endLoading() { spinner.style.display='none'; }
+
   async function headOrGetExists(url) {
     try {
       let res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
@@ -363,7 +370,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
   /* -------- Latest file (silent) -------- */
   async function refreshLatest() {
     clearError();
-    setStatus('Scanning latest files...');
+    setStatus('Ən son fayllar axtarılır...');
     startLoading();
     latestFilesCache = [];
     const maxSearchDays = 30;
@@ -376,24 +383,24 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     }
     endLoading();
     if (!latestFilesCache.length) {
-      showError('No XML files found. Run the GitHub Action workflow.');
+      showError('XML faylı tapılmadı. GitHub Action işlə.');
       setStatus('');
       return;
     }
-    setStatus(`Found ${latestFilesCache.length} file(s).`);
+    setStatus(`Tapıldı: ${latestFilesCache.length} fayl`);
     loadFile(latestFilesCache[0], false);
   }
 
   /* -------- Load & Parse XML -------- */
   async function loadFile(filename, warnIfMissing) {
     clearError();
-    setStatus('Loading ' + filename + ' ...');
+    setStatus('Yüklənir: ' + filename + ' ...');
     startLoading();
     try {
       const res = await fetch('./' + filename, { cache: 'no-store' });
       if (!res.ok) {
         endLoading();
-        if (warnIfMissing) showError(`File ${filename} not found.`);
+        if (warnIfMissing) showError(`Fayl tapılmadı: ${filename}`);
         setStatus('');
         return;
       }
@@ -404,26 +411,26 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       if (parseErr) {
         endLoading();
         console.error(parseErr.textContent);
-        showError('Failed to parse XML.');
+        showError('XML parse xətası.');
         setStatus('');
         return;
       }
       renderRates(xmlDoc);
       endLoading();
-      setStatus('Loaded ' + filename);
+      setStatus('Yükləndi: ' + filename);
     } catch (err) {
       endLoading();
       console.error(err);
-      showError('Unexpected network or parsing error.');
+      showError('Şəbəkə və ya parse xətası.');
       setStatus('');
     }
   }
 
   function renderRates(xmlDoc) {
     const valCurs = xmlDoc.getElementsByTagName('ValCurs')[0];
-    if (!valCurs) { showError('XML root <ValCurs> not found.'); return; }
-    const xmlDate = valCurs.getAttribute('Date') || '(Unknown Date)';
-    dateHeader.textContent = 'Rates for ' + xmlDate;
+    if (!valCurs) { showError('XML kök <ValCurs> tapılmadı.'); return; }
+    const xmlDate = valCurs.getAttribute('Date') || '(Tarix yoxdur)';
+    dateHeader.textContent = 'Tarix: ' + xmlDate;
 
     currentData = [];
     const valutes = xmlDoc.getElementsByTagName('Valute');
@@ -437,6 +444,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     }
 
     sortState = { key:null, dir:1 };
+    table.querySelectorAll('th').forEach(th => th.setAttribute('aria-sort','none'));
     renderTableRows(currentData);
     populateFilterOptions();
     tableWrap.classList.add('visible');
@@ -445,7 +453,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
 
   function populateFilterOptions() {
     const prevValue = filterSelect.value;
-    filterSelect.innerHTML = '<option value="__ALL__">All</option>';
+    filterSelect.innerHTML = '<option value="__ALL__">Hamısı</option>';
     const optionsSet = new Set();
     currentData.forEach(d => {
       if (d.Code) optionsSet.add(d.Code);
@@ -467,7 +475,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
   /* -------- Filtering -------- */
   function applyFilter() {
     const selected = filterSelect.value;
-    let rows = Array.from(tbody.querySelectorAll('tr'));
+    const rows = Array.from(tbody.querySelectorAll('tr'));
     let visibleCount = 0;
     rows.forEach(r => {
       const cells = Array.from(r.children).map(c => c.textContent);
@@ -476,7 +484,7 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
       if (match) visibleCount++;
     });
     rowCount.style.display='inline-block';
-    rowCount.textContent = visibleCount + ' row(s)';
+    rowCount.textContent = visibleCount + ' sətr';
   }
 
   /* -------- Sorting -------- */
@@ -485,8 +493,11 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     else { sortState.key = key; sortState.dir = 1; }
 
     table.querySelectorAll('th .sort-indicator').forEach(si => si.textContent='');
+    table.querySelectorAll('th').forEach(h => h.setAttribute('aria-sort','none'));
+
     const indicator = th.querySelector('.sort-indicator');
     indicator.textContent = sortState.dir === 1 ? '▲' : '▼';
+    th.setAttribute('aria-sort', sortState.dir === 1 ? 'ascending' : 'descending');
 
     const sorted = currentData.slice().sort((a,b) => compareValues(a[key], b[key]) * sortState.dir);
     renderTableRows(sorted);
@@ -494,10 +505,12 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     applyFilter();
   }
   function compareValues(a,b) {
-    const numA = parseFloat(a.replace(',','.'));
-    const numB = parseFloat(b.replace(',','.'));
+    const sa = String(a);
+    const sb = String(b);
+    const numA = parseFloat(sa.replace(',','.'));
+    const numB = parseFloat(sb.replace(',','.'));
     if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-    return a.localeCompare(b, undefined, { sensitivity:'base' });
+    return sa.localeCompare(sb, undefined, { sensitivity:'base' });
   }
 
   function renderTableRows(data) {
@@ -514,8 +527,8 @@ th:nth-child(4), td:nth-child(4){ width:20%; }
     }
   }
 
-  function escapeHtml(str) {
-    return str.replace(/[&<>"']/g, c => ({
+  function escapeHtml(str = '') {
+    return String(str).replace(/[&<>"']/g, c => ({
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
     })[c]);
   }
