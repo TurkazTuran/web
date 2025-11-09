@@ -207,11 +207,11 @@
       }
       .hero-card {
         position: relative;
-        display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-        gap: 36px;
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        padding: 40px 48px;
+        gap: 20px;
+        padding: 20px 20px;
         border-radius: 32px;
         background: linear-gradient(
           135deg,
@@ -223,6 +223,7 @@
           color-mix(in oklab, var(--accent-2) 18%, transparent);
         overflow: hidden;
         isolation: isolate;
+        text-align: center;
       }
       .hero-card::before,
       .hero-card::after {
@@ -252,30 +253,53 @@
       }
       .hero-copy {
         display: grid;
-        gap: 14px;
-      }
-      .hero-eyebrow {
-        font-size: 0.82rem;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: color-mix(in oklab, var(--muted) 65%, transparent);
-      }
-      .hero-title {
-        margin: 0;
-        font-size: clamp(2.1rem, 4vw, 2.8rem);
-        letter-spacing: 0.6px;
+        gap: 18px;
+        justify-items: center;
+        width: 100%;
       }
       .hero-text {
         margin: 0;
-        max-width: 44ch;
+        width: 100%;
+        max-width: 540px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 14px 22px;
         border-radius: 999px;
-        border: 5px solid transparent;
-        color: color-mix(in oklab, var(--muted) 60%, transparent);
-        line-height: 1.6;
+        border: 3px solid rgba(100, 200, 255, 0.6);
+        background: color-mix(in oklab, var(--card) 90%, transparent);
+        box-shadow: 0 0 16px rgba(110, 231, 255, 0.15);
+        color: color-mix(in oklab, var(--text) 95%, transparent);
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        line-height: 1.4;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .hero-ref {
+        margin: 0;
+        width: auto;
+        max-width: 360px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 18px;
+        border-radius: 999px;
+        border: 1px solid color-mix(in oklab, var(--accent-3) 40%, transparent);
+        background: color-mix(in oklab, var(--card) 75%, transparent);
+        font-size: 0.88rem;
+        font-weight: 600;
+        letter-spacing: 0.4rem;
+        text-transform: uppercase;
+        color: color-mix(in oklab, var(--accent) 82%, transparent);
       }
       .hero-actions {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 14px;
         flex-wrap: wrap;
         margin-top: 6px;
@@ -329,7 +353,7 @@
       .hero-media {
         justify-self: center;
         background: color-mix(in oklab, var(--card) 75%, transparent);
-        padding: 22px 26px;
+        padding: 20px 26px;
         border-radius: 24px;
         border: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
         box-shadow: 0 22px 40px
@@ -337,22 +361,21 @@
         position: relative;
         overflow: hidden;
       }
-      
+
       .hero-image {
-      max-width: 320px;
-      position: relative;
-      display: inline-block;
-      padding: 0;
-      border-radius: 10px;
-      overflow: hidden;
-      background: radial-gradient(circle at center, #f8f9fa 0%, #e2e6ea 100%);
-      border: 3px solid rgba(100, 200, 255, 0.6);
-      box-shadow:
-        0 0 10px rgba(173, 216, 230, 0.8),
-        inset 0 0 20px rgba(255, 255, 255, 0.5);
-      animation: frameGlow 3s ease-in-out infinite;
-      line-height: 0;
-    }
+        max-width: 100vh;
+        position: relative;
+        display: inline-block;
+        padding: 0;
+        border-radius: 10px;
+        overflow: hidden;
+        background: radial-gradient(circle at center, #f8f9fa 0%, #e2e6ea 100%);
+        border: 3px solid rgba(100, 200, 255, 0.6);
+        box-shadow: 0 0 10px rgba(173, 216, 230, 0.8),
+          inset 0 0 20px rgba(255, 255, 255, 0.5);
+        animation: frameGlow 3s ease-in-out infinite;
+        line-height: 0;
+      }
 
       .brand:focus-visible,
       .menu a:focus-visible,
@@ -491,7 +514,8 @@
           padding: 14px;
           border-radius: 18px;
           border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
-          box-shadow: 0 18px 38px color-mix(in oklab, var(--bg-2) 60%, transparent);
+          box-shadow: 0 18px 38px
+            color-mix(in oklab, var(--bg-2) 60%, transparent);
           width: min(240px, 80vw);
           backdrop-filter: var(--glass-blur);
         }
@@ -539,10 +563,11 @@
           margin: 32px 0 28px;
         }
         .hero-card {
-          grid-template-columns: 1fr;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           text-align: center;
-          padding: 34px 28px;
-          gap: 28px;
+          gap: 1rem;
         }
         .hero-text {
           margin: 0 auto;
@@ -814,13 +839,7 @@
     <header>
       <nav class="nav" aria-label="Əsas naviqasiya">
         <a class="brand" href="#" aria-label="Turkaz Turan ana səhifə">
-          <img
-            class="logo"
-            src="logo.svg"
-            alt="logo"
-            width="36"
-            height="36"
-          />
+          <img class="logo" src="logo.svg" alt="logo" width="36" height="36" />
           <span class="brand-text">
             <span class="title">Turkaz Turan</span>
           </span>
@@ -941,15 +960,9 @@
       </nav>
     </header>
 
-  <main id="mainContent" tabindex="-1">
+    <main id="mainContent" tabindex="-1">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-card">
-          <div class="hero-copy">
-            <h2><p class="hero-text">
-              De ki: "Ey haddi aşarak nefislerine karşı zulm etmiş olan kullarım! Allah'ın rahmetinden ümid kesmeyin. Çünkü Allah, bütün günahları bağışlar. Şüphesiz ki O, çok bağışlayıcı ve çok merhamet edicidir." ۞ 53
-            </p></h2>
-            <h4><p>39. Surah Az-Zumar</p></h4>
-          </div>
           <div class="hero-media">
             <img
               class="hero-image"
@@ -957,6 +970,15 @@
               alt="bismillah"
               loading="lazy"
             />
+          </div>
+          <div class="hero-copy">
+            <p class="hero-text" role="text">
+              De ki: "Ey haddi aşarak nefislerine karşı zulm etmiş olan
+              kullarım! Allah'ın rahmetinden ümid kesmeyin. Çünkü Allah, bütün
+              günahları bağışlar. Şüphesiz ki O, çok bağışlayıcı ve çok merhamet
+              edicidir." ۞ 39/53
+            </p>
+            <p class="hero-ref">Surah Az-Zumar</p>
           </div>
         </div>
       </section>
@@ -1003,13 +1025,14 @@
 
       // Generate lightweight fallback thumbnails for previews
       function makeFallbackThumb(title, colorStart, colorEnd) {
-        const initials = title
-          .split(/\s+/)
-          .filter(Boolean)
-          .slice(0, 2)
-          .map((part) => part[0] || "")
-          .join("")
-          .toUpperCase() || "TT";
+        const initials =
+          title
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0, 2)
+            .map((part) => part[0] || "")
+            .join("")
+            .toUpperCase() || "TT";
         const svg = `
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-label="${initials}">
             <defs>
@@ -1086,7 +1109,7 @@
       const empty = document.getElementById("empty");
 
       function cardHTML(p) {
-        return (`
+        return `
         <article class="card" role="listitem">
           <a class="head" href="${p.href}" aria-label="${p.title}">
             <div class="icon" aria-hidden="true">${iconSVG(p.icon)}</div>
@@ -1120,16 +1143,20 @@
         } səhifəsini aç">
               <div class="preview-wrap">
                 <div class="skeleton" aria-hidden="true"></div>
-                <iframe class="preview-frame" title="${p.title} ön baxış" loading="lazy"></iframe>
+                <iframe class="preview-frame" title="${
+                  p.title
+                } ön baxış" loading="lazy"></iframe>
                 <img class="preview-img visible" src="${
                   fallbackThumbs.get(p.href) || ""
-                }" data-page="${p.href}" alt="Ön baxış: ${p.title}" loading="lazy" />
+                }" data-page="${p.href}" alt="Ön baxış: ${
+          p.title
+        }" loading="lazy" />
                 <div class="preview-status" hidden>Ön baxış gətirilə bilmədi</div>
               </div>
             </a>
           </div>
         </article>
-      `);
+      `;
       }
 
       function render(items) {
@@ -1312,8 +1339,8 @@
     `;
       document.head.appendChild(style);
 
-  // Initial render after fallbacks are ready
-  render(pages);
+      // Initial render after fallbacks are ready
+      render(pages);
 
       // Responsive nav
       const navMenu = document.getElementById("primary-menu");
@@ -1330,10 +1357,7 @@
 
         function toggleMenu() {
           const isOpen = navMenu.classList.toggle("open");
-          menuToggle.setAttribute(
-            "aria-expanded",
-            isOpen ? "true" : "false"
-          );
+          menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
           if (toggleLabel)
             toggleLabel.textContent = isOpen ? "Menünü bağla" : "Menünü aç";
         }
