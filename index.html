@@ -212,6 +212,8 @@
         align-items: center;
         gap: 20px;
         padding: 20px 20px;
+        width: min(100%, 720px);
+        margin: 0 auto;
         border-radius: 32px;
         background: linear-gradient(
           135deg,
@@ -292,7 +294,7 @@
         background: color-mix(in oklab, var(--card) 75%, transparent);
         font-size: 0.88rem;
         font-weight: 600;
-        letter-spacing: 0.4rem;
+        letter-spacing: 0.32rem;
         text-transform: uppercase;
         color: color-mix(in oklab, var(--accent) 82%, transparent);
       }
@@ -359,13 +361,20 @@
         box-shadow: 0 22px 40px
           color-mix(in oklab, var(--accent-3) 18%, transparent);
         position: relative;
+        width: min(100%, 520px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         overflow: hidden;
       }
 
       .hero-image {
-        max-width: 100vh;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        max-height: clamp(200px, 55vw, 340px);
         position: relative;
-        display: inline-block;
+        display: block;
         padding: 0;
         border-radius: 10px;
         overflow: hidden;
@@ -375,6 +384,8 @@
           inset 0 0 20px rgba(255, 255, 255, 0.5);
         animation: frameGlow 3s ease-in-out infinite;
         line-height: 0;
+        object-fit: contain;
+        margin: 0 auto;
       }
 
       .brand:focus-visible,
@@ -581,16 +592,41 @@
       }
       @media (max-width: 600px) {
         .hero-card {
-          padding: 28px 22px;
-          border-radius: 26px;
+          padding: 24px 18px;
+          border-radius: 24px;
+          gap: 14px;
         }
-        .hero-media::before {
-          inset: 16% 18% auto 18%;
+        .hero-media {
+          width: 100%;
+          padding: 14px;
+          border-radius: 20px;
+        }
+        .hero-image {
+          border-width: 2px;
+          box-shadow: 0 0 8px rgba(173, 216, 230, 0.55),
+            inset 0 0 16px rgba(255, 255, 255, 0.4);
+          max-height: 220px;
+        }
+        .hero-text {
+          padding: 12px 16px;
+          font-size: 0.95rem;
+          line-height: 1.5;
+        }
+        .hero-ref {
+          width: 100%;
+          max-width: none;
+          font-size: 0.78rem;
+          letter-spacing: 0.2rem;
+          padding: 8px 14px;
         }
         .hero-button,
         .hero-ghost {
           width: 100%;
           justify-content: center;
+        }
+        :root {
+          --frame-h: 320px;
+          --preview-scale: 0.54;
         }
       }
       .sr-only {
