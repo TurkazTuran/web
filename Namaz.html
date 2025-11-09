@@ -1,1286 +1,2275 @@
 <!DOCTYPE html>
 <html lang="tr" data-theme="dark">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<title>Namaz Vakti - İslami Ezan Saatleri</title>
-<meta name="description" content="Güncel namaz vakitleri, ezan saatleri ve İslami takvim bilgileri. GPS destekli konum tespiti ile doğru vakitler.">
-<meta name="keywords" content="namaz vakti, ezan saatleri, İslami takvim, prayer times">
-<meta name="author" content="Namaz Vakti Uygulaması">
-<meta name="color-scheme" content="light dark" />
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* ====== Design Tokens (aligned with currency.html) ====== */
-:root {
-  --grad-bg: radial-gradient(circle at 20% 20%, #1f3c73 0%, #15294c 45%, #0d1a30 100%);
-  --grad-bg-light: radial-gradient(circle at 30% 30%, #e5f0ff 0%, #d7e6fb 35%, #c2d6f4 70%, #b3caec 100%);
-  --glass: rgba(18, 30, 52, 0.72);
-  --glass-solid: rgba(24, 38, 64, 0.88);
-  --glass-dark: rgba(15, 24, 41, 0.78);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-light: rgba(14, 45, 78, 0.12);
-  --text: #f0f4ff;
-  --text-soft: #c3ccdd;
-  --text-dark: #162238;
-  --accent: #ffd166;
-  --accent-alt: #ef476f;
-  --accent-purple: #8a63d2;
-  --danger: #f87171;
-  --success: #34d399;
-  --warn: #fbbf24;
-  --shadow: 0 14px 34px -10px rgba(5, 10, 25, 0.55);
-  --radius: 18px;
-  --focus: 0 0 0 3px rgba(255, 209, 102, 0.45), 0 0 0 6px rgba(239, 71, 111, 0.35);
-}
-[data-theme="light"] {
-  --glass: rgba(255, 255, 255, 0.86);
-  --glass-solid: rgba(255, 255, 255, 0.94);
-  --border: var(--border-light);
-  --text: var(--text-dark);
-  --text-soft: #4d5d7a;
-  --shadow: 0 10px 32px -12px rgba(35, 52, 84, 0.35);
-}
-html,body {
-  height:100%;
-  margin:0;
-  font-family:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  background:#0a1424;
-  color:var(--text);
-  overflow-x:hidden;
-}
-body::before {
-  content:"";
-  position:fixed;
-  inset:0;
-  background: var(--grad-bg);
-  opacity:.82;
-  filter:saturate(115%) brightness(0.98);
-  animation:bgMove 40s linear infinite;
-  z-index:-2;
-}
-[data-theme="light"] body::before {
-  background: var(--grad-bg-light);
-  opacity:.9;
-}
-@keyframes bgMove {
-  0% { transform:scale(1) translate(0,0); }
-  50% { transform:scale(1.12) translate(-3%,2%); }
-  100% { transform:scale(1) translate(0,0); }
-}
-/* Floating particle ambiance */
-.particles { position:fixed; inset:0; pointer-events:none; z-index:-1; }
-.particles span {
-  position:absolute; width:11px; height:11px;
-  background:radial-gradient(circle at 30% 30%, #fff 0%, rgba(255,255,255,0.05) 70%);
-  border-radius:50%; animation:float 18s linear infinite;
-  mix-blend-mode:screen; opacity:.4;
-}
-@keyframes float {
-  0% { transform:translateY(0) scale(.8); }
-  50% { transform:translateY(-120vh) scale(1); }
-  100% { transform:translateY(0) scale(.8); }
-}
-/* Layout wrapper */
-.wrapper {
-  max-width: 1020px;
-  margin: clamp(16px,4vw,48px) auto 90px;
-  padding:0 clamp(14px,3vw,40px);
-  display:flex;
-  flex-direction:column;
-  gap:28px;
-}
-/* Panel styles */
-.panel {
-  background:var(--glass);
-  backdrop-filter:blur(16px) saturate(160%);
-  border:1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow:var(--shadow);
-  position:relative;
-  overflow:hidden;
-  animation:rise .8s ease;
-}
-@keyframes rise {
-  from { opacity:0; transform:translateY(28px) scale(.95); }
-  to { opacity:1; transform:translateY(0) scale(1); }
-}
-.panel::before {
-  content:"";
-  position:absolute;
-  top:-15%; left:-18%;
-  width:55%; height:55%;
-  background:conic-gradient(from 60deg, rgba(255,209,102,.35), rgba(138,99,210,.25) 55%, rgba(239,71,111,.32) 90%, rgba(255,209,102,.35));
-  filter:blur(60px);
-  opacity:.2;
-  animation:spin 25s linear infinite;
-  pointer-events:none;
-}
-@keyframes spin { to { transform:rotate(360deg); } }
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+    />
+    <title>Namaz Vakti - İslami Ezan Saatleri</title>
+    <meta
+      name="description"
+      content="Güncel namaz vakitleri, ezan saatleri ve İslami takvim bilgileri. GPS destekli konum tespiti ile doğru vakitler."
+    />
+    <meta
+      name="keywords"
+      content="namaz vakti, ezan saatleri, İslami takvim, prayer times"
+    />
+    <meta name="author" content="Namaz Vakti Uygulaması" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ====== Design Tokens (aligned with currency.html) ====== */
+      :root {
+        --grad-bg: radial-gradient(
+          circle at 20% 20%,
+          #1f3c73 0%,
+          #15294c 45%,
+          #0d1a30 100%
+        );
+        --grad-bg-light: radial-gradient(
+          circle at 30% 30%,
+          #e5f0ff 0%,
+          #d7e6fb 35%,
+          #c2d6f4 70%,
+          #b3caec 100%
+        );
+        --glass: rgba(18, 30, 52, 0.72);
+        --glass-solid: rgba(24, 38, 64, 0.88);
+        --glass-dark: rgba(15, 24, 41, 0.78);
+        --border: rgba(255, 255, 255, 0.08);
+        --border-light: rgba(14, 45, 78, 0.12);
+        --text: #f0f4ff;
+        --text-soft: #c3ccdd;
+        --text-dark: #162238;
+        --accent: #ffd166;
+        --accent-alt: #ef476f;
+        --accent-purple: #8a63d2;
+        --danger: #f87171;
+        --success: #34d399;
+        --warn: #fbbf24;
+        --shadow: 0 14px 34px -10px rgba(5, 10, 25, 0.55);
+        --radius: 18px;
+        --focus: 0 0 0 3px rgba(255, 209, 102, 0.45),
+          0 0 0 6px rgba(239, 71, 111, 0.35);
+      }
+      [data-theme="light"] {
+        --glass: rgba(255, 255, 255, 0.86);
+        --glass-solid: rgba(255, 255, 255, 0.94);
+        --border: var(--border-light);
+        --text: var(--text-dark);
+        --text-soft: #4d5d7a;
+        --shadow: 0 10px 32px -12px rgba(35, 52, 84, 0.35);
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background: #0a1424;
+        color: var(--text);
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: var(--grad-bg);
+        opacity: 0.82;
+        filter: saturate(115%) brightness(0.98);
+        animation: bgMove 40s linear infinite;
+        z-index: -2;
+      }
+      [data-theme="light"] body::before {
+        background: var(--grad-bg-light);
+        opacity: 0.9;
+      }
+      @keyframes bgMove {
+        0% {
+          transform: scale(1) translate(0, 0);
+        }
+        50% {
+          transform: scale(1.12) translate(-3%, 2%);
+        }
+        100% {
+          transform: scale(1) translate(0, 0);
+        }
+      }
+      /* Floating particle ambiance */
+      .particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .particles span {
+        position: absolute;
+        width: 11px;
+        height: 11px;
+        background: radial-gradient(
+          circle at 30% 30%,
+          #fff 0%,
+          rgba(255, 255, 255, 0.05) 70%
+        );
+        border-radius: 50%;
+        animation: float 18s linear infinite;
+        mix-blend-mode: screen;
+        opacity: 0.4;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0) scale(0.8);
+        }
+        50% {
+          transform: translateY(-120vh) scale(1);
+        }
+        100% {
+          transform: translateY(0) scale(0.8);
+        }
+      }
+      /* Layout wrapper */
+      .wrapper {
+        max-width: 1020px;
+        margin: clamp(16px, 4vw, 48px) auto 90px;
+        padding: 0 clamp(14px, 3vw, 40px);
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+      /* Panel styles */
+      .panel {
+        background: var(--glass);
+        backdrop-filter: blur(16px) saturate(160%);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+        animation: rise 0.8s ease;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(28px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .panel::before {
+        content: "";
+        position: absolute;
+        top: -15%;
+        left: -18%;
+        width: 55%;
+        height: 55%;
+        background: conic-gradient(
+          from 60deg,
+          rgba(255, 209, 102, 0.35),
+          rgba(138, 99, 210, 0.25) 55%,
+          rgba(239, 71, 111, 0.32) 90%,
+          rgba(255, 209, 102, 0.35)
+        );
+        filter: blur(60px);
+        opacity: 0.2;
+        animation: spin 25s linear infinite;
+        pointer-events: none;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
 
-/* Header */
-.header {
-  padding: clamp(18px,3.2vw,34px) clamp(18px,3.2vw,34px) clamp(8px,1.4vw,14px);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:18px;
-}
-.brand-visual {
-  width: clamp(160px,40%,260px);
-  aspect-ratio: 3/1;
-  display:grid;
-  place-items:center;
-  position:relative;
-  border-radius:14px;
-  padding:6px;
-  background:radial-gradient(circle at center, rgba(255,255,255,0.94) 0%, rgba(236,244,255,0.88) 52%, rgba(208,225,255,0.8) 100%);
-  border:2px solid rgba(167, 196, 246, 0.6);
-  box-shadow:
-    0 0 18px rgba(167, 196, 246, 0.45),
-    inset 0 0 22px rgba(255, 255, 255, 0.35);
-  overflow:hidden;
-  animation:logoPulse 3.2s ease-in-out infinite;
-}
-.brand-visual img {
-  width:100%; height:auto;
-  border-radius:10px;
-  filter: drop-shadow(0 0 14px rgba(140, 170, 255, 0.42));
-  user-select:none;
-  transition:transform .35s ease, filter .35s ease;
-}
-.brand-visual:hover img {
-  transform:scale(1.03);
-  filter: drop-shadow(0 0 20px rgba(150, 185, 255, 0.6));
-}
-[data-theme="light"] .brand-visual {
-  background:radial-gradient(circle at center, rgba(255,255,255,0.98) 0%, rgba(232,240,255,0.9) 50%, rgba(210,225,255,0.82) 100%);
-  border:2px solid rgba(158, 182, 228, 0.55);
-  box-shadow:
-    0 0 16px rgba(155, 180, 230, 0.35),
-    inset 0 0 20px rgba(255, 255, 255, 0.42);
-}
-[data-theme="light"] .brand-visual img {
-  filter: drop-shadow(0 0 12px rgba(150, 170, 230, 0.35));
-}
-[data-theme="light"] .brand-visual:hover img {
-  filter: drop-shadow(0 0 18px rgba(150, 170, 230, 0.5));
-}
+      /* Header */
+      .header {
+        padding: clamp(18px, 3.2vw, 34px) clamp(18px, 3.2vw, 34px)
+          clamp(8px, 1.4vw, 14px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+      }
+      .brand-visual {
+        width: clamp(160px, 40%, 260px);
+        aspect-ratio: 3/1;
+        display: grid;
+        place-items: center;
+        position: relative;
+        border-radius: 14px;
+        padding: 6px;
+        background: radial-gradient(
+          circle at center,
+          rgba(255, 255, 255, 0.94) 0%,
+          rgba(236, 244, 255, 0.88) 52%,
+          rgba(208, 225, 255, 0.8) 100%
+        );
+        border: 2px solid rgba(167, 196, 246, 0.6);
+        box-shadow: 0 0 18px rgba(167, 196, 246, 0.45),
+          inset 0 0 22px rgba(255, 255, 255, 0.35);
+        overflow: hidden;
+        animation: logoPulse 3.2s ease-in-out infinite;
+      }
+      .brand-visual img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        filter: drop-shadow(0 0 14px rgba(140, 170, 255, 0.42));
+        user-select: none;
+        transition: transform 0.35s ease, filter 0.35s ease;
+      }
+      .brand-visual:hover img {
+        transform: scale(1.03);
+        filter: drop-shadow(0 0 20px rgba(150, 185, 255, 0.6));
+      }
+      [data-theme="light"] .brand-visual {
+        background: radial-gradient(
+          circle at center,
+          rgba(255, 255, 255, 0.98) 0%,
+          rgba(232, 240, 255, 0.9) 50%,
+          rgba(210, 225, 255, 0.82) 100%
+        );
+        border: 2px solid rgba(158, 182, 228, 0.55);
+        box-shadow: 0 0 16px rgba(155, 180, 230, 0.35),
+          inset 0 0 20px rgba(255, 255, 255, 0.42);
+      }
+      [data-theme="light"] .brand-visual img {
+        filter: drop-shadow(0 0 12px rgba(150, 170, 230, 0.35));
+      }
+      [data-theme="light"] .brand-visual:hover img {
+        filter: drop-shadow(0 0 18px rgba(150, 170, 230, 0.5));
+      }
 
-@keyframes logoPulse {
-  0%,100% {
-    box-shadow:
-      0 0 16px rgba(97, 173, 255, 0.4),
-      inset 0 0 18px rgba(255, 255, 255, 0.16);
-    border-color:rgba(138, 207, 255, 0.35);
-  }
-  50% {
-    box-shadow:
-      0 0 26px rgba(97, 173, 255, 0.65),
-      inset 0 0 24px rgba(255, 255, 255, 0.24);
-    border-color:rgba(138, 207, 255, 0.55);
-  }
-}
-h1 {
-  margin:0;
-  font-size: clamp(1.9rem,4.3vw,3.2rem);
-  line-height:1.05;
-  background:linear-gradient(90deg,#ffbe0b,#ff006e 40%,#8338ec 75%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  font-weight:700;
-  letter-spacing:.6px;
-  text-align:center;
-}
-.location-line {
-  font-size:.9rem;
-  letter-spacing:.4px;
-  font-weight:500;
-  color:var(--text-soft);
-  display:flex; align-items:center; gap:6px;
-}
+      @keyframes logoPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 16px rgba(97, 173, 255, 0.4),
+            inset 0 0 18px rgba(255, 255, 255, 0.16);
+          border-color: rgba(138, 207, 255, 0.35);
+        }
+        50% {
+          box-shadow: 0 0 26px rgba(97, 173, 255, 0.65),
+            inset 0 0 24px rgba(255, 255, 255, 0.24);
+          border-color: rgba(138, 207, 255, 0.55);
+        }
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(1.9rem, 4.3vw, 3.2rem);
+        line-height: 1.05;
+        background: linear-gradient(90deg, #ffbe0b, #ff006e 40%, #8338ec 75%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-align: center;
+      }
+      .location-line {
+        font-size: 0.9rem;
+        letter-spacing: 0.4px;
+        font-weight: 500;
+        color: var(--text-soft);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
 
-/* Status dot */
-.status-dot {
-  width:10px; height:10px; border-radius:50%;
-  background:var(--warn);
-  animation:pulse 2.4s ease-in-out infinite;
-  box-shadow:0 0 0 3px rgba(255,255,255,.15);
-}
-.status-dot.success { background:var(--success); }
-.status-dot.error { background:var(--danger); }
-@keyframes pulse {
-  0%,100% { transform:scale(1); opacity:1; }
-  50% { transform:scale(.65); opacity:.55; }
-}
+      /* Status dot */
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--warn);
+        animation: pulse 2.4s ease-in-out infinite;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+      }
+      .status-dot.success {
+        background: var(--success);
+      }
+      .status-dot.error {
+        background: var(--danger);
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(0.65);
+          opacity: 0.55;
+        }
+      }
 
-/* Controls group */
-.controls-bar {
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  padding:clamp(18px,3.2vw,32px) clamp(18px,3.2vw,34px) clamp(42px,5vw,60px);
-}
-.glass-btn {
-  width:54px;
-  height:54px;
-  background:var(--glass-solid);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:1.4rem;
-  cursor:pointer;
-  transition:.35s;
-  color:var(--text);
-  backdrop-filter:blur(8px) saturate(150%);
-  position:relative;
-}
-.glass-btn:hover {
-  transform:translateY(-4px);
-  box-shadow:0 10px 28px -6px rgba(0,0,0,.4);
-}
-.glass-btn.active {
-  background:linear-gradient(120deg,#ffbe0b,#ff006e 55%,#8338ec);
-  color:#fff;
-  box-shadow:0 8px 26px -6px rgba(0,0,0,.5);
-}
-.glass-btn::after {
-  content:attr(data-label);
-  position:absolute;
-  bottom:-28px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:0.65rem;
-  font-weight:600;
-  letter-spacing:0.4px;
-  color:var(--text-soft);
-  white-space:nowrap;
-  opacity:0;
-  transition:.3s;
-}
-.glass-btn:hover::after {
-  opacity:1;
-}
+      /* Controls group */
+      .controls-bar {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        padding: clamp(18px, 3.2vw, 32px) clamp(18px, 3.2vw, 34px)
+          clamp(42px, 5vw, 60px);
+      }
+      .glass-btn {
+        width: 54px;
+        height: 54px;
+        background: var(--glass-solid);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        cursor: pointer;
+        transition: 0.35s;
+        color: var(--text);
+        backdrop-filter: blur(8px) saturate(150%);
+        position: relative;
+      }
+      .glass-btn:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.4);
+      }
+      .glass-btn.active {
+        background: linear-gradient(120deg, #ffbe0b, #ff006e 55%, #8338ec);
+        color: #fff;
+        box-shadow: 0 8px 26px -6px rgba(0, 0, 0, 0.5);
+      }
+      .glass-btn::after {
+        content: attr(data-label);
+        position: absolute;
+        bottom: -28px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        color: var(--text-soft);
+        white-space: nowrap;
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .glass-btn:hover::after {
+        opacity: 1;
+      }
 
-/* Collapsible sections */
-.section {
-  margin:0 clamp(18px,3.2vw,34px) clamp(22px,3vw,34px);
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-}
-.section-inner {
-  background:var(--glass-solid);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:18px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-  position:relative;
-  overflow:hidden;
-}
-.section-inner::before {
-  content:"";
-  position:absolute; inset:0;
-  background:linear-gradient(140deg,rgba(255,209,102,.16),rgba(138,99,210,.14),rgba(239,71,111,.16));
-  opacity:.18;
-  pointer-events:none;
-}
-.section-title {
-  font-size:.75rem;
-  font-weight:700;
-  letter-spacing:.7px;
-  text-transform:uppercase;
-  color:var(--text-soft);
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.section-title.collapsible {
-  background:linear-gradient(120deg, rgba(31,60,115,0.85), rgba(15,30,52,0.92));
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:12px;
-  padding:12px 18px;
-  margin:0;
-  width:100%;
-  justify-content:space-between;
-  cursor:pointer;
-  font:inherit;
-  color:var(--text);
-  text-align:left;
-  transition:background .25s ease, box-shadow .25s ease, border-color .25s ease;
-}
-.section-title.collapsible .section-arrow {
-  font-size:1rem;
-  color:var(--accent);
-  transition:transform .3s ease, color .3s ease;
-}
-.section-title.collapsible.collapsed .section-arrow {
-  transform:rotate(-90deg);
-}
-.section-title.collapsible:hover,
-.section-title.collapsible:focus-visible {
-  background:linear-gradient(120deg, rgba(47,81,142,0.95), rgba(27,46,78,0.98));
-  border-color:rgba(255,255,255,0.16);
-  box-shadow:0 10px 26px -10px rgba(5, 10, 25, 0.55);
-}
-.section-title.collapsible.collapsed {
-  background:linear-gradient(120deg, rgba(24,38,64,0.88), rgba(15,24,41,0.9));
-}
-.section-title.collapsible.collapsed .section-arrow {
-  color:var(--text-soft);
-}
-[data-theme="light"] .section-title.collapsible {
-  background:linear-gradient(120deg, rgba(255,255,255,0.9), rgba(232,240,255,0.96));
-  border:1px solid rgba(22,34,56,0.08);
-  color:var(--text-dark);
-}
-[data-theme="light"] .section-title.collapsible:hover,
-[data-theme="light"] .section-title.collapsible:focus-visible {
-  background:linear-gradient(120deg, rgba(255,255,255,0.98), rgba(214,226,250,0.98));
-  border-color:rgba(22,34,56,0.18);
-  box-shadow:0 12px 26px -12px rgba(35,52,84,0.35);
-}
-[data-theme="light"] .section-title.collapsible .section-arrow {
-  color:var(--accent-alt);
-}
-[data-theme="light"] .section-title.collapsible.collapsed .section-arrow {
-  color:#a5adc2;
-}
-.section-content {
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
-.section-content.collapsed {
-  display:none;
-}
-#settingsContent {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
-  align-items:start;
-}
-#settingsContent .method-select {
-  grid-column:1 / -1;
-}
+      /* Collapsible sections */
+      .section {
+        margin: 0 clamp(18px, 3.2vw, 34px) clamp(22px, 3vw, 34px);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .section-inner {
+        background: var(--glass-solid);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        position: relative;
+        overflow: hidden;
+      }
+      .section-inner::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          140deg,
+          rgba(255, 209, 102, 0.16),
+          rgba(138, 99, 210, 0.14),
+          rgba(239, 71, 111, 0.16)
+        );
+        opacity: 0.18;
+        pointer-events: none;
+      }
+      .section-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        color: var(--text-soft);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .section-title.collapsible {
+        background: linear-gradient(
+          120deg,
+          rgba(31, 60, 115, 0.85),
+          rgba(15, 30, 52, 0.92)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 12px 18px;
+        margin: 0;
+        width: 100%;
+        justify-content: space-between;
+        cursor: pointer;
+        font: inherit;
+        color: var(--text);
+        text-align: left;
+        transition: background 0.25s ease, box-shadow 0.25s ease,
+          border-color 0.25s ease;
+      }
+      .section-title.collapsible .section-arrow {
+        font-size: 1rem;
+        color: var(--accent);
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+      .section-title.collapsible.collapsed .section-arrow {
+        transform: rotate(-90deg);
+      }
+      .section-title.collapsible:hover,
+      .section-title.collapsible:focus-visible {
+        background: linear-gradient(
+          120deg,
+          rgba(47, 81, 142, 0.95),
+          rgba(27, 46, 78, 0.98)
+        );
+        border-color: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 10px 26px -10px rgba(5, 10, 25, 0.55);
+      }
+      .section-title.collapsible.collapsed {
+        background: linear-gradient(
+          120deg,
+          rgba(24, 38, 64, 0.88),
+          rgba(15, 24, 41, 0.9)
+        );
+      }
+      .section-title.collapsible.collapsed .section-arrow {
+        color: var(--text-soft);
+      }
+      [data-theme="light"] .section-title.collapsible {
+        background: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0.9),
+          rgba(232, 240, 255, 0.96)
+        );
+        border: 1px solid rgba(22, 34, 56, 0.08);
+        color: var(--text-dark);
+      }
+      [data-theme="light"] .section-title.collapsible:hover,
+      [data-theme="light"] .section-title.collapsible:focus-visible {
+        background: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(214, 226, 250, 0.98)
+        );
+        border-color: rgba(22, 34, 56, 0.18);
+        box-shadow: 0 12px 26px -12px rgba(35, 52, 84, 0.35);
+      }
+      [data-theme="light"] .section-title.collapsible .section-arrow {
+        color: var(--accent-alt);
+      }
+      [data-theme="light"] .section-title.collapsible.collapsed .section-arrow {
+        color: #a5adc2;
+      }
+      .section-content {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .section-content.collapsed {
+        display: none;
+      }
+      #settingsContent {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .settings-field {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .settings-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: var(--text-soft);
+      }
+      .settings-subsection {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .settings-actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .apply-btn {
+        background: linear-gradient(140deg, #ffbe0b, #ff006e 55%, #8338ec);
+        border: none;
+        border-radius: 12px;
+        padding: 12px 28px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        color: #fff;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 10px 26px -10px rgba(0, 0, 0, 0.6);
+      }
+      .apply-btn:not(.no-changes):hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 32px -18px rgba(0, 0, 0, 0.65);
+      }
+      .apply-btn.no-changes {
+        background: var(--glass);
+        color: var(--text-soft);
+        border: 1px solid var(--border);
+        box-shadow: none;
+        opacity: 0.7;
+      }
+      .city-empty {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 18px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-soft);
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        background: var(--glass);
+      }
+      #settingsContent .section-title.collapsible.nested {
+        padding: 12px 16px;
+        border-radius: 14px;
+        background: linear-gradient(
+          120deg,
+          rgba(31, 60, 115, 0.82),
+          rgba(15, 30, 52, 0.88)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        font-size: 0.74rem;
+        gap: 10px;
+      }
+      #settingsContent .section-title.collapsible.nested:hover,
+      #settingsContent .section-title.collapsible.nested:focus-visible {
+        background: linear-gradient(
+          120deg,
+          rgba(45, 74, 130, 0.88),
+          rgba(21, 36, 64, 0.92)
+        );
+        border-color: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 16px 36px -20px rgba(5, 10, 25, 0.7);
+      }
+      #settingsContent .section-title.collapsible.nested .section-arrow {
+        font-size: 0.9rem;
+      }
+      #settingsContent .section-title.collapsible.nested.collapsed {
+        background: linear-gradient(
+          120deg,
+          rgba(24, 38, 64, 0.78),
+          rgba(12, 22, 42, 0.86)
+        );
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+      #settingsContent .section-title.collapsible.nested.collapsed:hover,
+      #settingsContent
+        .section-title.collapsible.nested.collapsed:focus-visible {
+        background: linear-gradient(
+          120deg,
+          rgba(30, 48, 84, 0.82),
+          rgba(17, 28, 50, 0.9)
+        );
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+      #settingsContent .section-content.nested {
+        padding: 18px 16px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: var(--glass);
+        box-shadow: 0 12px 32px -18px rgba(5, 10, 25, 0.65);
+      }
+      .settings-subsection .section-content.nested.collapsed {
+        display: none;
+      }
 
-/* Settings button makeover */
-#settingsPanel .section-inner {
-  padding:14px;
-  background:transparent;
-  border:none;
-  box-shadow:none;
-}
-#settingsPanel .section-inner::before { display:none; }
+      [data-theme="light"] #settingsContent .section-title.collapsible.nested {
+        background: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0.94),
+          rgba(232, 240, 255, 0.92)
+        );
+        border: 1px solid rgba(22, 34, 56, 0.08);
+        color: var(--text-dark);
+      }
+      [data-theme="light"]
+        #settingsContent
+        .section-title.collapsible.nested:hover,
+      [data-theme="light"]
+        #settingsContent
+        .section-title.collapsible.nested:focus-visible {
+        background: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(230, 238, 255, 0.96)
+        );
+        border-color: rgba(22, 34, 56, 0.14);
+        box-shadow: 0 14px 34px -20px rgba(35, 52, 84, 0.28);
+      }
+      [data-theme="light"]
+        #settingsContent
+        .section-title.collapsible.nested.collapsed {
+        background: linear-gradient(
+          120deg,
+          rgba(247, 250, 255, 0.94),
+          rgba(223, 232, 250, 0.92)
+        );
+        border-color: rgba(22, 34, 56, 0.08);
+      }
+      [data-theme="light"]
+        #settingsContent
+        .section-title.collapsible.nested.collapsed:hover,
+      [data-theme="light"]
+        #settingsContent
+        .section-title.collapsible.nested.collapsed:focus-visible {
+        background: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(234, 240, 253, 0.97)
+        );
+        border-color: rgba(22, 34, 56, 0.14);
+      }
+      [data-theme="light"]
+        #settingsContent
+        .section-title.collapsible.nested
+        .section-arrow {
+        color: var(--accent-alt);
+      }
+      [data-theme="light"] #settingsContent .section-content.nested {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(22, 34, 56, 0.1);
+        box-shadow: 0 12px 30px -18px rgba(35, 52, 84, 0.28);
+      }
 
-#settingsPanel .section-title.collapsible {
-  padding:18px 24px;
-  border-radius:calc(var(--radius) + 6px);
-  background:linear-gradient(130deg, rgba(255,190,11,0.92), rgba(255,0,110,0.88) 52%, rgba(131,56,236,0.92));
-  color:#fff;
-  border:1px solid rgba(255,255,255,0.16);
-  box-shadow:0 20px 48px -22px rgba(0,0,0,0.9);
-  gap:16px;
-  transition:transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
-}
-#settingsPanel .section-title.collapsible:hover,
-#settingsPanel .section-title.collapsible:focus-visible {
-  transform:translateY(-2px);
-  box-shadow:0 28px 54px -24px rgba(0,0,0,0.9);
-  border-color:rgba(255,255,255,0.22);
-}
-#settingsPanel .section-title.collapsible.collapsed {
-  background:linear-gradient(130deg, rgba(31,60,115,0.92), rgba(15,30,52,0.94));
-  border:1px solid rgba(255,255,255,0.08);
-  box-shadow:0 16px 42px -20px rgba(5,10,25,0.75);
-  color:var(--text);
-}
-#settingsPanel .section-title.collapsible.collapsed:hover,
-#settingsPanel .section-title.collapsible.collapsed:focus-visible {
-  background:linear-gradient(130deg, rgba(40,70,130,0.95), rgba(18,32,56,0.96));
-  border-color:rgba(255,255,255,0.18);
-}
-#settingsPanel .section-title.collapsible span:first-child {
-  display:flex;
-  align-items:center;
-  gap:14px;
-  font-size:0.85rem;
-}
-#settingsPanel .section-title.collapsible span:first-child::before {
-  content:"⚙️";
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:36px;
-  height:36px;
-  border-radius:14px;
-  background:rgba(255,255,255,0.18);
-  box-shadow:0 10px 26px -14px rgba(0,0,0,0.65);
-  font-size:1.15rem;
-}
-#settingsPanel .section-title.collapsible .section-arrow {
-  display:grid;
-  place-items:center;
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  background:rgba(0,0,0,0.22);
-  color:#fff;
-  font-size:1.05rem;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);
-}
-#settingsPanel .section-title.collapsible.collapsed .section-arrow {
-  background:rgba(0,0,0,0.3);
-  color:var(--text-soft);
-}
+      /* Settings button makeover */
+      #settingsPanel .section-inner {
+        padding: 14px;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+      #settingsPanel .section-inner::before {
+        display: none;
+      }
 
-#settingsPanel .section-content {
-  margin-top:16px;
-  padding:22px;
-  border-radius:calc(var(--radius) + 6px);
-  border:1px solid var(--border);
-  background:var(--glass-solid);
-  box-shadow:0 18px 42px -20px rgba(5,10,25,0.75);
-}
+      #settingsPanel .section-title.collapsible {
+        padding: 18px 24px;
+        border-radius: calc(var(--radius) + 6px);
+        background: linear-gradient(
+          130deg,
+          rgba(255, 190, 11, 0.92),
+          rgba(255, 0, 110, 0.88) 52%,
+          rgba(131, 56, 236, 0.92)
+        );
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: 0 20px 48px -22px rgba(0, 0, 0, 0.9);
+        gap: 16px;
+        transition: transform 0.25s ease, box-shadow 0.25s ease,
+          background 0.25s ease, border-color 0.25s ease;
+      }
+      #settingsPanel .section-title.collapsible:hover,
+      #settingsPanel .section-title.collapsible:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 28px 54px -24px rgba(0, 0, 0, 0.9);
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+      #settingsPanel .section-title.collapsible.collapsed {
+        background: linear-gradient(
+          130deg,
+          rgba(31, 60, 115, 0.92),
+          rgba(15, 30, 52, 0.94)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 16px 42px -20px rgba(5, 10, 25, 0.75);
+        color: var(--text);
+      }
+      #settingsPanel .section-title.collapsible.collapsed:hover,
+      #settingsPanel .section-title.collapsible.collapsed:focus-visible {
+        background: linear-gradient(
+          130deg,
+          rgba(40, 70, 130, 0.95),
+          rgba(18, 32, 56, 0.96)
+        );
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+      #settingsPanel .section-title.collapsible span:first-child {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 0.85rem;
+      }
+      #settingsPanel .section-title.collapsible span:first-child::before {
+        content: "⚙️";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 10px 26px -14px rgba(0, 0, 0, 0.65);
+        font-size: 1.15rem;
+      }
+      #settingsPanel .section-title.collapsible .section-arrow {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.22);
+        color: #fff;
+        font-size: 1.05rem;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+      }
+      #settingsPanel .section-title.collapsible.collapsed .section-arrow {
+        background: rgba(0, 0, 0, 0.3);
+        color: var(--text-soft);
+      }
 
-[data-theme="light"] #settingsPanel .section-title.collapsible {
-  background:linear-gradient(130deg, rgba(255,255,255,0.96), rgba(232,240,255,0.94) 45%, rgba(207,222,255,0.92));
-  color:var(--text-dark);
-  border:1px solid rgba(22,34,56,0.08);
-  box-shadow:0 18px 40px -20px rgba(35,52,84,0.35);
-}
-[data-theme="light"] #settingsPanel .section-title.collapsible:hover,
-[data-theme="light"] #settingsPanel .section-title.collapsible:focus-visible {
-  background:linear-gradient(130deg, rgba(255,255,255,0.98), rgba(226,234,252,0.96) 55%, rgba(212,224,255,0.94));
-  border-color:rgba(22,34,56,0.16);
-}
-[data-theme="light"] #settingsPanel .section-title.collapsible.collapsed {
-  background:linear-gradient(130deg, rgba(247,250,255,0.95), rgba(225,234,252,0.95));
-  color:var(--text-dark);
-}
-[data-theme="light"] #settingsPanel .section-title.collapsible.collapsed:hover,
-[data-theme="light"] #settingsPanel .section-title.collapsible.collapsed:focus-visible {
-  background:linear-gradient(130deg, rgba(255,255,255,0.98), rgba(234,240,253,0.97));
-  border-color:rgba(22,34,56,0.16);
-}
-[data-theme="light"] #settingsPanel .section-title.collapsible span:first-child::before {
-  background:rgba(22,34,56,0.08);
-  box-shadow:0 8px 18px -12px rgba(35,52,84,0.35);
-}
-[data-theme="light"] #settingsPanel .section-title.collapsible .section-arrow {
-  background:rgba(22,34,56,0.08);
-  color:var(--text-dark);
-}
-[data-theme="light"] #settingsPanel .section-title.collapsible.collapsed .section-arrow {
-  color:#8290af;
-}
-[data-theme="light"] #settingsPanel .section-content {
-  background:rgba(255,255,255,0.92);
-  border:1px solid rgba(22,34,56,0.1);
-  box-shadow:0 18px 38px -20px rgba(35,52,84,0.3);
-}
+      #settingsPanel .section-content {
+        margin-top: 16px;
+        padding: 22px;
+        border-radius: calc(var(--radius) + 6px);
+        border: 1px solid var(--border);
+        background: var(--glass-solid);
+        box-shadow: 0 18px 42px -20px rgba(5, 10, 25, 0.75);
+      }
 
+      [data-theme="light"] #settingsPanel .section-title.collapsible {
+        background: linear-gradient(
+          130deg,
+          rgba(255, 255, 255, 0.96),
+          rgba(232, 240, 255, 0.94) 45%,
+          rgba(207, 222, 255, 0.92)
+        );
+        color: var(--text-dark);
+        border: 1px solid rgba(22, 34, 56, 0.08);
+        box-shadow: 0 18px 40px -20px rgba(35, 52, 84, 0.35);
+      }
+      [data-theme="light"] #settingsPanel .section-title.collapsible:hover,
+      [data-theme="light"]
+        #settingsPanel
+        .section-title.collapsible:focus-visible {
+        background: linear-gradient(
+          130deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(226, 234, 252, 0.96) 55%,
+          rgba(212, 224, 255, 0.94)
+        );
+        border-color: rgba(22, 34, 56, 0.16);
+      }
+      [data-theme="light"] #settingsPanel .section-title.collapsible.collapsed {
+        background: linear-gradient(
+          130deg,
+          rgba(247, 250, 255, 0.95),
+          rgba(225, 234, 252, 0.95)
+        );
+        color: var(--text-dark);
+      }
+      [data-theme="light"]
+        #settingsPanel
+        .section-title.collapsible.collapsed:hover,
+      [data-theme="light"]
+        #settingsPanel
+        .section-title.collapsible.collapsed:focus-visible {
+        background: linear-gradient(
+          130deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(234, 240, 253, 0.97)
+        );
+        border-color: rgba(22, 34, 56, 0.16);
+      }
+      [data-theme="light"]
+        #settingsPanel
+        .section-title.collapsible
+        span:first-child::before {
+        background: rgba(22, 34, 56, 0.08);
+        box-shadow: 0 8px 18px -12px rgba(35, 52, 84, 0.35);
+      }
+      [data-theme="light"]
+        #settingsPanel
+        .section-title.collapsible
+        .section-arrow {
+        background: rgba(22, 34, 56, 0.08);
+        color: var(--text-dark);
+      }
+      [data-theme="light"]
+        #settingsPanel
+        .section-title.collapsible.collapsed
+        .section-arrow {
+        color: #8290af;
+      }
+      [data-theme="light"] #settingsPanel .section-content {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(22, 34, 56, 0.1);
+        box-shadow: 0 18px 38px -20px rgba(35, 52, 84, 0.3);
+      }
 
-@media (max-width:740px){
-  #settingsPanel .section-title.collapsible {
-    padding:16px 20px;
-  }
-  #settingsPanel .section-content {
-    padding:20px;
-  }
-}
-.search-box {
-  width:100%;
-  background:var(--glass);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:12px 16px;
-  font-size:.85rem;
-  font-weight:500;
-  color:var(--text);
-  outline:none;
-  transition:.3s;
-}
-.search-box:focus {
-  box-shadow:var(--focus);
-  border-color:var(--accent);
-}
-.city-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
-  gap:10px;
-  max-height:340px;
-  overflow:auto;
-  padding:4px;
-}
-.city-btn {
-  background:var(--glass);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:10px 12px;
-  font-size:.7rem;
-  font-weight:600;
-  color:var(--text);
-  letter-spacing:.4px;
-  cursor:pointer;
-  transition:.3s;
-  text-align:center;
-}
-.city-btn:hover {
-  background:linear-gradient(140deg,#ffbe0b,#ff006e 60%,#8338ec);
-  color:#fff;
-  transform:translateY(-3px);
-  box-shadow:0 6px 20px -6px rgba(0,0,0,.5);
-}
-.city-btn.selected {
-  background:linear-gradient(140deg,#ffbe0b,#ff006e 55%,#8338ec);
-  border-color:transparent;
-  color:#fff;
-  box-shadow:0 6px 20px -6px rgba(0,0,0,.55);
-}
+      @media (max-width: 740px) {
+        #settingsPanel .section-title.collapsible {
+          padding: 16px 20px;
+        }
+        #settingsPanel .section-content {
+          padding: 20px;
+        }
+      }
+      .search-box {
+        width: 100%;
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text);
+        outline: none;
+        transition: 0.3s;
+      }
+      .search-box:focus {
+        box-shadow: var(--focus);
+        border-color: var(--accent);
+      }
+      .city-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+        max-height: 340px;
+        overflow: auto;
+        padding: 4px;
+      }
+      .city-btn {
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: 0.4px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-align: center;
+      }
+      .city-btn:hover {
+        background: linear-gradient(140deg, #ffbe0b, #ff006e 60%, #8338ec);
+        color: #fff;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.5);
+      }
+      .city-btn.selected {
+        background: linear-gradient(140deg, #ffbe0b, #ff006e 55%, #8338ec);
+        border-color: transparent;
+        color: #fff;
+        box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.55);
+      }
 
-.method-select {
-  width:100%;
-  background:var(--glass);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:12px 14px;
-  font-size:.8rem;
-  font-weight:600;
-  color:var(--text);
-  letter-spacing:.4px;
-  cursor:pointer;
-  outline:none;
-  transition:.3s;
-}
-.method-select:focus {
-  box-shadow:var(--focus);
-  border-color:var(--accent);
-}
+      .method-select {
+        width: 100%;
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: 0.4px;
+        cursor: pointer;
+        outline: none;
+        transition: 0.3s;
+      }
+      .method-select:focus {
+        box-shadow: var(--focus);
+        border-color: var(--accent);
+      }
 
-.switch {
-  width:54px; height:28px;
-  background:var(--glass-solid);
-  border:1px solid var(--border);
-  border-radius:999px;
-  position:relative;
-  cursor:pointer;
-  transition:.4s;
-}
-.switch::after {
-  content:"";
-  position:absolute;
-  top:50%; left:6px;
-  width:18px; height:18px;
-  border-radius:50%;
-  background:linear-gradient(140deg,#fff,#e2e6ea);
-  transform:translateY(-50%);
-  box-shadow:0 4px 12px -4px rgba(0,0,0,.45);
-  transition:.4s;
-}
-.switch.active {
-  background:linear-gradient(120deg,#ffbe0b,#ff006e 60%,#8338ec);
-  border-color:transparent;
-}
-.switch.active::after { left: calc(100% - 24px); background:linear-gradient(140deg,#ffbe0b,#ff006e); }
+      .switch {
+        width: 54px;
+        height: 28px;
+        background: var(--glass-solid);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        position: relative;
+        cursor: pointer;
+        transition: 0.4s;
+      }
+      .switch::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 6px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: linear-gradient(140deg, #fff, #e2e6ea);
+        transform: translateY(-50%);
+        box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.45);
+        transition: 0.4s;
+      }
+      .switch.active {
+        background: linear-gradient(120deg, #ffbe0b, #ff006e 60%, #8338ec);
+        border-color: transparent;
+      }
+      .switch.active::after {
+        left: calc(100% - 24px);
+        background: linear-gradient(140deg, #ffbe0b, #ff006e);
+      }
 
-/* Time panel */
-.time-panel {
-  display:grid;
-  gap:14px;
-  text-align:center;
-  background:var(--glass-solid);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:24px 20px;
-}
-.current-time {
-  font-size: clamp(2.2rem,7vw,3.1rem);
-  font-weight:800;
-  letter-spacing:.5px;
-  background:linear-gradient(90deg,#ffbe0b,#ff006e 45%,#8338ec);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  filter:drop-shadow(0 3px 10px rgba(0,0,0,.35));
-  font-variant-numeric: tabular-nums;
-}
-.next-prayer-info {
-  font-size: clamp(.95rem,2.8vw,1.1rem);
-  font-weight:600;
-  letter-spacing:.4px;
-  color:var(--text-soft);
-}
-.countdown-timer {
-  font-size: clamp(1.4rem,6vw,2rem);
-  font-weight:700;
-  letter-spacing:.8px;
-  color:var(--danger);
-  font-variant-numeric:tabular-nums;
-}
-.date-box {
-  background:var(--glass-solid);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:20px 18px;
-  text-align:center;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.gregorian-date {
-  font-size: clamp(1rem,3vw,1.25rem);
-  font-weight:700;
-  letter-spacing:.5px;
-  background:linear-gradient(90deg,#ffbe0b,#ff006e,#8338ec);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-}
-.hijri-date {
-  font-size:.85rem;
-  font-weight:600;
-  letter-spacing:.4px;
-  color:var(--text-soft);
-}
+      /* Time panel */
+      .time-panel {
+        display: grid;
+        gap: 14px;
+        text-align: center;
+        background: var(--glass-solid);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 24px 20px;
+      }
+      .current-time {
+        font-size: clamp(2.2rem, 7vw, 3.1rem);
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        background: linear-gradient(90deg, #ffbe0b, #ff006e 45%, #8338ec);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.35));
+        font-variant-numeric: tabular-nums;
+      }
+      .next-prayer-info {
+        font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        color: var(--text-soft);
+      }
+      .countdown-timer {
+        font-size: clamp(1.4rem, 6vw, 2rem);
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        color: var(--danger);
+        font-variant-numeric: tabular-nums;
+      }
+      .date-box {
+        background: var(--glass-solid);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px 18px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .gregorian-date {
+        font-size: clamp(1rem, 3vw, 1.25rem);
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        background: linear-gradient(90deg, #ffbe0b, #ff006e, #8338ec);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .hijri-date {
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        color: var(--text-soft);
+      }
 
-/* Prayer cards grid */
-.prayer-grid {
-  display:grid;
-  gap:14px;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-}
-.prayer-card {
-  position:relative;
-  background:var(--glass);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:16px 14px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  cursor:pointer;
-  transition:.4s;
-  backdrop-filter:blur(10px) saturate(150%);
-}
-.prayer-card:hover {
-  transform:translateY(-4px);
-  box-shadow:0 10px 26px -6px rgba(0,0,0,.5);
-}
-.prayer-name {
-  font-size:.85rem;
-  font-weight:700;
-  letter-spacing:.5px;
-  color:var(--text-soft);
-  text-transform:uppercase;
-}
-.prayer-time {
-  font-size:1.15rem;
-  font-weight:700;
-  letter-spacing:.6px;
-  font-variant-numeric:tabular-nums;
-  color:var(--text);
-}
-.prayer-card.active {
-  background:linear-gradient(140deg,rgba(34,197,94,.55),rgba(34,197,94,.15)) border-box;
-  border:2px solid rgba(34,197,94,.85);
-  box-shadow:0 0 0 3px rgba(34,197,94,.35),0 8px 28px -6px rgba(0,0,0,.6);
-}
-.prayer-card.active .prayer-name,
-.prayer-card.active .prayer-time {
-  color:#fff;
-  text-shadow:0 2px 10px rgba(0,0,0,.55);
-}
-.prayer-card.upcoming {
-  background:linear-gradient(140deg,rgba(255,190,11,.55),rgba(255,0,110,.45),rgba(131,56,236,.55));
-  border:2px solid rgba(255,190,11,.65);
-  box-shadow:0 0 0 3px rgba(255,190,11,.35),0 8px 28px -6px rgba(0,0,0,.6);
-}
-.prayer-card.upcoming .prayer-name,
-.prayer-card.upcoming .prayer-time {
-  color:#fff;
-  text-shadow:0 2px 10px rgba(0,0,0,.55);
-}
+      /* Prayer cards grid */
+      .prayer-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+      .prayer-card {
+        position: relative;
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: 0.4s;
+        backdrop-filter: blur(10px) saturate(150%);
+      }
+      .prayer-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 26px -6px rgba(0, 0, 0, 0.5);
+      }
+      .prayer-name {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: var(--text-soft);
+        text-transform: uppercase;
+      }
+      .prayer-time {
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        font-variant-numeric: tabular-nums;
+        color: var(--text);
+      }
+      .prayer-card.active {
+        background: linear-gradient(
+            140deg,
+            rgba(34, 197, 94, 0.55),
+            rgba(34, 197, 94, 0.15)
+          )
+          border-box;
+        border: 2px solid rgba(34, 197, 94, 0.85);
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.35),
+          0 8px 28px -6px rgba(0, 0, 0, 0.6);
+      }
+      .prayer-card.active .prayer-name,
+      .prayer-card.active .prayer-time {
+        color: #fff;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+      }
+      .prayer-card.upcoming {
+        background: linear-gradient(
+          140deg,
+          rgba(255, 190, 11, 0.55),
+          rgba(255, 0, 110, 0.45),
+          rgba(131, 56, 236, 0.55)
+        );
+        border: 2px solid rgba(255, 190, 11, 0.65);
+        box-shadow: 0 0 0 3px rgba(255, 190, 11, 0.35),
+          0 8px 28px -6px rgba(0, 0, 0, 0.6);
+      }
+      .prayer-card.upcoming .prayer-name,
+      .prayer-card.upcoming .prayer-time {
+        color: #fff;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+      }
 
-/* Loading & error */
-.loading, .error-msg {
-  grid-column:1 / -1;
-  text-align:center;
-  padding:22px 18px;
-  font-size:.85rem;
-  font-weight:600;
-  letter-spacing:.4px;
-  border-radius:14px;
-  backdrop-filter:blur(10px);
-}
-.loading {
-  background:var(--glass-solid);
-  color:var(--text-soft);
-  border:1px solid var(--border);
-}
-.error-msg {
-  background:rgba(239,68,68,.12);
-  color:var(--danger);
-  border:1px solid rgba(239,68,68,.4);
-}
+      /* Loading & error */
+      .loading,
+      .error-msg {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 22px 18px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        border-radius: 14px;
+        backdrop-filter: blur(10px);
+      }
+      .loading {
+        background: var(--glass-solid);
+        color: var(--text-soft);
+        border: 1px solid var(--border);
+      }
+      .error-msg {
+        background: rgba(239, 68, 68, 0.12);
+        color: var(--danger);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+      }
 
-/* Theme toggle (global) */
-.theme-toggle {
-  position:fixed;
-  top:14px;
-  right:14px;
-  z-index:20;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  background:var(--glass);
-  backdrop-filter:blur(12px) saturate(160%);
-  border:1px solid var(--border);
-  padding:8px 14px;
-  border-radius:999px;
-  font-size:.65rem;
-  font-weight:600;
-  letter-spacing:.6px;
-  cursor:pointer;
-  color:var(--text);
-  box-shadow:0 6px 22px -6px rgba(0,0,0,.55);
-  transition:.35s;
-}
-.theme-toggle:hover { transform:translateY(-3px); }
-.theme-toggle input { display:none; }
+      /* Theme toggle (global) */
+      .theme-toggle {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--glass);
+        backdrop-filter: blur(12px) saturate(160%);
+        border: 1px solid var(--border);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        cursor: pointer;
+        color: var(--text);
+        box-shadow: 0 6px 22px -6px rgba(0, 0, 0, 0.55);
+        transition: 0.35s;
+      }
+      .theme-toggle:hover {
+        transform: translateY(-3px);
+      }
+      .theme-toggle input {
+        display: none;
+      }
 
-/* Scrollbar */
-::-webkit-scrollbar { width:12px; }
-::-webkit-scrollbar-track { background:rgba(255,255,255,.08); }
-::-webkit-scrollbar-thumb {
-  background:linear-gradient(160deg,#ffbe0b,#ff006e,#8338ec);
-  border-radius:10px;
-}
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(160deg, #ffbe0b, #ff006e, #8338ec);
+        border-radius: 10px;
+      }
 
-/* Responsive adjustments */
-@media (max-width:860px){
-  .prayer-grid { grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); }
-}
-@media (max-width:520px){
-  h1 { font-size: clamp(1.7rem,8vw,2.4rem); }
-  .wrapper { margin: 12px auto 70px; }
-  .panel { border-radius: 16px; }
-  .prayer-card { padding:14px 12px; }
-  .current-time { font-size: clamp(1.9rem,11vw,2.6rem); }
-  .glass-btn { 
-    width:48px; 
-    height:48px; 
-    font-size:1.2rem;
-  }
-  .glass-btn::after { 
-    bottom:-24px; 
-    font-size:0.6rem; 
-  }
-  #settingsPanel .section-title.collapsible {
-    padding:15px 18px;
-    font-size:0.78rem;
-    gap:12px;
-  }
-  #settingsPanel .section-title.collapsible span:first-child {
-    gap:10px;
-  }
-  #settingsPanel .section-title.collapsible span:first-child::before {
-    width:30px;
-    height:30px;
-    font-size:1rem;
-  }
-  #settingsPanel .section-content {
-    padding:18px 16px;
-  }
-  #settingsContent {
-    grid-template-columns:1fr;
-    gap:14px;
-  }
-}
-@media (prefers-reduced-motion:reduce){
-  * { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition:none !important; }
-}
+      /* Responsive adjustments */
+      @media (max-width: 860px) {
+        .prayer-grid {
+          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        }
+      }
+      @media (max-width: 520px) {
+        h1 {
+          font-size: clamp(1.7rem, 8vw, 2.4rem);
+        }
+        .wrapper {
+          margin: 12px auto 70px;
+        }
+        .panel {
+          border-radius: 16px;
+        }
+        .prayer-card {
+          padding: 14px 12px;
+        }
+        .current-time {
+          font-size: clamp(1.9rem, 11vw, 2.6rem);
+        }
+        .glass-btn {
+          width: 48px;
+          height: 48px;
+          font-size: 1.2rem;
+        }
+        .glass-btn::after {
+          bottom: -24px;
+          font-size: 0.6rem;
+        }
+        #settingsPanel .section-title.collapsible {
+          padding: 15px 18px;
+          font-size: 0.78rem;
+          gap: 12px;
+        }
+        #settingsPanel .section-title.collapsible span:first-child {
+          gap: 10px;
+        }
+        #settingsPanel .section-title.collapsible span:first-child::before {
+          width: 30px;
+          height: 30px;
+          font-size: 1rem;
+        }
+        #settingsPanel .section-content {
+          padding: 18px 16px;
+        }
+        #settingsContent {
+          gap: 16px;
+        }
+        .settings-field {
+          gap: 8px;
+        }
+        .settings-subsection {
+          gap: 12px;
+        }
+        #settingsContent .section-title.collapsible.nested {
+          font-size: 0.72rem;
+          padding: 10px 14px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition: none !important;
+        }
+      }
 
-/* Focus visible */
-:focus-visible { outline:none; box-shadow:var(--focus); }
-</style>
-</head>
-<body>
-<button class="theme-toggle" title="Tema değiş" id="themeToggle" type="button">
-  <span id="themeLabel">Karanlık</span>
-  <div class="switch" id="themeSwitch" aria-hidden="true"></div>
-</button>
+      /* Focus visible */
+      :focus-visible {
+        outline: none;
+        box-shadow: var(--focus);
+      }
+    </style>
+  </head>
+  <body>
+    <button
+      class="theme-toggle"
+      title="Tema değiş"
+      id="themeToggle"
+      type="button"
+    >
+      <span id="themeLabel">Karanlık</span>
+      <div class="switch" id="themeSwitch" aria-hidden="true"></div>
+    </button>
 
-<div class="particles" aria-hidden="true">
-  <span style="left:8%; animation-delay:0s;"></span>
-  <span style="left:22%; animation-delay:5s;"></span>
-  <span style="left:38%; animation-delay:2s;"></span>
-  <span style="left:56%; animation-delay:7s;"></span>
-  <span style="left:72%; animation-delay:3s;"></span>
-  <span style="left:88%; animation-delay:6s;"></span>
-</div>
-
-<div class="wrapper">
-  <div class="panel header">
-    <div class="brand-visual">
-      <img src="bismillah.png" alt="Bismillah - Rahmân ve Rahîm olan Allah'ın adıyla" decoding="async" loading="eager">
+    <div class="particles" aria-hidden="true">
+      <span style="left: 8%; animation-delay: 0s"></span>
+      <span style="left: 22%; animation-delay: 5s"></span>
+      <span style="left: 38%; animation-delay: 2s"></span>
+      <span style="left: 56%; animation-delay: 7s"></span>
+      <span style="left: 72%; animation-delay: 3s"></span>
+      <span style="left: 88%; animation-delay: 6s"></span>
     </div>
-    <h1>Namaz Vakti <span class="status-dot loading" id="statusIndicator" aria-label="Yükleme durumu" title="Veri yükleniyor"></span></h1>
-    <div class="location-line" id="locationDisplay">📍 Berlin, Almanya</div>
-  </div>
 
-  <div class="panel">
-    <div class="controls-bar" role="tablist" aria-label="Ana menü seçenekleri">
-      <button class="glass-btn" id="gpsBtn" role="tab" aria-selected="false" title="GPS ile konum tespit et" data-label="GPS">📍</button>
-      <button class="glass-btn active" id="cityBtn" role="tab" aria-selected="true" title="Şehir seçimi yap" data-label="Şehir">🌍</button>
-      <button class="glass-btn" id="settingsBtn" role="tab" aria-selected="false" title="Uygulama ayarları" data-label="Ayarlar">⚙️</button>
-      <button class="glass-btn" id="refreshBtn" type="button" title="Vakitleri yenile" data-label="Yenile">🔄</button>
-    </div>
-
-    <!-- City Selector -->
-    <div class="section" id="citySelector" hidden>
-      <div class="section-inner">
-        <button class="section-title collapsible collapsed" type="button" data-target="cityContent" aria-expanded="false">
-          <span>Şehir Seçimi</span>
-          <span class="section-arrow" aria-hidden="true">⌄</span>
-        </button>
-        <div class="section-content collapsed" id="cityContent" hidden>
-          <input type="search" class="search-box" id="searchBox" placeholder="Şehir ara...">
-          <div class="city-grid" id="cityGrid"></div>
+    <div class="wrapper">
+      <div class="panel header">
+        <div class="brand-visual">
+          <img
+            src="bismillah.png"
+            alt="Bismillah - Rahmân ve Rahîm olan Allah'ın adıyla"
+            decoding="async"
+            loading="eager"
+          />
         </div>
+        <h1>
+          Namaz Vakti
+          <span
+            class="status-dot loading"
+            id="statusIndicator"
+            aria-label="Yükleme durumu"
+            title="Veri yükleniyor"
+          ></span>
+        </h1>
+        <div class="location-line" id="locationDisplay">📍 Berlin, Almanya</div>
       </div>
-    </div>
+
+      <div class="panel">
+        <div
+          class="controls-bar"
+          role="tablist"
+          aria-label="Ana menü seçenekleri"
+        >
+          <button
+            class="glass-btn"
+            id="gpsBtn"
+            role="tab"
+            aria-selected="false"
+            title="GPS ile konum tespit et"
+            data-label="GPS"
+          >
+            📍
+          </button>
+          <button
+            class="glass-btn"
+            id="cityBtn"
+            role="tab"
+            aria-selected="false"
+            title="Şehir seçimi yap"
+            data-label="Şehir"
+          >
+            🌍
+          </button>
+          <button
+            class="glass-btn"
+            id="settingsBtn"
+            role="tab"
+            aria-selected="false"
+            title="Uygulama ayarları"
+            data-label="Ayarlar"
+          >
+            ⚙️
+          </button>
+          <button
+            class="glass-btn"
+            id="refreshBtn"
+            type="button"
+            title="Vakitleri yenile"
+            data-label="Yenile"
+          >
+            🔄
+          </button>
+        </div>
 
     <!-- Settings Panel -->
     <div class="section" id="settingsPanel" hidden>
-      <div class="section-inner">
-        <button class="section-title collapsible collapsed" type="button" data-target="settingsContent" aria-expanded="false">
-          <span>Ayarlar</span>
-          <span class="section-arrow" aria-hidden="true">⌄</span>
-        </button>
-        <div class="section-content collapsed" id="settingsContent" hidden>
-          <select class="method-select" id="methodSelect">
-          <option value="13">Ummah - 13</option>
-          <option value="0">Shia - 0</option>
-          <option value="1">Hanafi - 1</option>
-          <option value="2">Maliki - 2</option>
-          <option value="3">Shafi - 3</option>
-          <option value="4">Hanbali - 4</option>
-          <option value="5">Jafari - 5</option>
-          <option value="7">Al Ghad - 7</option>
-          <option value="8">University of Islamic Sciences - 8</option>
-          <option value="9">Diyanet - 9</option>
-          <option value="10">Kuwait - 10</option>
-          <option value="11">Qatar - 11</option>
-          <option value="12">Majlis Ugama - 12</option>
-          <option value="14">UOIF - 14</option>
-          <option value="15">JAKIM - 15</option>
-        </select>
+          <div class="section-inner">
+            <div class="section-content collapsed" id="settingsContent" hidden>
+              <div class="settings-subsection">
+                <button
+                  class="section-title collapsible nested collapsed"
+                  type="button"
+                  data-target="methodSettings"
+                  aria-expanded="false"
+                >
+                  <span>Hesaplama yöntemi</span>
+                  <span class="section-arrow" aria-hidden="true">⬇️</span>
+                </button>
+                <div
+                  class="section-content nested collapsed"
+                  id="methodSettings"
+                  hidden>
+                  <div class="settings-field">
+                    <label class="settings-label" for="methodSelect"
+                      >Hesaplama yöntemi</label
+                    >
+                    <select class="method-select" id="methodSelect">
+                      <option value="13">Ummah - 13</option>
+                      <option value="0">Shia - 0</option>
+                      <option value="1">Hanafi - 1</option>
+                      <option value="2">Maliki - 2</option>
+                      <option value="3">Shafi - 3</option>
+                      <option value="4">Hanbali - 4</option>
+                      <option value="5">Jafari - 5</option>
+                      <option value="7">Al Ghad - 7</option>
+                      <option value="8">
+                        University of Islamic Sciences - 8
+                      </option>
+                      <option value="9">Diyanet - 9</option>
+                      <option value="10">Kuwait - 10</option>
+                      <option value="11">Qatar - 11</option>
+                      <option value="12">Majlis Ugama - 12</option>
+                      <option value="14">UOIF - 14</option>
+                      <option value="15">JAKIM - 15</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-subsection">
+                <button
+                  class="section-title collapsible nested collapsed"
+                  type="button"
+                  data-target="citySettings"
+                  aria-expanded="false"
+                >
+                  <span>Şehir ve ülke</span>
+                  <span class="section-arrow" aria-hidden="true">⬇️</span>
+                </button>
+                <div
+                  class="section-content nested collapsed"
+                  id="citySettings"
+                  hidden
+                >
+                  <div class="settings-field">
+                    <label class="settings-label" for="searchBox"
+                      >Şehir seçimi</label
+                    >
+                    <input
+                      type="search"
+                      class="search-box"
+                      id="searchBox"
+                      placeholder="Şehir ara..."
+                    />
+                    <div class="city-grid" id="cityGrid"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-actions">
+                <button
+                  type="button"
+                  class="apply-btn"
+                  id="settingsApplyBtn"
+                >
+                  Tamam
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date / Time / Countdown -->
+        <div class="section">
+          <div class="date-box">
+            <div class="gregorian-date" id="gregorianDate">Yükleniyor...</div>
+            <div class="hijri-date" id="hijriDate">--</div>
+          </div>
+          <div class="time-panel">
+            <div class="current-time" id="currentTime">--:--:--</div>
+            <div class="next-prayer-info" id="nextPrayerInfo">--</div>
+            <div class="countdown-timer" id="countdownTimer">--:--:--</div>
+          </div>
+        </div>
+
+        <!-- Prayer times -->
+        <div class="section">
+          <div class="section-inner">
+            <div class="section-title">Vakitler</div>
+            <div class="prayer-grid" id="prayerTimesGrid">
+              <div class="loading">Namaz vakitleri yükleniyor...</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Date / Time / Countdown -->
-    <div class="section">
-      <div class="date-box">
-        <div class="gregorian-date" id="gregorianDate">Yükleniyor...</div>
-        <div class="hijri-date" id="hijriDate">--</div>
-      </div>
-      <div class="time-panel">
-        <div class="current-time" id="currentTime">--:--:--</div>
-        <div class="next-prayer-info" id="nextPrayerInfo">--</div>
-        <div class="countdown-timer" id="countdownTimer">--:--:--</div>
-      </div>
-    </div>
+    <script>
+      /* Preserve original logic, only adapted selectors & toggles */
+      let prayerData = null;
+      let countdownInterval = null;
+      let currentCity = "Berlin";
+      let currentCountry = "Almanya";
+      let currentCountryCode = "DE";
+      let currentLat = null;
+      let currentLon = null;
+      let useGPS = false;
+      let prayerMethod = "13";
+      let cities = [];
+      let pendingCity = currentCity;
+      let pendingCountry = currentCountry;
+      let pendingCountryCode = currentCountryCode;
+      let pendingMethod = prayerMethod;
+      let themeToggleButton = null;
+      let themeSwitch = null;
+      let themeLabel = null;
+      let gpsResolvedAddress = null;
+      const TIMEZONE_FALLBACK =
+        Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+      let currentTimezone = TIMEZONE_FALLBACK;
+      let prayerDateInfo = null;
+      const PRAYER_SEQUENCE = [
+        { key: "Fajr", label: "İmsak" },
+        { key: "Sunrise", label: "Güneş" },
+        { key: "Dhuhr", label: "Öğle" },
+        { key: "Asr", label: "İkindi" },
+        { key: "Maghrib", label: "Akşam" },
+        { key: "Isha", label: "Yatsı" },
+      ];
+      const COUNTRY_API_MAP = {
+        Almanya: "Germany",
+        Türkiye: "Turkey",
+        İngiltere: "United Kingdom",
+        Fransa: "France",
+        İtalya: "Italy",
+        İspanya: "Spain",
+        Hollanda: "Netherlands",
+        Avusturya: "Austria",
+        İsviçre: "Switzerland",
+        Belçika: "Belgium",
+        Azerbaycan: "Azerbaijan",
+        "Suudi Arabistan": "Saudi Arabia",
+        Katar: "Qatar",
+        Kuveyt: "Kuwait",
+        "Birleşik Arap Emirlikleri": "United Arab Emirates",
+        ABD: "United States",
+      };
+      const COUNTRY_API_NAME_MAP = {
+        DE: "Germany",
+        TR: "Turkey",
+        GB: "United Kingdom",
+        FR: "France",
+        IT: "Italy",
+        ES: "Spain",
+        NL: "Netherlands",
+        AT: "Austria",
+        CH: "Switzerland",
+        BE: "Belgium",
+        AZ: "Azerbaijan",
+        SA: "Saudi Arabia",
+        QA: "Qatar",
+        KW: "Kuwait",
+        AE: "United Arab Emirates",
+        US: "United States",
+        CA: "Canada",
+      };
+      const COUNTRY_DISPLAY_MAP = {
+        DE: "Almanya",
+        TR: "Türkiye",
+        GB: "Birleşik Krallık",
+        FR: "Fransa",
+        IT: "İtalya",
+        ES: "İspanya",
+        NL: "Hollanda",
+        AT: "Avusturya",
+        CH: "İsviçre",
+        BE: "Belçika",
+        AZ: "Azerbaycan",
+        SA: "Suudi Arabistan",
+        QA: "Katar",
+        KW: "Kuveyt",
+        AE: "Birleşik Arap Emirlikleri",
+        US: "Amerika Birleşik Devletleri",
+        CA: "Kanada",
+      };
 
-    <!-- Prayer times -->
-    <div class="section">
-      <div class="section-inner">
-        <div class="section-title">Vakitler</div>
-        <div class="prayer-grid" id="prayerTimesGrid">
-          <div class="loading">Namaz vakitleri yükleniyor...</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+      const statusIndicator = document.getElementById("statusIndicator");
+      function setStatus(state) {
+        statusIndicator.classList.remove("success", "error", "loading");
+        statusIndicator.classList.add(state);
+      }
 
-<script>
-/* Preserve original logic, only adapted selectors & toggles */
-let prayerData = null;
-let countdownInterval = null;
-let currentCity = "Berlin";
-let currentCountry = "Germany";
-let currentLat = null;
-let currentLon = null;
-let useGPS = false;
-let prayerMethod = "13";
-let cities = [];
-let themeToggleButton = null;
-let themeSwitch = null;
-let themeLabel = null;
+      function cleanTimeString(raw) {
+        return (raw || "")
+          .toString()
+          .replace(/\s*\(.+\)/, "")
+          .trim();
+      }
 
-const statusIndicator = document.getElementById('statusIndicator');
-function setStatus(state){
-  statusIndicator.classList.remove('success','error','loading');
-  statusIndicator.classList.add(state);
-}
+      function timeStringToSeconds(str) {
+        const match = /^\s*(\d{1,2}):(\d{2})\s*$/.exec(str || "");
+        if (!match) return null;
+        const hours = Number(match[1]);
+        const minutes = Number(match[2]);
+        if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+        return hours * 3600 + minutes * 60;
+      }
 
-function qs(id){ return document.getElementById(id); }
+      function getActiveTimezone() {
+        return currentTimezone || TIMEZONE_FALLBACK;
+      }
 
-const cityBtn = qs('cityBtn');
-const gpsBtn = qs('gpsBtn');
-const settingsBtn = qs('settingsBtn');
-const refreshBtn = qs('refreshBtn');
+      function resolveCountryForApi(countryName, countryCode) {
+        if (countryCode) {
+          const upper = countryCode.toUpperCase();
+          if (COUNTRY_API_NAME_MAP[upper]) {
+            return COUNTRY_API_NAME_MAP[upper];
+          }
+        }
+        if (countryName && COUNTRY_API_MAP[countryName]) {
+          return COUNTRY_API_MAP[countryName];
+        }
+        return countryName;
+      }
 
-const citySelector = qs('citySelector');
-const settingsPanel = qs('settingsPanel');
-const searchBox = qs('searchBox');
-const cityGrid = qs('cityGrid');
-const methodSelect = qs('methodSelect');
+      function updateLocationDisplay() {
+        if (!locationDisplay) {
+          return;
+        }
+        const tzSuffix = currentTimezone ? ` (${currentTimezone})` : "";
+        if (useGPS) {
+          if (
+            gpsResolvedAddress &&
+            gpsResolvedAddress.city &&
+            gpsResolvedAddress.country
+          ) {
+            locationDisplay.textContent = `📍 ${gpsResolvedAddress.city}, ${gpsResolvedAddress.country}${tzSuffix}`;
+            return;
+          }
+          if (currentLat !== null && currentLon !== null) {
+            locationDisplay.textContent = `📍 GPS: ${currentLat.toFixed(
+              4
+            )}, ${currentLon.toFixed(4)}${tzSuffix}`;
+            return;
+          }
+          locationDisplay.textContent = `📍 GPS kullanılıyor${tzSuffix}`;
+          return;
+        }
+        locationDisplay.textContent = `📍 ${currentCity}, ${currentCountry}${tzSuffix}`;
+      }
 
-const collapsibleMap = new Map();
+      function getNowPartsInTimezone(timeZone) {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+          timeZone,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        });
+        const parts = formatter.format(new Date()).split(":").map(Number);
+        const [hour = 0, minute = 0, second = 0] = parts;
+        const totalSeconds = hour * 3600 + minute * 60 + second;
+        return { hour, minute, second, totalSeconds };
+      }
 
-function setCollapsibleState(trigger, content, expanded){
-  trigger.classList.toggle('collapsed', !expanded);
-  trigger.setAttribute('aria-expanded', expanded.toString());
-  content.classList.toggle('collapsed', !expanded);
-  content.hidden = !expanded;
-}
+      function buildPrayerSchedule() {
+        if (!prayerData) return [];
+        return PRAYER_SEQUENCE.map((item) => {
+          const raw = cleanTimeString(prayerData[item.key]);
+          const seconds = timeStringToSeconds(raw);
+          return {
+            key: item.key,
+            label: item.label,
+            rawTime: raw,
+            seconds,
+          };
+        }).filter((entry) => entry.seconds !== null);
+      }
 
-const collapsibleTriggers = document.querySelectorAll('.section-title.collapsible');
-collapsibleTriggers.forEach(trigger => {
-  const targetId = trigger.dataset.target;
-  const content = document.getElementById(targetId);
-  if(!targetId || !content) return;
-  collapsibleMap.set(targetId, { trigger, content });
-  trigger.setAttribute('aria-controls', targetId);
-  const initialExpanded = trigger.getAttribute('aria-expanded') === 'true';
-  setCollapsibleState(trigger, content, initialExpanded);
-  trigger.addEventListener('click', () => {
-    const expanded = trigger.getAttribute('aria-expanded') === 'true';
-    setCollapsibleState(trigger, content, !expanded);
-  });
-});
+      async function reverseGeocode(lat, lon) {
+        const params = new URLSearchParams({
+          format: "jsonv2",
+          lat: String(lat),
+          lon: String(lon),
+          "accept-language": "tr",
+        });
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?${params.toString()}`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`Reverse geocoding failed (${response.status})`);
+        }
+        const data = await response.json();
+        const address = data.address || {};
+        const cityCandidate =
+          address.city ||
+          address.town ||
+          address.village ||
+          address.municipality ||
+          address.state_district ||
+          address.county ||
+          "";
+        const fallbackName = (data.name || "").split(",")[0] || ""; // use main label if city missing
+        const city = (cityCandidate || fallbackName || "").trim();
+        const countryCode = address.country_code
+          ? address.country_code.toUpperCase()
+          : null;
+        const mappedCountry =
+          countryCode && COUNTRY_DISPLAY_MAP[countryCode]
+            ? COUNTRY_DISPLAY_MAP[countryCode]
+            : "";
+        const country = (mappedCountry || address.country || "").trim();
+        return {
+          city,
+          country,
+          countryCode,
+          raw: data,
+        };
+      }
 
-cityBtn.addEventListener('click', () => {
-  cityBtn.classList.toggle('active');
-  const open = cityBtn.classList.contains('active');
-  citySelector.hidden = !open;
-  cityBtn.setAttribute('aria-selected', open ? 'true' : 'false');
-  if(open){
-    const cityCollapsible = collapsibleMap.get('cityContent');
-    if(cityCollapsible){
-      setCollapsibleState(cityCollapsible.trigger, cityCollapsible.content, false);
-    }
-    settingsPanel.hidden = true;
-    settingsBtn.classList.remove('active');
-    settingsBtn.setAttribute('aria-selected','false');
-    const settingsCollapsible = collapsibleMap.get('settingsContent');
-    if(settingsCollapsible){
-      setCollapsibleState(settingsCollapsible.trigger, settingsCollapsible.content, false);
-    }
-  } else {
-    const cityCollapsible = collapsibleMap.get('cityContent');
-    if(cityCollapsible){
-      setCollapsibleState(cityCollapsible.trigger, cityCollapsible.content, false);
-    }
-  }
-});
-settingsBtn.addEventListener('click', () => {
-  settingsBtn.classList.toggle('active');
-  const open = settingsBtn.classList.contains('active');
-  settingsPanel.hidden = !open;
-  settingsBtn.setAttribute('aria-selected', open ? 'true' : 'false');
-  if(open){
-    citySelector.hidden = true;
-    cityBtn.classList.remove('active');
-    cityBtn.setAttribute('aria-selected','false');
-    const cityCollapsible = collapsibleMap.get('cityContent');
-    if(cityCollapsible){
-      setCollapsibleState(cityCollapsible.trigger, cityCollapsible.content, false);
-    }
-    const settingsCollapsible = collapsibleMap.get('settingsContent');
-    if(settingsCollapsible){
-      setCollapsibleState(settingsCollapsible.trigger, settingsCollapsible.content, false);
-    }
-  } else {
-    const settingsCollapsible = collapsibleMap.get('settingsContent');
-    if(settingsCollapsible){
-      setCollapsibleState(settingsCollapsible.trigger, settingsCollapsible.content, false);
-    }
-  }
-});
+      function qs(id) {
+        return document.getElementById(id);
+      }
 
-function setThemeMode(mode){
-  const theme = mode === 'light' ? 'light' : 'dark';
-  const isDark = theme === 'dark';
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('namaz-theme', theme);
-  if(themeSwitch){
-    themeSwitch.classList.toggle('active', isDark);
-  }
-  if(themeLabel){
-    themeLabel.textContent = isDark ? 'Karanlık' : 'Aydınlık';
-  }
-  if(themeToggleButton){
-    themeToggleButton.setAttribute('aria-pressed', isDark.toString());
-  }
-}
+      const cityBtn = qs("cityBtn");
+      const gpsBtn = qs("gpsBtn");
+      const settingsBtn = qs("settingsBtn");
+      const refreshBtn = qs("refreshBtn");
 
-function toggleThemeMode(){
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  setThemeMode(isDark ? 'light' : 'dark');
-}
-/* Dummy loadCities (short sample) */
-async function loadCitiesFromAPI(){
-  const citiesData = [
-    { name:"Berlin", country:"Germany", display:"Berlin" },
-    { name:"Hamburg", country:"Germany", display:"Hamburg" },
-    { name:"München", country:"Germany", display:"München" },
-    { name:"Istanbul", country:"Turkey", display:"İstanbul" },
-    { name:"Ankara", country:"Turkey", display:"Ankara" },
-    { name:"Izmir", country:"Turkey", display:"İzmir" }
-  ];
-  cities = citiesData;
-  renderCityList(citiesData);
-}
+      const settingsPanel = qs("settingsPanel");
+      const searchBox = qs("searchBox");
+      const cityGrid = qs("cityGrid");
+      const methodSelect = qs("methodSelect");
+      const settingsApplyBtn = qs("settingsApplyBtn");
+      const settingsContentEl = qs("settingsContent");
+      const locationDisplay = qs("locationDisplay");
+      const nestedToggles = document.querySelectorAll(
+        "#settingsContent .section-title.collapsible.nested"
+      );
 
-function renderCityList(list){
-  cityGrid.innerHTML = '';
-  list.forEach(c => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'city-btn';
-    btn.textContent = c.display;
-    btn.addEventListener('click', () => {
-      currentCity = c.display;
-      currentCountry = c.country;
-      document.getElementById('locationDisplay').textContent = '📍 ' + currentCity + ', ' + currentCountry;
-      cityGrid.querySelectorAll('.city-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      // trigger data refresh
-      fetchPrayerTimes();
-    });
-    cityGrid.appendChild(btn);
-  });
-}
+      function setNestedExpanded(button, expanded) {
+        const targetId = button.getAttribute("data-target");
+        const target = targetId ? document.getElementById(targetId) : null;
+        button.classList.toggle("collapsed", !expanded);
+        button.setAttribute("aria-expanded", expanded.toString());
+        if (target) {
+          target.classList.toggle("collapsed", !expanded);
+          target.hidden = !expanded;
+        }
+      }
 
-searchBox.addEventListener('input', (e) => {
-  const q = e.target.value.trim().toLowerCase();
-  const filtered = cities.filter(c => c.display.toLowerCase().includes(q));
-  renderCityList(filtered);
-});
+      function ensureNestedExpanded(targetId) {
+        const button = document.querySelector(
+          `#settingsContent .section-title.collapsible.nested[data-target="${targetId}"]`
+        );
+        if (button) {
+          const expanded = button.getAttribute("aria-expanded") === "true";
+          if (!expanded) {
+            setNestedExpanded(button, true);
+          }
+        }
+      }
 
-async function fetchPrayerTimes(){
-  setStatus('loading');
-  try {
-    // TODO: Replace with actual API call
-    // For now, simulate API response
-    await new Promise(resolve => setTimeout(resolve, 900));
-    
-    prayerData = {
-      Fajr:"05:42",
-      Sunrise:"07:02", 
-      Dhuhr:"12:31",
-      Asr:"15:45",
-      Maghrib:"18:12",
-      Isha:"19:30"
-    };
-    renderPrayerTimes();
-    setStatus('success');
-  } catch (error) {
-    console.error('Namaz vakitleri yüklenemedi:', error);
-    setStatus('error');
-    document.getElementById('prayerTimesGrid').innerHTML = 
-      '<div class="error-msg">Vakitler yüklenemedi. Lütfen tekrar deneyin.</div>';
-  }
-}
+      nestedToggles.forEach((button) => {
+        button.addEventListener("click", () => {
+          const expanded = button.getAttribute("aria-expanded") === "true";
+          setNestedExpanded(button, !expanded);
+        });
+      });
 
-function renderPrayerTimes(){
-  const grid = document.getElementById('prayerTimesGrid');
-  grid.innerHTML = '';
-  const order = [
-    ['Fajr','İmsak'],
-    ['Sunrise','Güneş'],
-    ['Dhuhr','Öğle'],
-    ['Asr','İkindi'],
-    ['Maghrib','Akşam'],
-    ['Isha','Yatsı']
-  ];
-  order.forEach(([key,label]) => {
-    const time = prayerData[key] || '--:--';
-    const card = document.createElement('div');
-    card.className = 'prayer-card';
-    card.innerHTML = '<div class="prayer-name">'+label+'</div><div class="prayer-time">'+time+'</div>';
-    grid.appendChild(card);
-  });
-  highlightCurrentAndUpcoming();
-}
+      function hasSettingsChanges() {
+        const methodChanged = pendingMethod !== prayerMethod;
+        const cityChanged =
+          pendingCity !== currentCity ||
+          pendingCountry !== currentCountry ||
+          (pendingCountryCode || null) !== (currentCountryCode || null);
+        return methodChanged || cityChanged;
+      }
 
-function highlightCurrentAndUpcoming(){
-  const cards = [...document.querySelectorAll('.prayer-card')];
-  if(!cards.length) return;
-  // Simple highlight imitation
-  if(cards[0]) cards[0].classList.add('active');
-  if(cards[1]) cards[1].classList.add('upcoming');
-}
+      function updateApplyButtonState() {
+        if (!settingsApplyBtn) return;
+        const hasChanges = hasSettingsChanges();
+        settingsApplyBtn.classList.toggle("no-changes", !hasChanges);
+        if (hasChanges) {
+          settingsApplyBtn.removeAttribute("aria-disabled");
+        } else {
+          settingsApplyBtn.setAttribute("aria-disabled", "true");
+        }
+      }
 
-function updateClock(){
-  const now = new Date();
-  document.getElementById('currentTime').textContent = now.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  updateCountdown();
-}
+      function renderCityList(list) {
+        cityGrid.innerHTML = "";
+        if (!list.length) {
+          const empty = document.createElement("div");
+          empty.className = "city-empty";
+          empty.textContent = "Şehir bulunamadı.";
+          cityGrid.appendChild(empty);
+          return;
+        }
+        list.forEach((c) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "city-btn";
+          btn.textContent = c.display;
+          const isSelected =
+            c.display === pendingCity &&
+            c.country === pendingCountry &&
+            (c.countryCode || null) === (pendingCountryCode || null);
+          if (isSelected) {
+            btn.classList.add("selected");
+          }
+          btn.addEventListener("click", () => {
+            pendingCity = c.display;
+            pendingCountry = c.country;
+            pendingCountryCode = c.countryCode || null;
+            cityGrid
+              .querySelectorAll(".city-btn")
+              .forEach((b) => b.classList.remove("selected"));
+            btn.classList.add("selected");
+            updateApplyButtonState();
+          });
+          cityGrid.appendChild(btn);
+        });
+      }
 
-function updateCountdown() {
-  if (!prayerData) return;
-  
-  const now = new Date();
-  const currentTime = now.getHours() * 60 + now.getMinutes();
-  
-  // Convert prayer times to minutes
-  const prayers = [
-    { name: 'İmsak', key: 'Fajr', time: prayerData.Fajr },
-    { name: 'Güneş', key: 'Sunrise', time: prayerData.Sunrise },
-    { name: 'Öğle', key: 'Dhuhr', time: prayerData.Dhuhr },
-    { name: 'İkindi', key: 'Asr', time: prayerData.Asr },
-    { name: 'Akşam', key: 'Maghrib', time: prayerData.Maghrib },
-    { name: 'Yatsı', key: 'Isha', time: prayerData.Isha }
-  ].map(p => {
-    const [hours, minutes] = p.time.split(':').map(Number);
-    return { ...p, minutes: hours * 60 + minutes };
-  });
-  
-  // Find next prayer
-  let nextPrayer = prayers.find(p => p.minutes > currentTime);
-  if (!nextPrayer) {
-    // Next prayer is tomorrow's first prayer
-    nextPrayer = prayers[0];
-    nextPrayer.minutes += 24 * 60; // Add 24 hours
-  }
-  
-  const remainingMinutes = nextPrayer.minutes - currentTime;
-  const hours = Math.floor(remainingMinutes / 60);
-  const mins = remainingMinutes % 60;
-  const secs = 59 - now.getSeconds();
-  
-  document.getElementById('nextPrayerInfo').textContent = `Sonraki: ${nextPrayer.name}`;
-  document.getElementById('countdownTimer').textContent = 
-    `${hours.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-}
+      function refreshCityList() {
+        if (!cityGrid) return;
+        if (!cities.length) {
+          cityGrid.innerHTML =
+            '<div class="loading">Şehirler yükleniyor...</div>';
+          return;
+        }
+        const query = searchBox ? searchBox.value.trim().toLowerCase() : "";
+        const filtered = query
+          ? cities.filter((c) => c.display.toLowerCase().includes(query))
+          : cities;
+        renderCityList(filtered);
+      }
 
-setInterval(updateClock, 1000);
-updateClock();
+      function resetPendingSelections() {
+        pendingCity = currentCity;
+        pendingCountry = currentCountry;
+        pendingCountryCode = currentCountryCode;
+        pendingMethod = prayerMethod;
+        if (methodSelect) {
+          methodSelect.value = pendingMethod;
+        }
+        if (searchBox) {
+          searchBox.value = "";
+        }
+        refreshCityList();
+        updateApplyButtonState();
+      }
 
-function updateDate(){
-  const now = new Date();
-  document.getElementById('gregorianDate').textContent = now.toLocaleDateString('tr-TR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  
-  // Simple Hijri calculation (approximation)
-  const hijriDate = calculateHijriDate(now);
-  document.getElementById('hijriDate').textContent = hijriDate;
-}
+      function setSettingsExpanded(expanded) {
+        if (!settingsContentEl) return;
+        settingsContentEl.classList.toggle("collapsed", !expanded);
+        settingsContentEl.hidden = !expanded;
+        if (!expanded) {
+          nestedToggles.forEach((button) => setNestedExpanded(button, false));
+        }
+      }
 
-function calculateHijriDate(date) {
-  // Simple Hijri conversion (approximation)
-  // For production, use a proper Islamic calendar library
-  const islamicEpoch = new Date('622-07-16'); // Approximation of Hijri epoch
-  const daysDiff = Math.floor((date - islamicEpoch) / (1000 * 60 * 60 * 24));
-  const islamicYear = Math.floor(daysDiff / 354.367) + 1; // 354.367 days per Islamic year
-  
-  const islamicMonths = [
-    'Muharrem', 'Safer', 'Rebiülevvel', 'Rebiülahir', 'Cemaziyelevvel', 
-    'Cemaziyelahir', 'Receb', 'Şaban', 'Ramazan', 'Şevval', 'Zilkade', 'Zilhicce'
-  ];
-  
-  const remainingDays = daysDiff % 354.367;
-  const islamicMonth = Math.floor(remainingDays / 29.5);
-  const islamicDay = Math.floor(remainingDays % 29.5) + 1;
-  
-  return `${islamicDay} ${islamicMonths[islamicMonth] || islamicMonths[0]} ${islamicYear}`;
-}
-updateDate();
+      function showSettingsPanel(show) {
+        if (settingsPanel) {
+          settingsPanel.hidden = !show;
+        }
+      }
 
-refreshBtn.addEventListener('click', () => fetchPrayerTimes());
-gpsBtn.addEventListener('click', () => {
-  if (!navigator.geolocation) {
-    alert('Bu tarayıcı GPS desteklemiyor.');
-    return;
-  }
-  
-  setStatus('loading');
-  gpsBtn.textContent = '📡 Konum alınıyor...';
-  gpsBtn.disabled = true;
-  
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      currentLat = position.coords.latitude;
-      currentLon = position.coords.longitude;
-      useGPS = true;
-      
-      // Reverse geocoding would go here to get city name
-      document.getElementById('locationDisplay').textContent = 
-        `📍 GPS: ${currentLat.toFixed(4)}, ${currentLon.toFixed(4)}`;
-      
-      fetchPrayerTimes();
-      gpsBtn.textContent = '📍 GPS';
-      gpsBtn.disabled = false;
-    },
-    (error) => {
-      console.error('GPS hatası:', error);
-      setStatus('error');
-      alert('Konum alınamadı. Lütfen konum erişimine izin verin.');
-      gpsBtn.textContent = '📍';
-      gpsBtn.disabled = false;
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
-  );
-});
+      function openSettingsPanel({ focusCity = false } = {}) {
+        showSettingsPanel(true);
+        setSettingsExpanded(true);
+        if (settingsBtn) {
+          settingsBtn.classList.add("active");
+          settingsBtn.setAttribute("aria-selected", "true");
+        }
+        if (focusCity) {
+          if (cityBtn) {
+            cityBtn.classList.add("active");
+            cityBtn.setAttribute("aria-selected", "true");
+          }
+          ensureNestedExpanded("citySettings");
+          requestAnimationFrame(() => {
+            if (searchBox) {
+              searchBox.focus();
+            }
+          });
+        } else if (cityBtn) {
+          cityBtn.classList.remove("active");
+          cityBtn.setAttribute("aria-selected", "false");
+        }
+        refreshCityList();
+        updateApplyButtonState();
+      }
 
-// Initialize application
-document.addEventListener('DOMContentLoaded', () => {
-  loadCitiesFromAPI();
-  fetchPrayerTimes();
-  
-  // Load saved preferences
-  const savedMethod = localStorage.getItem('namaz-method');
-  if (savedMethod) {
-    prayerMethod = savedMethod;
-    methodSelect.value = savedMethod;
-  }
-  
-});
+      function closeSettingsPanel() {
+        setSettingsExpanded(false);
+        showSettingsPanel(false);
+        if (settingsBtn) {
+          settingsBtn.classList.remove("active");
+          settingsBtn.setAttribute("aria-selected", "false");
+        }
+        if (cityBtn) {
+          cityBtn.classList.remove("active");
+          cityBtn.setAttribute("aria-selected", "false");
+        }
+        resetPendingSelections();
+      }
 
-// Save settings when changed
-methodSelect.addEventListener('change', (e) => {
-  prayerMethod = e.target.value;
-  localStorage.setItem('namaz-method', prayerMethod);
-  fetchPrayerTimes(); // Refresh with new calculation method
-});
+      if (cityBtn) {
+        cityBtn.addEventListener("click", () => {
+          const isActive =
+            settingsPanel &&
+            !settingsPanel.hidden &&
+            cityBtn.classList.contains("active");
+          if (isActive) {
+            closeSettingsPanel();
+          } else {
+            openSettingsPanel({ focusCity: true });
+          }
+        });
+      }
 
-/* Theme toggle */
-themeToggleButton = document.getElementById('themeToggle');
-themeSwitch = document.getElementById('themeSwitch');
-themeLabel = document.getElementById('themeLabel');
+      if (settingsBtn) {
+        settingsBtn.addEventListener("click", () => {
+          const isOpen = settingsPanel && !settingsPanel.hidden;
+          if (isOpen) {
+            closeSettingsPanel();
+          } else {
+            openSettingsPanel();
+          }
+        });
+      }
 
-const storedTheme = localStorage.getItem('namaz-theme');
-const existingTheme = document.documentElement.getAttribute('data-theme');
-setThemeMode(storedTheme || existingTheme || 'dark');
+      function setThemeMode(mode) {
+        const theme = mode === "light" ? "light" : "dark";
+        const isDark = theme === "dark";
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("namaz-theme", theme);
+        if (themeSwitch) {
+          themeSwitch.classList.toggle("active", isDark);
+        }
+        if (themeLabel) {
+          themeLabel.textContent = isDark ? "Karanlık" : "Aydınlık";
+        }
+        if (themeToggleButton) {
+          themeToggleButton.setAttribute("aria-pressed", isDark.toString());
+        }
+      }
 
-if(themeToggleButton){
-  themeToggleButton.addEventListener('click', () => {
-    toggleThemeMode();
-  });
-}
-</script>
-</body>
+      function toggleThemeMode() {
+        const isDark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        setThemeMode(isDark ? "light" : "dark");
+      }
+      /* Dummy loadCities (short sample) */
+      async function loadCitiesFromAPI() {
+        const citiesData = [
+          { display: "Berlin", country: "Almanya", countryCode: "DE" },
+          { display: "Hamburg", country: "Almanya", countryCode: "DE" },
+          { display: "München", country: "Almanya", countryCode: "DE" },
+          { display: "İstanbul", country: "Türkiye", countryCode: "TR" },
+          { display: "Ankara", country: "Türkiye", countryCode: "TR" },
+          { display: "İzmir", country: "Türkiye", countryCode: "TR" },
+        ];
+        cities = citiesData;
+        refreshCityList();
+        updateApplyButtonState();
+      }
+
+      if (searchBox) {
+        searchBox.addEventListener("input", () => {
+          refreshCityList();
+        });
+      }
+
+      async function fetchPrayerTimes() {
+        setStatus("loading");
+        const grid = document.getElementById("prayerTimesGrid");
+        if (grid) {
+          grid.innerHTML =
+            '<div class="loading">Namaz vakitleri yükleniyor...</div>';
+        }
+
+        try {
+          const timestamp = Math.floor(Date.now() / 1000);
+          let endpoint;
+
+          if (useGPS && currentLat !== null && currentLon !== null) {
+            endpoint = `https://api.aladhan.com/v1/timings/${timestamp}?latitude=${encodeURIComponent(
+              currentLat
+            )}&longitude=${encodeURIComponent(
+              currentLon
+            )}&method=${prayerMethod}`;
+          } else {
+            const countryParam =
+              resolveCountryForApi(currentCountry, currentCountryCode) ||
+              currentCountry;
+            endpoint = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(
+              currentCity
+            )}&country=${encodeURIComponent(
+              countryParam
+            )}&method=${prayerMethod}`;
+          }
+
+          const response = await fetch(endpoint);
+          if (!response.ok) {
+            throw new Error(`API hatası (${response.status})`);
+          }
+
+          const payload = await response.json();
+          if (payload.code !== 200 || !payload.data) {
+            throw new Error("Beklenmeyen API yanıtı");
+          }
+
+          const { timings, meta, date } = payload.data;
+
+          prayerData = {
+            Fajr: cleanTimeString(timings.Fajr || timings.Imsak),
+            Sunrise: cleanTimeString(timings.Sunrise),
+            Dhuhr: cleanTimeString(timings.Dhuhr || timings.Zuhr),
+            Asr: cleanTimeString(timings.Asr),
+            Maghrib: cleanTimeString(timings.Maghrib),
+            Isha: cleanTimeString(timings.Isha),
+          };
+
+          currentTimezone =
+            meta?.timezone || currentTimezone || TIMEZONE_FALLBACK;
+          prayerDateInfo = {
+            gregorian: date?.gregorian || null,
+            hijri: date?.hijri || null,
+          };
+
+          renderPrayerTimes();
+          updateDate();
+          updateClock();
+
+          updateLocationDisplay();
+
+          setStatus("success");
+        } catch (error) {
+          console.error("Namaz vakitleri yüklenemedi:", error);
+          setStatus("error");
+          prayerData = null;
+          prayerDateInfo = null;
+          if (grid) {
+            grid.innerHTML =
+              '<div class="error-msg">Vakitler yüklenemedi. Lütfen tekrar deneyin.</div>';
+          }
+        } finally {
+          if (gpsBtn) {
+            gpsBtn.textContent = useGPS ? "📡" : "📍";
+            gpsBtn.disabled = false;
+          }
+        }
+      }
+
+      function renderPrayerTimes() {
+        const grid = document.getElementById("prayerTimesGrid");
+        if (!grid) {
+          return;
+        }
+        if (!prayerData) {
+          grid.innerHTML =
+            '<div class="loading">Namaz vakitleri bekleniyor...</div>';
+          return;
+        }
+
+        grid.innerHTML = "";
+        PRAYER_SEQUENCE.forEach((item) => {
+          const time = cleanTimeString(prayerData[item.key]) || "--:--";
+          const card = document.createElement("div");
+          card.className = "prayer-card";
+          card.dataset.prayerKey = item.key;
+          card.innerHTML =
+            '<div class="prayer-name">' +
+            item.label +
+            '</div><div class="prayer-time">' +
+            time +
+            "</div>";
+          grid.appendChild(card);
+        });
+
+        updateCountdown();
+      }
+
+      function updateClock() {
+        const display = document.getElementById("currentTime");
+        if (display) {
+          const formatter = new Intl.DateTimeFormat("tr-TR", {
+            timeZone: getActiveTimezone(),
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+          });
+          display.textContent = formatter.format(new Date());
+        }
+
+        updateCountdown();
+      }
+
+      function updateCountdown() {
+        const nextInfo = document.getElementById("nextPrayerInfo");
+        const countdownEl = document.getElementById("countdownTimer");
+
+        if (!prayerData) {
+          if (nextInfo) {
+            nextInfo.textContent = "--";
+          }
+          if (countdownEl) {
+            countdownEl.textContent = "--:--:--";
+          }
+          return;
+        }
+
+        const schedule = buildPrayerSchedule();
+        if (!schedule.length) {
+          return;
+        }
+
+        const nowParts = getNowPartsInTimezone(getActiveTimezone());
+        const nowSeconds = nowParts.totalSeconds;
+
+        let nextIndex = schedule.findIndex(
+          (entry) => entry.seconds > nowSeconds
+        );
+        if (nextIndex === -1) {
+          nextIndex = 0;
+        }
+        const nextPrayer = schedule[nextIndex];
+        const currentIndex =
+          nextIndex === 0 ? schedule.length - 1 : nextIndex - 1;
+        const currentPrayer = schedule[currentIndex];
+
+        const targetSeconds =
+          nextPrayer.seconds > nowSeconds
+            ? nextPrayer.seconds
+            : nextPrayer.seconds + 86400;
+        const remainingSeconds = targetSeconds - nowSeconds;
+        const hours = Math.floor(remainingSeconds / 3600);
+        const minutes = Math.floor((remainingSeconds % 3600) / 60);
+        const seconds = remainingSeconds % 60;
+
+        if (nextInfo) {
+          nextInfo.textContent = `Sonraki: ${nextPrayer.label} (${nextPrayer.rawTime})`;
+        }
+
+        if (countdownEl) {
+          countdownEl.textContent = [hours, minutes, seconds]
+            .map((value) => String(value).padStart(2, "0"))
+            .join(":");
+        }
+
+        const cards = document.querySelectorAll(".prayer-card");
+        cards.forEach((card) => card.classList.remove("active", "upcoming"));
+
+        const activeCard = document.querySelector(
+          `.prayer-card[data-prayer-key="${currentPrayer.key}"]`
+        );
+        if (activeCard) {
+          activeCard.classList.add("active");
+        }
+
+        const upcomingCard = document.querySelector(
+          `.prayer-card[data-prayer-key="${nextPrayer.key}"]`
+        );
+        if (upcomingCard && upcomingCard !== activeCard) {
+          upcomingCard.classList.add("upcoming");
+        }
+      }
+
+      setInterval(updateClock, 1000);
+      updateClock();
+
+      function updateDate() {
+        const tz = getActiveTimezone();
+        const now = new Date();
+        const gregorianDisplay = document.getElementById("gregorianDate");
+        if (gregorianDisplay) {
+          gregorianDisplay.textContent = new Intl.DateTimeFormat("tr-TR", {
+            timeZone: tz,
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }).format(now);
+        }
+
+        const hijriDisplay = document.getElementById("hijriDate");
+        if (hijriDisplay) {
+          if (prayerDateInfo?.hijri) {
+            const hijri = prayerDateInfo.hijri;
+            const weekday = hijri.weekday?.en || "";
+            const month = hijri.month?.en || "";
+            hijriDisplay.textContent =
+              `${weekday} ${hijri.day} ${month} ${hijri.year}`.trim();
+          } else {
+            hijriDisplay.textContent = "--";
+          }
+        }
+      }
+      updateDate();
+
+      refreshBtn.addEventListener("click", () => fetchPrayerTimes());
+      gpsBtn.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          alert("Bu tarayıcı GPS desteklemiyor.");
+          return;
+        }
+
+        setStatus("loading");
+        gpsBtn.textContent = "📡 Konum alınıyor...";
+        gpsBtn.disabled = true;
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            currentLat = position.coords.latitude;
+            currentLon = position.coords.longitude;
+            useGPS = true;
+            gpsResolvedAddress = null;
+            if (!currentCity) {
+              currentCity = "";
+            }
+            if (!currentCountry) {
+              currentCountry = "";
+            }
+            currentCountryCode = null;
+            pendingCity = currentCity;
+            pendingCountry = currentCountry;
+            pendingCountryCode = currentCountryCode;
+
+            updateLocationDisplay();
+
+            fetchPrayerTimes();
+
+            reverseGeocode(currentLat, currentLon)
+              .then((result) => {
+                const hasCity = Boolean(result.city);
+                const hasCountry = Boolean(result.country);
+                if (hasCity) {
+                  currentCity = result.city;
+                }
+                if (hasCountry) {
+                  currentCountry = result.country;
+                }
+                if (result.countryCode) {
+                  currentCountryCode = result.countryCode;
+                }
+                if (hasCity || hasCountry) {
+                  gpsResolvedAddress = {
+                    city: hasCity ? result.city : currentCity || "",
+                    country: hasCountry ? result.country : currentCountry || "",
+                    countryCode: currentCountryCode,
+                  };
+                } else {
+                  gpsResolvedAddress = null;
+                }
+                pendingCity = currentCity;
+                pendingCountry = currentCountry;
+                pendingCountryCode = currentCountryCode;
+                refreshCityList();
+                updateApplyButtonState();
+              })
+              .catch((err) => {
+                console.error("GPS reverse geocode hatası:", err);
+              })
+              .finally(() => {
+                updateLocationDisplay();
+              });
+          },
+          (error) => {
+            console.error("GPS hatası:", error);
+            setStatus("error");
+            alert("Konum alınamadı. Lütfen konum erişimine izin verin.");
+            useGPS = false;
+            gpsResolvedAddress = null;
+            updateLocationDisplay();
+            gpsBtn.textContent = "📍";
+            gpsBtn.disabled = false;
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+        );
+      });
+
+      // Initialize application
+      document.addEventListener("DOMContentLoaded", () => {
+        loadCitiesFromAPI();
+        fetchPrayerTimes();
+
+        // Load saved preferences
+        const savedMethod = localStorage.getItem("namaz-method");
+        if (savedMethod) {
+          prayerMethod = savedMethod;
+        }
+        pendingMethod = prayerMethod;
+        if (methodSelect) {
+          methodSelect.value = pendingMethod;
+        }
+        closeSettingsPanel();
+      });
+
+      if (methodSelect) {
+        methodSelect.addEventListener("change", (e) => {
+          pendingMethod = e.target.value;
+          updateApplyButtonState();
+        });
+      }
+
+      if (settingsApplyBtn) {
+        settingsApplyBtn.addEventListener("click", () => {
+          const hasChanges = hasSettingsChanges();
+          if (!hasChanges) {
+            closeSettingsPanel();
+            return;
+          }
+
+          const methodChanged = pendingMethod !== prayerMethod;
+          const cityChanged =
+            pendingCity !== currentCity ||
+            pendingCountry !== currentCountry ||
+            (pendingCountryCode || null) !== (currentCountryCode || null);
+
+          prayerMethod = pendingMethod;
+          if (methodChanged) {
+            localStorage.setItem("namaz-method", prayerMethod);
+          }
+
+          if (cityChanged) {
+            currentCity = pendingCity;
+            currentCountry = pendingCountry;
+            currentCountryCode = pendingCountryCode || null;
+            useGPS = false;
+            gpsResolvedAddress = null;
+            currentLat = null;
+            currentLon = null;
+          }
+
+          updateApplyButtonState();
+          fetchPrayerTimes();
+          updateLocationDisplay();
+          closeSettingsPanel();
+        });
+      }
+
+      /* Theme toggle */
+      themeToggleButton = document.getElementById("themeToggle");
+      themeSwitch = document.getElementById("themeSwitch");
+      themeLabel = document.getElementById("themeLabel");
+
+      const storedTheme = localStorage.getItem("namaz-theme");
+      const existingTheme = document.documentElement.getAttribute("data-theme");
+      setThemeMode(storedTheme || existingTheme || "dark");
+
+      if (themeToggleButton) {
+        themeToggleButton.addEventListener("click", () => {
+          toggleThemeMode();
+        });
+      }
+    </script>
+  </body>
 </html>
