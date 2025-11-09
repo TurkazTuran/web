@@ -1,369 +1,965 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="az">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <title>TurkazTuran | Web</title>
-  <meta name="description" content="Modern, animated, responsive index with image previews of your HTML pages." />
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>TurkazTuran | Web</title>
+    <meta
+      name="description"
+      content="Modern, animated, responsive index with image previews of your HTML pages."
+    />
 
-  <link rel="icon" type="image/svg+xml" href="turan.svg" />
+    <link rel="icon" type="image/svg+xml" href="turan.svg" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <style>
-    :root {
-      --bg: #0b0f14;
-      --bg-2: #0f1621;
-      --text: #e8eef5;
-      --muted: #a6b3c2;
-      --card: rgba(255, 255, 255, 0.06);
-      --card-hover: rgba(255, 255, 255, 0.12);
-      --accent: #6ee7ff;
-      --accent-2: #7c5cff;
-      --accent-3: #22d3ee;
-      --shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-      --radius: 16px;
-      --ring: 0 0 0 2px color-mix(in oklab, var(--accent) 50%, transparent);
-      --glass-blur: blur(10px);
-      --frame-h: 440px;
-    }
-    [data-theme="light"] {
-      --bg: #f7f9fc;
-      --bg-2: #eaf0f7;
-      --text: #0f1720;
-      --muted: #4b5563;
-      --card: rgba(255, 255, 255, 0.8);
-      --card-hover: rgba(255, 255, 255, 0.92);
-      --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      --ring: 0 0 0 2px color-mix(in oklab, var(--accent-2) 45%, transparent);
-    }
+    <style>
+      :root {
+        --bg: #0b0f14;
+        --bg-2: #0f1621;
+        --text: #e8eef5;
+        --muted: #a6b3c2;
+        --card: rgba(255, 255, 255, 0.06);
+        --card-hover: rgba(255, 255, 255, 0.12);
+        --accent: #6ee7ff;
+        --accent-2: #7c5cff;
+        --accent-3: #22d3ee;
+        --shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+        --radius: 16px;
+        --ring: 0 0 0 2px color-mix(in oklab, var(--accent) 50%, transparent);
+        --glass-blur: blur(10px);
+        --frame-h: 440px;
+      }
+      [data-theme="light"] {
+        --bg: #f7f9fc;
+        --bg-2: #eaf0f7;
+        --text: #0f1720;
+        --muted: #4b5563;
+        --card: rgba(255, 255, 255, 0.8);
+        --card-hover: rgba(255, 255, 255, 0.92);
+        --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        --ring: 0 0 0 2px color-mix(in oklab, var(--accent-2) 45%, transparent);
+      }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-      color: var(--text);
-      background: radial-gradient(1200px 800px at 20% -10%, #153463, transparent 60%),
-                  radial-gradient(1200px 800px at 120% 10%, #2d134f, transparent 60%),
-                  linear-gradient(120deg, var(--bg), var(--bg-2));
-      background-attachment: fixed;
-      overflow-x: hidden;
-    }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1200px 800px at 20% -10%,
+            #21553ba5,
+            transparent 60%
+          ),
+          radial-gradient(1200px 800px at 120% 10%, #436c5ac6, transparent 60%),
+          linear-gradient(120deg, var(--bg), var(--bg-2));
+        background-attachment: fixed;
+        overflow-x: hidden;
+      }
 
-    .gradient-overlay {
-      position: fixed;
-      inset: -20%;
-      background: conic-gradient(from 0deg at 50% 50%, color-mix(in oklab, var(--accent) 85%, transparent) 0% 10%, transparent 10% 20%,
-        color-mix(in oklab, var(--accent-2) 85%, transparent) 20% 30%, transparent 30% 40%,
-        color-mix(in oklab, var(--accent-3) 85%, transparent) 40% 50%, transparent 50% 100%);
-      filter: blur(80px) saturate(140%) opacity(0.35);
-      animation: rotate 28s linear infinite;
-      z-index: -1;
-      pointer-events: none;
-      transform-origin: 50% 50%;
-    }
-    @keyframes rotate { to { transform: rotate(360deg); } }
+      .gradient-overlay {
+        position: fixed;
+        inset: -20%;
+        background: conic-gradient(
+          from 0deg at 50% 50%,
+          color-mix(in oklab, var(--accent) 85%, transparent) 0% 10%,
+          transparent 10% 20%,
+          color-mix(in oklab, var(--accent-2) 85%, transparent) 20% 30%,
+          transparent 30% 40%,
+          color-mix(in oklab, var(--accent-3) 85%, transparent) 40% 50%,
+          transparent 50% 100%
+        );
+        filter: blur(80px) saturate(140%) opacity(0.35);
+        z-index: -1;
+        pointer-events: none;
+        transform-origin: 50% 50%;
+      }
+      @keyframes rotate {
+        to {
+          transform: rotate(360deg);
+        }
+      }
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: var(--glass-blur);
-      background: color-mix(in oklab, var(--bg) 75%, transparent);
-      border-bottom: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
-    }
-    .nav {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .brand {
-      display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;
-    }
-    .brand .logo {
-      width: 36px;
-      height: 36px;
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: var(--glass-blur);
+        background: color-mix(in oklab, var(--bg) 75%, transparent);
+        border-bottom: 1px solid
+          color-mix(in oklab, var(--text) 12%, transparent);
+        box-shadow: 0 6px 18px color-mix(in oklab, var(--bg-2) 45%, transparent);
+      }
+      .skip-link {
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: var(--card);
+        color: var(--text);
+        text-decoration: none;
+        border: 1px solid color-mix(in oklab, var(--accent) 35%, transparent);
+        box-shadow: var(--shadow);
+        backdrop-filter: var(--glass-blur);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 15;
+      }
+      .skip-link:focus-visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .nav {
+        position: relative;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+        color: inherit;
+        padding: 6px 10px;
+        border-radius: 14px;
+        transition: background 0.2s ease, border-color 0.2s ease,
+          transform 0.2s ease;
+        border: 1px solid color-mix(in oklab, var(--text) 6%, transparent);
+        background: color-mix(in oklab, var(--bg-2) 35%, transparent);
+      }
+      .brand:hover {
+        background: color-mix(in oklab, var(--bg-2) 55%, transparent);
+        border-color: color-mix(in oklab, var(--accent) 25%, transparent);
+        transform: translateY(-1px);
+      }
+      .brand .logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: block;
+        padding: 4px;
+        object-fit: contain;
+        background: color-mix(in oklab, var(--bg-2) 55%, transparent);
+        border: 1px solid color-mix(in oklab, var(--text) 14%, transparent);
+        box-shadow: 0 6px 16px
+          color-mix(in oklab, var(--accent-2) 30%, transparent);
+      }
+
+      .brand-text {
+        display: grid;
+        gap: 2px;
+      }
+      .brand .title {
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        font-size: 1.06rem;
+      }
+      .brand .subtitle {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: color-mix(in oklab, var(--muted) 75%, transparent);
+      }
+      .brand .signature {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+        background: color-mix(in oklab, var(--card) 80%, transparent);
+        box-shadow: 0 4px 12px
+          color-mix(in oklab, var(--accent) 18%, transparent);
+      }
+      .brand .signature img {
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+
+      .hero {
+        margin: 42px 0 32px;
+      }
+      .hero-card {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        gap: 36px;
+        align-items: center;
+        padding: 40px 48px;
+        border-radius: 32px;
+        background: linear-gradient(
+          135deg,
+          color-mix(in oklab, var(--bg-2) 80%, transparent) 0%,
+          color-mix(in oklab, var(--bg) 82%, transparent) 100%
+        );
+        border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+        box-shadow: 0 24px 60px
+          color-mix(in oklab, var(--accent-2) 18%, transparent);
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .hero-card::before,
+      .hero-card::after {
+        content: "";
+        position: absolute;
+        inset: -20% auto auto -20%;
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(
+          circle at 30% 30%,
+          color-mix(in oklab, var(--accent) 55%, transparent),
+          transparent 65%
+        );
+        opacity: 0.55;
+        transform: rotate(18deg);
+        pointer-events: none;
+        z-index: -1;
+      }
+      .hero-card::after {
+        inset: auto -25% -25% auto;
+        background: radial-gradient(
+          circle at 70% 70%,
+          color-mix(in oklab, var(--accent-2) 50%, transparent),
+          transparent 68%
+        );
+        transform: rotate(-24deg);
+      }
+      .hero-copy {
+        display: grid;
+        gap: 14px;
+      }
+      .hero-eyebrow {
+        font-size: 0.82rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: color-mix(in oklab, var(--muted) 65%, transparent);
+      }
+      .hero-title {
+        margin: 0;
+        font-size: clamp(2.1rem, 4vw, 2.8rem);
+        letter-spacing: 0.6px;
+      }
+      .hero-text {
+        margin: 0;
+        max-width: 44ch;
+        border-radius: 999px;
+        border: 5px solid transparent;
+        color: color-mix(in oklab, var(--muted) 60%, transparent);
+        line-height: 1.6;
+      }
+      .hero-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
+      .hero-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        background: linear-gradient(
+          135deg,
+          color-mix(in oklab, var(--accent) 85%, transparent),
+          color-mix(in oklab, var(--accent-2) 70%, transparent)
+        );
+        color: var(--bg);
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 14px 30px
+          color-mix(in oklab, var(--accent) 25%, transparent);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .hero-button:hover,
+      .hero-button:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 38px
+          color-mix(in oklab, var(--accent-2) 35%, transparent);
+        outline: none;
+      }
+      .hero-ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 999px;
+        border: 1px solid color-mix(in oklab, var(--text) 18%, transparent);
+        background: color-mix(in oklab, var(--card) 88%, transparent);
+        color: var(--text);
+        text-decoration: none;
+        transition: border-color 0.2s ease, background 0.2s ease,
+          transform 0.2s ease;
+      }
+      .hero-ghost:hover,
+      .hero-ghost:focus-visible {
+        border-color: color-mix(in oklab, var(--accent) 40%, transparent);
+        background: color-mix(in oklab, var(--card-hover) 90%, transparent);
+        transform: translateY(-2px);
+        outline: none;
+      }
+      .hero-media {
+        justify-self: center;
+        background: color-mix(in oklab, var(--card) 75%, transparent);
+        padding: 22px 26px;
+        border-radius: 24px;
+        border: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
+        box-shadow: 0 22px 40px
+          color-mix(in oklab, var(--accent-3) 18%, transparent);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .hero-image {
+      max-width: 320px;
+      position: relative;
+      display: inline-block;
+      padding: 0;
       border-radius: 10px;
-      display: block;
-      padding: 4px;
-      object-fit: contain;
-      background: color-mix(in oklab, var(--bg-2) 55%, transparent);
-      border: 1px solid color-mix(in oklab, var(--text) 14%, transparent);
-      box-shadow: 0 6px 16px color-mix(in oklab, var(--accent-2) 30%, transparent);
-    }
-    .brand .title {
-      font-weight: 800;
-      letter-spacing: 0.2px;
-      font-size: 1.05rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .brand .signature {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4px 6px;
-      border-radius: 999px;
-      border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
-      background: color-mix(in oklab, var(--card) 80%, transparent);
-      box-shadow: 0 4px 12px color-mix(in oklab, var(--accent) 18%, transparent);
-    }
-    .brand .signature img {
-      display: block;
-      max-height: 24px;
-      width: auto;
-    }
-
-    .controls { display: flex; align-items: center; gap: 10px; }
-    .toggle {
-      border: 1px solid color-mix(in oklab, var(--text) 15%, transparent);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 8px 12px;
-      display: inline-flex; align-items: center; gap: 8px;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      backdrop-filter: var(--glass-blur);
-    }
-    .toggle:hover { background: var(--card-hover); }
-
-    main { max-width: 1100px; margin: 0 auto; padding: 22px 20px 60px; }
-
-    .toolbar {
-      margin: 6px 0 18px;
-      display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
-    }
-
-    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-
-    .card {
-      position: relative;
-      background: var(--card);
-      border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
       overflow: hidden;
-      transition: transform .35s cubic-bezier(.2,.8,.2,1), background .2s ease, border-color .2s ease;
-      backdrop-filter: var(--glass-blur);
-      will-change: transform;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      background: var(--card-hover);
-      border-color: color-mix(in oklab, var(--accent) 30%, transparent);
-      box-shadow: 0 14px 35px color-mix(in oklab, var(--accent-2) 15%, transparent);
+      background: radial-gradient(circle at center, #f8f9fa 0%, #e2e6ea 100%);
+      border: 3px solid rgba(100, 200, 255, 0.6);
+      box-shadow:
+        0 0 10px rgba(173, 216, 230, 0.8),
+        inset 0 0 20px rgba(255, 255, 255, 0.5);
+      animation: frameGlow 3s ease-in-out infinite;
+      line-height: 0;
     }
 
-    .card .head {
-      display: grid; grid-template-columns: 56px 1fr auto; gap: 14px; align-items: center;
-      color: inherit; text-decoration: none; padding: 16px;
-    }
-    .card .icon {
-      width: 56px; height: 56px; border-radius: 12px;
-      background: linear-gradient(135deg, color-mix(in oklab, var(--accent-3) 60%, transparent), color-mix(in oklab, var(--accent-2) 60%, transparent));
-      display: grid; place-items: center;
-      box-shadow: inset 0 0 20px rgba(255,255,255,.12);
-    }
-    .card .meta { display: grid; gap: 4px; }
-    .card .title { font-weight: 800; letter-spacing: .2px; font-size: 1.02rem; }
-    .card .desc { color: var(--muted); font-size: .9rem; }
-    .arrow {
-      width: 20px; height: 20px; border-radius: 999px;
-      display: grid; place-items: center;
-      background: color-mix(in oklab, var(--accent-2) 28%, transparent);
-      transition: transform .25s ease, background .25s ease;
-    }
-    .card:hover .arrow { transform: translateX(4px); background: color-mix(in oklab, var(--accent) 40%, transparent); }
+      .brand:focus-visible,
+      .menu a:focus-visible,
+      .toggle:focus-visible,
+      .menu-toggle:focus-visible {
+        outline: 2px solid color-mix(in oklab, var(--accent) 70%, transparent);
+        outline-offset: 3px;
+      }
 
-    .preview {
-      position: relative;
-      border-top: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
-      background: color-mix(in oklab, var(--bg-2) 40%, transparent);
-    }
-    .preview-link { display: block; color: inherit; text-decoration: none; }
-    .preview-wrap {
-      position: relative;
-      width: 100%;
-      height: var(--frame-h);
-      overflow: hidden;
-      border-radius: 0 0 var(--radius) var(--radius);
-      isolation: isolate;
-      background: color-mix(in oklab, var(--bg) 60%, transparent);
-    }
-    .preview-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      filter: saturate(105%);
-      transition: opacity .35s ease, transform .35s cubic-bezier(.2,.8,.2,1);
-    }
-    .preview-img.visible {
-      opacity: 1;
-    }
-    .card:hover .preview-img.visible {
-      transform: scale(1.02);
-    }
-    .skeleton {
-      position: absolute; inset: 0; border-radius: inherit;
-      background:
-        linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.12), rgba(255,255,255,0.05));
-      background-size: 200% 100%;
-      animation: shimmer 1.4s infinite;
-      filter: saturate(120%);
-      pointer-events: none;
-    }
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    .preview-status {
-      position: absolute; inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--muted);
-      background: color-mix(in oklab, var(--bg) 80%, transparent);
-      pointer-events: none;
-    }
+      .menu {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 0.92rem;
+      }
+      .menu a {
+        color: color-mix(in oklab, var(--text) 80%, transparent);
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 999px;
+        transition: background 0.2s ease, color 0.2s ease,
+          border-color 0.2s ease;
+        border: 1px solid transparent;
+      }
+      .menu a:hover,
+      .menu a:focus-visible {
+        color: var(--text);
+        background: color-mix(in oklab, var(--bg-2) 55%, transparent);
+        border-color: color-mix(in oklab, var(--accent) 25%, transparent);
+        outline: none;
+      }
 
-    .empty {
-      display: none;
-      margin: 24px 0; padding: 16px;
-      border-radius: 12px; border: 1px dashed color-mix(in oklab, var(--text) 20%, transparent);
-      background: var(--card);
-      color: var(--muted);
-    }
+      .menu-toggle {
+        display: none;
+        border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+        background: color-mix(in oklab, var(--card) 90%, transparent);
+        color: var(--text);
+        border-radius: 14px;
+        padding: 10px 12px;
+        box-shadow: var(--shadow);
+        transition: background 0.2s ease, border-color 0.2s ease;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+      }
+      .menu-toggle svg {
+        width: 22px;
+        height: 22px;
+      }
+      .menu-toggle:hover,
+      .menu-toggle:active {
+        background: color-mix(in oklab, var(--card-hover) 88%, transparent);
+        border-color: color-mix(in oklab, var(--accent-2) 30%, transparent);
+      }
+      .menu.open {
+        display: flex;
+      }
 
-    footer { margin-top: 28px; color: var(--muted); text-align: center; font-size: 0.9rem; }
-    .footer-content {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: color-mix(in oklab, var(--card) 80%, transparent);
-      border: 1px solid color-mix(in oklab, var(--text) 8%, transparent);
-      backdrop-filter: var(--glass-blur);
-    }
-    .footer-icon {
-      width: 20px;
-      height: 20px;
-      border-radius: 6px;
-      overflow: hidden;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 8px color-mix(in oklab, var(--accent) 45%, transparent);
-    }
-    .footer-icon img {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .search {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+        background: color-mix(in oklab, var(--bg-2) 45%, transparent);
+        box-shadow: var(--shadow);
+        backdrop-filter: var(--glass-blur);
+      }
+      .search svg {
+        width: 16px;
+        height: 16px;
+        color: var(--muted);
+      }
+      .search input {
+        background: transparent;
+        border: 0;
+        color: inherit;
+        font: inherit;
+        width: 180px;
+        outline: none;
+      }
+      .search input::placeholder {
+        color: color-mix(in oklab, var(--muted) 70%, transparent);
+      }
+      .toggle {
+        border: 1px solid color-mix(in oklab, var(--text) 15%, transparent);
+        background: var(--card);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 8px 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+        backdrop-filter: var(--glass-blur);
+      }
+      .toggle:hover {
+        background: var(--card-hover);
+      }
 
-    @media (prefers-reduced-motion: reduce) {
-      .gradient-overlay, .card, .preview-img { animation: none !important; transition: none !important; }
-    }
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 22px 20px 60px;
+      }
 
-    body[data-theme="dark"] .footer-content {
-      background: color-mix(in oklab, var(--text) 92%, transparent);
-      color: var(--bg);
-      border-color: color-mix(in oklab, var(--text) 60%, transparent);
-    }
+      .toolbar {
+        margin: 6px 0 18px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
 
-    body[data-theme="dark"] .footer-icon {
-      box-shadow: 0 0 8px color-mix(in oklab, var(--text) 30%, transparent);
-    }
-  </style>
-</head>
-<body>
-  <div class="gradient-overlay" aria-hidden="true"></div>
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      @media (max-width: 1100px) {
+        .menu {
+          display: none;
+          position: absolute;
+          top: calc(100% + 10px);
+          right: 20px;
+          flex-direction: column;
+          align-items: stretch;
+          background: color-mix(in oklab, var(--bg) 85%, transparent);
+          padding: 14px;
+          border-radius: 18px;
+          border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+          box-shadow: 0 18px 38px color-mix(in oklab, var(--bg-2) 60%, transparent);
+          width: min(240px, 80vw);
+          backdrop-filter: var(--glass-blur);
+        }
+        .menu a {
+          padding: 10px 12px;
+          border-radius: 12px;
+        }
+        .menu-toggle {
+          display: inline-flex;
+        }
+        .search input {
+          width: 150px;
+        }
+        .hero-card {
+          grid-template-columns: 1fr 0.9fr;
+          padding: 32px 36px;
+        }
+      }
+      @media (max-width: 900px) {
+        .nav {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 14px;
+        }
+        .brand {
+          align-self: center;
+        }
+        .controls {
+          width: 100%;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+        .search {
+          width: 100%;
+          justify-content: center;
+        }
+        .search input {
+          width: 100%;
+          text-align: center;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .hero {
+          margin: 32px 0 28px;
+        }
+        .hero-card {
+          grid-template-columns: 1fr;
+          text-align: center;
+          padding: 34px 28px;
+          gap: 28px;
+        }
+        .hero-text {
+          margin: 0 auto;
+        }
+        .hero-actions {
+          justify-content: center;
+        }
+        .hero-media {
+          padding: 16px 20px;
+        }
+      }
+      @media (max-width: 600px) {
+        .hero-card {
+          padding: 28px 22px;
+          border-radius: 26px;
+        }
+        .hero-media::before {
+          inset: 16% 18% auto 18%;
+        }
+        .hero-button,
+        .hero-ghost {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
 
-  <header>
-    <nav class="nav" aria-label="Primary">
-      <a class="brand" href="#">
-        <img class="logo" src="logo.svg" alt="Turkaz Turan logo" width="36" height="36">
-        <span class="title">Turkaz Turan
-          <span class="signature">
-            <img src="imzam.png" alt="signature" aria-hidden="true">
+      .card {
+        position: relative;
+        background: var(--card);
+        border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+          background 0.2s ease, border-color 0.2s ease;
+        backdrop-filter: var(--glass-blur);
+        will-change: transform;
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        background: var(--card-hover);
+        border-color: color-mix(in oklab, var(--accent) 30%, transparent);
+        box-shadow: 0 14px 35px
+          color-mix(in oklab, var(--accent-2) 15%, transparent);
+      }
+
+      .card .head {
+        display: grid;
+        grid-template-columns: 56px 1fr auto;
+        gap: 14px;
+        align-items: center;
+        color: inherit;
+        text-decoration: none;
+        padding: 16px;
+      }
+      .card .icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        background: linear-gradient(
+          135deg,
+          color-mix(in oklab, var(--accent-3) 60%, transparent),
+          color-mix(in oklab, var(--accent-2) 60%, transparent)
+        );
+        display: grid;
+        place-items: center;
+        box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.12);
+      }
+      .card .meta {
+        display: grid;
+        gap: 4px;
+      }
+      .card .title {
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        font-size: 1.02rem;
+      }
+      .card .desc {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .arrow {
+        width: 20px;
+        height: 20px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        background: color-mix(in oklab, var(--accent-2) 28%, transparent);
+        transition: transform 0.25s ease, background 0.25s ease;
+      }
+      .card:hover .arrow {
+        transform: translateX(4px);
+        background: color-mix(in oklab, var(--accent) 40%, transparent);
+      }
+
+      .preview {
+        position: relative;
+        border-top: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
+        background: color-mix(in oklab, var(--bg-2) 40%, transparent);
+      }
+      .preview-link {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+      }
+      .preview-wrap {
+        position: relative;
+        width: 100%;
+        height: var(--frame-h);
+        overflow: hidden;
+        border-radius: 0 0 var(--radius) var(--radius);
+        isolation: isolate;
+        background: color-mix(in oklab, var(--bg) 60%, transparent);
+      }
+      .preview-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        filter: saturate(105%);
+        transition: opacity 0.35s ease,
+          transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .preview-img.visible {
+        opacity: 1;
+      }
+      .card:hover .preview-img.visible {
+        transform: scale(1.02);
+      }
+      .skeleton {
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.05),
+          rgba(255, 255, 255, 0.12),
+          rgba(255, 255, 255, 0.05)
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite;
+        filter: saturate(120%);
+        pointer-events: none;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+      .preview-status {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--muted);
+        background: color-mix(in oklab, var(--bg) 80%, transparent);
+        pointer-events: none;
+      }
+
+      .empty {
+        display: none;
+        margin: 24px 0;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px dashed color-mix(in oklab, var(--text) 20%, transparent);
+        background: var(--card);
+        color: var(--muted);
+      }
+
+      footer {
+        margin-top: 28px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 0.9rem;
+      }
+      .footer-content {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: color-mix(in oklab, var(--card) 80%, transparent);
+        border: 1px solid color-mix(in oklab, var(--text) 8%, transparent);
+        backdrop-filter: var(--glass-blur);
+      }
+      .footer-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 8px color-mix(in oklab, var(--accent) 45%, transparent);
+      }
+      .footer-icon img {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .gradient-overlay,
+        .card,
+        .preview-img {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+
+      body[data-theme="dark"] .footer-content {
+        background: color-mix(in oklab, var(--text) 92%, transparent);
+        color: var(--bg);
+        border-color: color-mix(in oklab, var(--text) 60%, transparent);
+      }
+
+      body[data-theme="dark"] .footer-icon {
+        box-shadow: 0 0 8px color-mix(in oklab, var(--text) 30%, transparent);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="gradient-overlay" aria-hidden="true"></div>
+    <a class="skip-link" href="#mainContent">Məzmunə keç</a>
+
+    <header>
+      <nav class="nav" aria-label="Əsas naviqasiya">
+        <a class="brand" href="#" aria-label="Turkaz Turan ana səhifə">
+          <img
+            class="logo"
+            src="logo.svg"
+            alt="logo"
+            width="36"
+            height="36"
+          />
+          <span class="brand-text">
+            <span class="title">Turkaz Turan</span>
           </span>
-        </span>
-      </a>
-      <div class="controls">
-        <button id="themeToggle" class="toggle" type="button" aria-pressed="false" title="Tema dəyiş">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="1.6"/>
+        </a>
+        <button
+          id="menuToggle"
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primary-menu"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M4 7h16M4 12h16M4 17h16"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
           </svg>
-          <span>Tema</span>
+          <span class="sr-only">Menünü aç</span>
         </button>
-      </div>
-    </nav>
-  </header>
+        <div class="menu" id="primary-menu">
+          <a href="Namaz.html">Namaz</a>
+          <a href="ausgaben_rechner.html">Xərclər</a>
+          <a href="currency.html">Valyuta</a>
+        </div>
+        <div class="controls">
+          <label class="search">
+            <span class="sr-only">Səhifələrdə axtar</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M15.5 15.5 21 21"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
+              <circle
+                cx="11"
+                cy="11"
+                r="6"
+                stroke="currentColor"
+                stroke-width="1.6"
+              />
+            </svg>
+            <input
+              id="searchInput"
+              type="search"
+              name="search"
+              placeholder="Səhifə axtar..."
+              autocomplete="off"
+            />
+          </label>
+          <button
+            id="themeToggle"
+            class="toggle"
+            type="button"
+            aria-pressed="false"
+            title="Tema dəyiş"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"
+                stroke="currentColor"
+                stroke-width="1.6"
+              />
+            </svg>
+            <span>Tema</span>
+          </button>
+        </div>
+      </nav>
+    </header>
 
-  <main>
-        <section>
-      <div id="cards" class="grid" role="list"></div>
-      <div id="empty" class="empty" role="status">Axtarışa uyğun səhifə tapılmadı.</div>
-    </section>
+  <main id="mainContent" tabindex="-1">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-card">
+          <div class="hero-copy">
+            <h2><p class="hero-text">
+              De ki: "Ey haddi aşarak nefislerine karşı zulm etmiş olan kullarım! Allah'ın rahmetinden ümid kesmeyin. Çünkü Allah, bütün günahları bağışlar. Şüphesiz ki O, çok bağışlayıcıdır ve çok merhamet edicidir." ۞ 53
+            </p></h2>
+            <h4><p>39. Surah Az-Zumar</p></h4>
+          </div>
+          <div class="hero-media">
+            <img
+              class="hero-image"
+              src="bismillah.png"
+              alt="bismillah"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+      <section>
+        <div id="cards" class="grid" role="list"></div>
+        <div id="empty" class="empty" role="status">
+          Axtarışa uyğun səhifə tapılmadı.
+        </div>
+      </section>
 
-    <footer>
-      <div class="footer-content">
-        <span class="footer-icon" aria-hidden="true">
-          <img src="https://github.githubassets.com/favicons/favicon.png" alt="">
-        </span>
-        <span>• Built with GitHub Copilot •</span>
-      </div>
-    </footer>
-  </main>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+      <footer>
+        <div class="footer-content">
+          <span class="footer-icon" aria-hidden="true">
+            <img
+              src="https://github.githubassets.com/favicons/favicon.png"
+              alt=""
+            />
+          </span>
+          <span>• Built with GitHub Copilot •</span>
+        </div>
+      </footer>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-  <script>
-    // Theme
-    (function() {
-      const key = 'tt_theme';
-      const saved = localStorage.getItem(key);
-      if (saved === 'light' || saved === 'dark') document.body.setAttribute('data-theme', saved);
-      const btn = document.getElementById('themeToggle');
-      const apply = (mode) => {
-        document.body.setAttribute('data-theme', mode);
-        localStorage.setItem(key, mode);
-        btn.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
-      };
-      btn.addEventListener('click', () => {
-        const current = document.body.getAttribute('data-theme') || 'dark';
-        apply(current === 'dark' ? 'light' : 'dark');
-      });
-      if (!saved) apply('dark');
-    })();
+    <script>
+      // Theme
+      (function () {
+        const key = "tt_theme";
+        const saved = localStorage.getItem(key);
+        if (saved === "light" || saved === "dark")
+          document.body.setAttribute("data-theme", saved);
+        const btn = document.getElementById("themeToggle");
+        const apply = (mode) => {
+          document.body.setAttribute("data-theme", mode);
+          localStorage.setItem(key, mode);
+          btn.setAttribute("aria-pressed", mode === "dark" ? "true" : "false");
+        };
+        btn.addEventListener("click", () => {
+          const current = document.body.getAttribute("data-theme") || "dark";
+          apply(current === "dark" ? "light" : "dark");
+        });
+        if (!saved) apply("dark");
+      })();
 
-    // Pages discovered in the repo with requested titles
-    const pages = [
-      { title: 'Namaz Vakti',        href: 'Namaz.html',              desc: 'Namaz vaxtları və məlumat', icon: 'moon'  },
-      { title: 'Aylıq Xərclər',      href: 'ausgaben_rechner.html',   desc: 'Aylıq xərclər kalkulyatoru', icon: 'calc'  },
-      { title: 'Valyuta Kursu',      href: 'currency.html',           desc: 'Kurslar və çevirici',        icon: 'money' },
-    ];
+      // Pages discovered in the repo with requested titles
+      const pages = [
+        {
+          title: "Namaz Vakti",
+          href: "Namaz.html",
+          desc: "Namaz vaxtları və məlumat",
+          icon: "moon",
+        },
+        {
+          title: "Aylıq Xərclər",
+          href: "ausgaben_rechner.html",
+          desc: "Aylıq xərclər kalkulyatoru",
+          icon: "calc",
+        },
+        {
+          title: "Valyuta Kursu",
+          href: "currency.html",
+          desc: "Kurslar və çevirici",
+          icon: "money",
+        },
+      ];
 
-    function iconSVG(kind) {
-      switch (kind) {
-        case 'calc':
-          return `
+      function iconSVG(kind) {
+        switch (kind) {
+          case "calc":
+            return `
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.6"/>
               <path d="M8 7h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -375,8 +971,8 @@
               <path d="M17 15.5l-1.5 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
             </svg>
           `;
-        case 'money':
-          return `
+          case "money":
+            return `
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <rect x="3.5" y="6" width="17" height="12" rx="3" stroke="currentColor" stroke-width="1.6"/>
               <path d="M8 12c0-2.5 2-3.5 4-3.5s4 1 4 3-1.5 2.5-3 2.5-2 .7-2 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -385,9 +981,9 @@
               <circle cx="17" cy="15" r="1" fill="currentColor"/>
             </svg>
           `;
-        case 'moon':
-        default:
-          return `
+          case "moon":
+          default:
+            return `
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M4.5 21v-5.5l2-.9V9.7l-2-.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M19.5 21v-5.5l-2-.9V9.7l2-.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -396,20 +992,20 @@
               <path d="M9.5 19h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
             </svg>
           `;
+        }
       }
-    }
 
-    const list = document.getElementById('cards');
-    const empty = document.getElementById('empty');
+      const list = document.getElementById("cards");
+      const empty = document.getElementById("empty");
 
-    function cardHTML(p) {
-      return `
+      function cardHTML(p) {
+        return `
         <article class="card" role="listitem">
           <a class="head" href="${p.href}" aria-label="${p.title}">
             <div class="icon" aria-hidden="true">${iconSVG(p.icon)}</div>
             <div class="meta">
               <div class="title">${p.title}</div>
-              <div class="desc">${p.desc || ''}</div>
+              <div class="desc">${p.desc || ""}</div>
             </div>
             <div class="arrow" aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -418,170 +1014,234 @@
             </div>
           </a>
           <div class="preview">
-            <a class="preview-link" href="${p.href}" aria-label="${p.title} səhifəsini aç">
+            <a class="preview-link" href="${p.href}" aria-label="${
+          p.title
+        } səhifəsini aç">
               <div class="preview-wrap">
                 <div class="skeleton" aria-hidden="true"></div>
-                <img class="preview-img" data-page="${p.href}" alt="Ön baxış: ${p.title}" loading="lazy" />
+                <img class="preview-img" data-page="${p.href}" alt="Ön baxış: ${
+          p.title
+        }" loading="lazy" />
                 <div class="preview-status" hidden>Ön baxış gətirilə bilmədi</div>
               </div>
             </a>
           </div>
         </article>
       `;
-    }
+      }
 
-    function render(items) {
-      list.innerHTML = '';
-      if (!items.length) { empty.style.display = 'block'; return; }
-      empty.style.display = 'none';
-      items.forEach((p, i) => {
-        const container = document.createElement('div');
-        container.innerHTML = cardHTML(p);
-        const el = container.firstElementChild;
-        el.style.animation = 'fadeInUp 500ms cubic-bezier(.2,.8,.2,1) forwards';
-        el.style.opacity = '0';
-        el.style.animationDelay = (70 * i) + 'ms';
-        list.appendChild(el);
-      });
-      generateScreenshots();
-    }
-    const previewCache = new Map();
-    const previewTasks = new Map();
-
-    // Render static image previews using html2canvas and cache results.
-    async function generateScreenshots() {
-      if (typeof window.html2canvas !== 'function') return;
-      const images = Array.from(document.querySelectorAll('.preview-img[data-page]'));
-      for (const img of images) {
-        const page = img.dataset.page;
-        if (!page || img.dataset.rendered === 'true') continue;
-        if (previewCache.has(page)) {
-          applyPreview(img, previewCache.get(page));
-          continue;
+      function render(items) {
+        list.innerHTML = "";
+        if (!items.length) {
+          empty.style.display = "block";
+          return;
         }
-        if (previewTasks.has(page)) {
+        empty.style.display = "none";
+        items.forEach((p, i) => {
+          const container = document.createElement("div");
+          container.innerHTML = cardHTML(p);
+          const el = container.firstElementChild;
+          el.style.animation =
+            "fadeInUp 500ms cubic-bezier(.2,.8,.2,1) forwards";
+          el.style.opacity = "0";
+          el.style.animationDelay = 70 * i + "ms";
+          list.appendChild(el);
+        });
+        generateScreenshots();
+      }
+      const previewCache = new Map();
+      const previewTasks = new Map();
+
+      // Render static image previews using html2canvas and cache results.
+      async function generateScreenshots() {
+        if (typeof window.html2canvas !== "function") return;
+        const images = Array.from(
+          document.querySelectorAll(".preview-img[data-page]")
+        );
+        for (const img of images) {
+          const page = img.dataset.page;
+          if (!page || img.dataset.rendered === "true") continue;
+          if (previewCache.has(page)) {
+            applyPreview(img, previewCache.get(page));
+            continue;
+          }
+          if (previewTasks.has(page)) {
+            try {
+              const cached = await previewTasks.get(page);
+              previewCache.set(page, cached);
+              applyPreview(img, cached);
+            } catch (err) {
+              console.warn("Preview capture failed for", page, err);
+              showPreviewError(img);
+            }
+            continue;
+          }
           try {
-            const cached = await previewTasks.get(page);
-            previewCache.set(page, cached);
-            applyPreview(img, cached);
+            const task = capturePage(page);
+            previewTasks.set(page, task);
+            const dataUrl = await task;
+            previewCache.set(page, dataUrl);
+            applyPreview(img, dataUrl);
           } catch (err) {
-            console.warn('Preview capture failed for', page, err);
+            console.warn("Preview capture failed for", page, err);
             showPreviewError(img);
+          } finally {
+            previewTasks.delete(page);
           }
-          continue;
-        }
-        try {
-          const task = capturePage(page);
-          previewTasks.set(page, task);
-          const dataUrl = await task;
-          previewCache.set(page, dataUrl);
-          applyPreview(img, dataUrl);
-        } catch (err) {
-          console.warn('Preview capture failed for', page, err);
-          showPreviewError(img);
-        } finally {
-          previewTasks.delete(page);
         }
       }
-    }
 
-    function applyPreview(img, dataUrl) {
-      const container = img.parentElement;
-      img.src = dataUrl;
-      img.dataset.rendered = 'true';
-      img.classList.add('visible');
-      const skeleton = container && container.querySelector('.skeleton');
-      if (skeleton) skeleton.remove();
-      const status = container && container.querySelector('.preview-status');
-      if (status) status.hidden = true;
-    }
-
-    function showPreviewError(img) {
-      const container = img.parentElement;
-      img.dataset.rendered = 'true';
-      if (container) {
-        const skeleton = container.querySelector('.skeleton');
+      function applyPreview(img, dataUrl) {
+        const container = img.parentElement;
+        img.src = dataUrl;
+        img.dataset.rendered = "true";
+        img.classList.add("visible");
+        const skeleton = container && container.querySelector(".skeleton");
         if (skeleton) skeleton.remove();
-        const status = container.querySelector('.preview-status');
-        if (status) status.hidden = false;
+        const status = container && container.querySelector(".preview-status");
+        if (status) status.hidden = true;
       }
-    }
 
-    function capturePage(href) {
-      return new Promise((resolve, reject) => {
-        const iframe = document.createElement('iframe');
-        iframe.style.position = 'fixed';
-        iframe.style.top = '-200vh';
-        iframe.style.left = '0';
-        iframe.style.width = '1280px';
-        iframe.style.height = '720px';
-        iframe.style.border = '0';
-        iframe.style.visibility = 'hidden';
-        iframe.style.pointerEvents = 'none';
-        iframe.setAttribute('aria-hidden', 'true');
+      function showPreviewError(img) {
+        const container = img.parentElement;
+        img.dataset.rendered = "true";
+        if (container) {
+          const skeleton = container.querySelector(".skeleton");
+          if (skeleton) skeleton.remove();
+          const status = container.querySelector(".preview-status");
+          if (status) status.hidden = false;
+        }
+      }
 
-        const cleanup = () => {
-          iframe.removeEventListener('load', onLoad);
-          iframe.removeEventListener('error', onError);
-          iframe.remove();
-        };
+      function capturePage(href) {
+        return new Promise((resolve, reject) => {
+          const iframe = document.createElement("iframe");
+          iframe.style.position = "fixed";
+          iframe.style.top = "-200vh";
+          iframe.style.left = "0";
+          iframe.style.width = "1280px";
+          iframe.style.height = "720px";
+          iframe.style.border = "0";
+          iframe.style.visibility = "hidden";
+          iframe.style.pointerEvents = "none";
+          iframe.setAttribute("aria-hidden", "true");
 
-        const onError = () => {
-          cleanup();
-          reject(new Error('Preview capture failed'));
-        };
+          const cleanup = () => {
+            iframe.removeEventListener("load", onLoad);
+            iframe.removeEventListener("error", onError);
+            iframe.remove();
+          };
 
-        const onLoad = async () => {
-          try {
-            const doc = iframe.contentDocument;
-            if (!doc) throw new Error('Empty document');
-            await new Promise(r => setTimeout(r, 280));
-            iframe.contentWindow.scrollTo(0, 0);
-            const bg = doc.body ? getComputedStyle(doc.body).backgroundColor : '#ffffff';
-            const canvas = await html2canvas(doc.documentElement, {
-              backgroundColor: bg,
-              windowWidth: iframe.contentWindow.innerWidth,
-              windowHeight: iframe.contentWindow.innerHeight,
-              scale: 0.5,
-              useCORS: true
-            });
+          const onError = () => {
             cleanup();
-            resolve(canvas.toDataURL('image/png'));
-          } catch (error) {
-            cleanup();
-            reject(error);
-          }
-        };
+            reject(new Error("Preview capture failed"));
+          };
 
-        iframe.addEventListener('load', onLoad, { once: true });
-        iframe.addEventListener('error', onError, { once: true });
-        iframe.src = href;
-        document.body.appendChild(iframe);
-      });
-    }
+          const onLoad = async () => {
+            try {
+              const doc = iframe.contentDocument;
+              if (!doc) throw new Error("Empty document");
+              await new Promise((r) => setTimeout(r, 280));
+              iframe.contentWindow.scrollTo(0, 0);
+              const bg = doc.body
+                ? getComputedStyle(doc.body).backgroundColor
+                : "#ffffff";
+              const canvas = await html2canvas(doc.documentElement, {
+                backgroundColor: bg,
+                windowWidth: iframe.contentWindow.innerWidth,
+                windowHeight: iframe.contentWindow.innerHeight,
+                scale: 0.5,
+                useCORS: true,
+              });
+              cleanup();
+              resolve(canvas.toDataURL("image/png"));
+            } catch (error) {
+              cleanup();
+              reject(error);
+            }
+          };
 
-    const style = document.createElement('style');
-    style.textContent = `
+          iframe.addEventListener("load", onLoad, { once: true });
+          iframe.addEventListener("error", onError, { once: true });
+          iframe.src = href;
+          document.body.appendChild(iframe);
+        });
+      }
+
+      const style = document.createElement("style");
+      style.textContent = `
       @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
       }
     `;
-    document.head.appendChild(style);
+      document.head.appendChild(style);
 
-    render(pages);
+      render(pages);
 
-    // Search
-    const search = document.getElementById('searchInput');
-    search.addEventListener('input', (e) => {
-      const q = e.target.value.trim().toLowerCase();
-      const filtered = pages.filter(p =>
-        p.title.toLowerCase().includes(q) ||
-        (p.desc && p.desc.toLowerCase().includes(q)) ||
-        p.href.toLowerCase().includes(q)
-      );
-      render(filtered);
-    });
-  </script>
-</body>
+      // Responsive nav
+      const navMenu = document.getElementById("primary-menu");
+      const menuToggle = document.getElementById("menuToggle");
+      if (navMenu && menuToggle) {
+        const mediaQuery = window.matchMedia("(min-width: 1101px)");
+        const toggleLabel = menuToggle.querySelector(".sr-only");
+
+        function closeMenu() {
+          navMenu.classList.remove("open");
+          menuToggle.setAttribute("aria-expanded", "false");
+          if (toggleLabel) toggleLabel.textContent = "Menünü aç";
+        }
+
+        function toggleMenu() {
+          const isOpen = navMenu.classList.toggle("open");
+          menuToggle.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+          );
+          if (toggleLabel)
+            toggleLabel.textContent = isOpen ? "Menünü bağla" : "Menünü aç";
+        }
+
+        menuToggle.addEventListener("click", toggleMenu);
+
+        document.addEventListener("click", (evt) => {
+          if (!navMenu.classList.contains("open")) return;
+          const target = evt.target;
+          if (!(target instanceof Element)) return;
+          if (navMenu.contains(target) || menuToggle.contains(target)) return;
+          closeMenu();
+        });
+
+        document.addEventListener("keydown", (evt) => {
+          if (evt.key === "Escape") closeMenu();
+        });
+
+        const handleChange = (evt) => {
+          if (evt.matches) closeMenu();
+        };
+        if (typeof mediaQuery.addEventListener === "function") {
+          mediaQuery.addEventListener("change", handleChange);
+        } else if (typeof mediaQuery.addListener === "function") {
+          mediaQuery.addListener(handleChange);
+        }
+
+        navMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", closeMenu);
+        });
+      }
+
+      // Search
+      const search = document.getElementById("searchInput");
+      search.addEventListener("input", (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        const filtered = pages.filter(
+          (p) =>
+            p.title.toLowerCase().includes(q) ||
+            (p.desc && p.desc.toLowerCase().includes(q)) ||
+            p.href.toLowerCase().includes(q)
+        );
+        render(filtered);
+      });
+    </script>
+  </body>
 </html>
