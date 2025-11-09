@@ -998,51 +998,1278 @@
       }
       .prayer-card {
         position: relative;
-        /* Truncated for brevity... */
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: 0.4s;
+        backdrop-filter: blur(10px) saturate(150%);
+      }
+      .prayer-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 26px -6px rgba(0, 0, 0, 0.5);
+      }
+      .prayer-name {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: var(--text-soft);
+        text-transform: uppercase;
+      }
+      .prayer-time {
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        font-variant-numeric: tabular-nums;
+        color: var(--text);
+      }
+      .prayer-card.active {
+        background: linear-gradient(
+            140deg,
+            rgba(34, 197, 94, 0.55),
+            rgba(34, 197, 94, 0.15)
+          )
+          border-box;
+        border: 2px solid rgba(34, 197, 94, 0.85);
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.35),
+          0 8px 28px -6px rgba(0, 0, 0, 0.6);
+      }
+      .prayer-card.active .prayer-name,
+      .prayer-card.active .prayer-time {
+        color: #fff;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+      }
+      .prayer-card.upcoming {
+        background: linear-gradient(
+          140deg,
+          rgba(255, 190, 11, 0.55),
+          rgba(255, 0, 110, 0.45),
+          rgba(131, 56, 236, 0.55)
+        );
+        border: 2px solid rgba(255, 190, 11, 0.65);
+        box-shadow: 0 0 0 3px rgba(255, 190, 11, 0.35),
+          0 8px 28px -6px rgba(0, 0, 0, 0.6);
+      }
+      .prayer-card.upcoming .prayer-name,
+      .prayer-card.upcoming .prayer-time {
+        color: #fff;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+      }
+
+      /* Loading & error */
+      .loading,
+      .error-msg {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 22px 18px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        border-radius: 14px;
+        backdrop-filter: blur(10px);
+      }
+      .loading {
+        background: var(--glass-solid);
+        color: var(--text-soft);
+        border: 1px solid var(--border);
+      }
+      .error-msg {
+        background: rgba(239, 68, 68, 0.12);
+        color: var(--danger);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+      }
+
+      /* Theme toggle (global) */
+      .theme-toggle {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--glass);
+        backdrop-filter: blur(12px) saturate(160%);
+        border: 1px solid var(--border);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        cursor: pointer;
+        color: var(--text);
+        box-shadow: 0 6px 22px -6px rgba(0, 0, 0, 0.55);
+        transition: 0.35s;
+      }
+      .theme-toggle:hover {
+        transform: translateY(-3px);
+      }
+      .theme-toggle input {
+        display: none;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(160deg, #ffbe0b, #ff006e, #8338ec);
+        border-radius: 10px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 860px) {
+        .prayer-grid {
+          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        }
+      }
+      @media (max-width: 520px) {
+        h1 {
+          font-size: clamp(1.7rem, 8vw, 2.4rem);
+        }
+        .wrapper {
+          margin: 12px auto 70px;
+        }
+        .panel {
+          border-radius: 16px;
+        }
+        .prayer-card {
+          padding: 14px 12px;
+        }
+        .current-time {
+          font-size: clamp(1.9rem, 11vw, 2.6rem);
+        }
+        .glass-btn {
+          width: 48px;
+          height: 48px;
+          font-size: 1.2rem;
+        }
+        .glass-btn::after {
+          bottom: -24px;
+          font-size: 0.6rem;
+        }
+        #settingsPanel .section-title.collapsible {
+          padding: 15px 18px;
+          font-size: 0.78rem;
+          gap: 12px;
+        }
+        #settingsPanel .section-title.collapsible span:first-child {
+          gap: 10px;
+        }
+        #settingsPanel .section-title.collapsible span:first-child::before {
+          width: 30px;
+          height: 30px;
+          font-size: 1rem;
+        }
+        #settingsPanel .section-content {
+          padding: 18px 16px;
+        }
+        #settingsContent {
+          gap: 16px;
+        }
+        .settings-field {
+          gap: 8px;
+        }
+        .settings-subsection {
+          gap: 12px;
+        }
+        #settingsContent .section-title.collapsible.nested {
+          font-size: 0.72rem;
+          padding: 10px 14px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition: none !important;
+        }
+      }
+
+      /* Focus visible */
+      :focus-visible {
+        outline: none;
+        box-shadow: var(--focus);
       }
     </style>
   </head>
   <body>
-    <!-- The rest of your HTML body... -->
+    <button
+      class="theme-toggle"
+      title="Tema değiş"
+      id="themeToggle"
+      type="button"
+    >
+      <span id="themeLabel">Karanlık</span>
+      <div class="switch" id="themeSwitch" aria-hidden="true"></div>
+    </button>
+
+    <div class="particles" aria-hidden="true">
+      <span style="left: 8%; animation-delay: 0s"></span>
+      <span style="left: 22%; animation-delay: 5s"></span>
+      <span style="left: 38%; animation-delay: 2s"></span>
+      <span style="left: 56%; animation-delay: 7s"></span>
+      <span style="left: 72%; animation-delay: 3s"></span>
+      <span style="left: 88%; animation-delay: 6s"></span>
+    </div>
+
+    <div class="wrapper">
+      <div class="panel header">
+        <div class="brand-visual">
+          <img
+            src="bismillah.png"
+            alt="Bismillah - Rahmân ve Rahîm olan Allah'ın adıyla"
+            decoding="async"
+            loading="eager"
+          />
+        </div>
+        <h1>
+          Namaz Vakti
+          <span
+            class="status-dot loading"
+            id="statusIndicator"
+            aria-label="Yükleme durumu"
+            title="Veri yükleniyor"
+          ></span>
+        </h1>
+        <div class="location-line" id="locationDisplay">📍 Berlin, Almanya</div>
+      </div>
+
+      <div class="panel">
+        <div
+          class="controls-bar"
+          role="tablist"
+          aria-label="Ana menü seçenekleri"
+        >
+          <button
+            class="glass-btn"
+            id="gpsBtn"
+            role="tab"
+            aria-selected="false"
+            title="GPS ile konum tespit et"
+            data-label="GPS"
+          >
+            📍
+          </button>
+          <button
+            class="glass-btn"
+            id="cityBtn"
+            role="tab"
+            aria-selected="false"
+            title="Şehir seçimi yap"
+            data-label="Şehir"
+          >
+            🌍
+          </button>
+          <button
+            class="glass-btn"
+            id="settingsBtn"
+            role="tab"
+            aria-selected="false"
+            title="Uygulama ayarları"
+            data-label="Ayarlar"
+          >
+            ⚙️
+          </button>
+          <button
+            class="glass-btn"
+            id="refreshBtn"
+            type="button"
+            title="Vakitleri yenile"
+            data-label="Yenile"
+          >
+            🔄
+          </button>
+        </div>
+
+    <!-- Settings Panel -->
+    <div class="section" id="settingsPanel" hidden>
+          <div class="section-inner">
+            <div class="section-content collapsed" id="settingsContent" hidden>
+              <div class="settings-subsection">
+                <button
+                  class="section-title collapsible nested collapsed"
+                  type="button"
+                  data-target="methodSettings"
+                  aria-expanded="false"
+                >
+                  <span>Hesaplama yöntemi</span>
+                  <span class="section-arrow" aria-hidden="true">⬇️</span>
+                </button>
+                <div
+                  class="section-content nested collapsed"
+                  id="methodSettings"
+                  hidden>
+                  <div class="settings-field">
+                    <label class="settings-label" for="methodSelect"
+                      >Hesaplama yöntemi</label
+                    >
+                    <select class="method-select" id="methodSelect">
+                      <option value="13">Ummah - 13</option>
+                      <option value="0">Shia - 0</option>
+                      <option value="1">Hanafi - 1</option>
+                      <option value="2">Maliki - 2</option>
+                      <option value="3">Shafi - 3</option>
+                      <option value="4">Hanbali - 4</option>
+                      <option value="5">Jafari - 5</option>
+                      <option value="7">Al Ghad - 7</option>
+                      <option value="8">
+                        University of Islamic Sciences - 8
+                      </option>
+                      <option value="9">Diyanet - 9</option>
+                      <option value="10">Kuwait - 10</option>
+                      <option value="11">Qatar - 11</option>
+                      <option value="12">Majlis Ugama - 12</option>
+                      <option value="14">UOIF - 14</option>
+                      <option value="15">JAKIM - 15</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-subsection">
+                <button
+                  class="section-title collapsible nested collapsed"
+                  type="button"
+                  data-target="citySettings"
+                  aria-expanded="false"
+                >
+                  <span>Şehir ve ülke</span>
+                  <span class="section-arrow" aria-hidden="true">⬇️</span>
+                </button>
+                <div
+                  class="section-content nested collapsed"
+                  id="citySettings"
+                  hidden
+                >
+                  <div class="settings-field">
+                    <label class="settings-label" for="searchBox"
+                      >Şehir seçimi</label
+                    >
+                    <input
+                      type="search"
+                      class="search-box"
+                      id="searchBox"
+                      placeholder="Şehir ara..."
+                    />
+                    <div class="city-grid" id="cityGrid"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-actions">
+                <button
+                  type="button"
+                  class="apply-btn"
+                  id="settingsApplyBtn"
+                >
+                  Tamam
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date / Time / Countdown -->
+        <div class="section">
+          <div class="date-box">
+            <div class="gregorian-date" id="gregorianDate">Yükleniyor...</div>
+            <div class="hijri-date" id="hijriDate">--</div>
+          </div>
+          <div class="time-panel">
+            <div class="current-time" id="currentTime">--:--:--</div>
+            <div class="next-prayer-info" id="nextPrayerInfo">--</div>
+            <div class="countdown-timer" id="countdownTimer">--:--:--</div>
+          </div>
+        </div>
+
+        <!-- Prayer times -->
+        <div class="section">
+          <div class="section-inner">
+            <div class="section-title">Vakitler</div>
+            <div class="prayer-grid" id="prayerTimesGrid">
+              <div class="loading">Namaz vakitleri yükleniyor...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        // --- Settings Panel Toggle ---
-        const settingsToggle = document.querySelector('#settingsPanel .section-title.collapsible');
-        const settingsContent = document.querySelector('#settingsPanel .section-content');
+      /* Preserve original logic, only adapted selectors & toggles */
+      let prayerData = null;
+      let countdownInterval = null;
+      let currentCity = "Berlin";
+      let currentCountry = "Almanya";
+      let currentCountryCode = "DE";
+      let currentLat = null;
+      let currentLon = null;
+      let useGPS = false;
+      let prayerMethod = "13";
+      let cities = [];
+      let pendingCity = currentCity;
+      let pendingCountry = currentCountry;
+      let pendingCountryCode = currentCountryCode;
+      let pendingMethod = prayerMethod;
+      let themeToggleButton = null;
+      let themeSwitch = null;
+      let themeLabel = null;
+      let gpsResolvedAddress = null;
+      const TIMEZONE_FALLBACK =
+        Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+      let currentTimezone = TIMEZONE_FALLBACK;
+      let prayerDateInfo = null;
+      const PRAYER_SEQUENCE = [
+        { key: "Fajr", label: "İmsak" },
+        { key: "Sunrise", label: "Güneş" },
+        { key: "Dhuhr", label: "Öğle" },
+        { key: "Asr", label: "İkindi" },
+        { key: "Maghrib", label: "Akşam" },
+        { key: "Isha", label: "Yatsı" },
+      ];
+      const COUNTRY_API_MAP = {
+        Almanya: "Germany",
+        Türkiye: "Turkey",
+        İngiltere: "United Kingdom",
+        Fransa: "France",
+        İtalya: "Italy",
+        İspanya: "Spain",
+        Hollanda: "Netherlands",
+        Avusturya: "Austria",
+        İsviçre: "Switzerland",
+        Belçika: "Belgium",
+        Azerbaycan: "Azerbaijan",
+        "Suudi Arabistan": "Saudi Arabia",
+        Katar: "Qatar",
+        Kuveyt: "Kuwait",
+        "Birleşik Arap Emirlikleri": "United Arab Emirates",
+        ABD: "United States",
+      };
+      const COUNTRY_API_NAME_MAP = {
+        DE: "Germany",
+        TR: "Turkey",
+        GB: "United Kingdom",
+        FR: "France",
+        IT: "Italy",
+        ES: "Spain",
+        NL: "Netherlands",
+        AT: "Austria",
+        CH: "Switzerland",
+        BE: "Belgium",
+        AZ: "Azerbaijan",
+        SA: "Saudi Arabia",
+        QA: "Qatar",
+        KW: "Kuwait",
+        AE: "United Arab Emirates",
+        US: "United States",
+        CA: "Canada",
+      };
+      const COUNTRY_DISPLAY_MAP = {
+        DE: "Almanya",
+        TR: "Türkiye",
+        GB: "Birleşik Krallık",
+        FR: "Fransa",
+        IT: "İtalya",
+        ES: "İspanya",
+        NL: "Hollanda",
+        AT: "Avusturya",
+        CH: "İsviçre",
+        BE: "Belçika",
+        AZ: "Azerbaycan",
+        SA: "Suudi Arabistan",
+        QA: "Katar",
+        KW: "Kuveyt",
+        AE: "Birleşik Arap Emirlikleri",
+        US: "Amerika Birleşik Devletleri",
+        CA: "Kanada",
+      };
 
-        if (settingsToggle && settingsContent) {
-          // Initially hide the content by ensuring the 'collapsed' class is present
-          settingsToggle.classList.add('collapsed');
-          settingsContent.classList.add('collapsed');
+      const statusIndicator = document.getElementById("statusIndicator");
+      function setStatus(state) {
+        statusIndicator.classList.remove("success", "error", "loading");
+        statusIndicator.classList.add(state);
+      }
 
-          settingsToggle.addEventListener('click', () => {
-            settingsToggle.classList.toggle('collapsed');
-            settingsContent.classList.toggle('collapsed');
-          });
+      function cleanTimeString(raw) {
+        return (raw || "")
+          .toString()
+          .replace(/\s*\(.+\)/, "")
+          .trim();
+      }
+
+      function timeStringToSeconds(str) {
+        const match = /^\s*(\d{1,2}):(\d{2})\s*$/.exec(str || "");
+        if (!match) return null;
+        const hours = Number(match[1]);
+        const minutes = Number(match[2]);
+        if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+        return hours * 3600 + minutes * 60;
+      }
+
+      function getActiveTimezone() {
+        return currentTimezone || TIMEZONE_FALLBACK;
+      }
+
+      function resolveCountryForApi(countryName, countryCode) {
+        if (countryCode) {
+          const upper = countryCode.toUpperCase();
+          if (COUNTRY_API_NAME_MAP[upper]) {
+            return COUNTRY_API_NAME_MAP[upper];
+          }
         }
-        
-        // --- Nested Collapsible Sections within Settings ---
-        const nestedToggles = document.querySelectorAll('#settingsContent .section-title.collapsible.nested');
+        if (countryName && COUNTRY_API_MAP[countryName]) {
+          return COUNTRY_API_MAP[countryName];
+        }
+        return countryName;
+      }
 
-        nestedToggles.forEach(toggle => {
-          const content = toggle.nextElementSibling;
-          if (content && content.classList.contains('section-content')) {
-            // Start with nested sections collapsed
-            toggle.classList.add('collapsed');
-            content.classList.add('collapsed');
-            
-            toggle.addEventListener('click', (e) => {
-              e.stopPropagation(); // Prevents the main settings panel from toggling
-              toggle.classList.toggle('collapsed');
-              content.classList.toggle('collapsed');
-            });
+      function updateLocationDisplay() {
+        if (!locationDisplay) {
+          return;
+        }
+        const tzSuffix = currentTimezone ? ` (${currentTimezone})` : "";
+        if (useGPS) {
+          if (
+            gpsResolvedAddress &&
+            gpsResolvedAddress.city &&
+            gpsResolvedAddress.country
+          ) {
+            locationDisplay.textContent = `📍 ${gpsResolvedAddress.city}, ${gpsResolvedAddress.country}${tzSuffix}`;
+            return;
+          }
+          if (currentLat !== null && currentLon !== null) {
+            locationDisplay.textContent = `📍 GPS: ${currentLat.toFixed(
+              4
+            )}, ${currentLon.toFixed(4)}${tzSuffix}`;
+            return;
+          }
+          locationDisplay.textContent = `📍 GPS kullanılıyor${tzSuffix}`;
+          return;
+        }
+        locationDisplay.textContent = `📍 ${currentCity}, ${currentCountry}${tzSuffix}`;
+      }
+
+      function getNowPartsInTimezone(timeZone) {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+          timeZone,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        });
+        const parts = formatter.format(new Date()).split(":").map(Number);
+        const [hour = 0, minute = 0, second = 0] = parts;
+        const totalSeconds = hour * 3600 + minute * 60 + second;
+        return { hour, minute, second, totalSeconds };
+      }
+
+      function buildPrayerSchedule() {
+        if (!prayerData) return [];
+        return PRAYER_SEQUENCE.map((item) => {
+          const raw = cleanTimeString(prayerData[item.key]);
+          const seconds = timeStringToSeconds(raw);
+          return {
+            key: item.key,
+            label: item.label,
+            rawTime: raw,
+            seconds,
+          };
+        }).filter((entry) => entry.seconds !== null);
+      }
+
+      async function reverseGeocode(lat, lon) {
+        const params = new URLSearchParams({
+          format: "jsonv2",
+          lat: String(lat),
+          lon: String(lon),
+          "accept-language": "tr",
+        });
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?${params.toString()}`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`Reverse geocoding failed (${response.status})`);
+        }
+        const data = await response.json();
+        const address = data.address || {};
+        const cityCandidate =
+          address.city ||
+          address.town ||
+          address.village ||
+          address.municipality ||
+          address.state_district ||
+          address.county ||
+          "";
+        const fallbackName = (data.name || "").split(",")[0] || ""; // use main label if city missing
+        const city = (cityCandidate || fallbackName || "").trim();
+        const countryCode = address.country_code
+          ? address.country_code.toUpperCase()
+          : null;
+        const mappedCountry =
+          countryCode && COUNTRY_DISPLAY_MAP[countryCode]
+            ? COUNTRY_DISPLAY_MAP[countryCode]
+            : "";
+        const country = (mappedCountry || address.country || "").trim();
+        return {
+          city,
+          country,
+          countryCode,
+          raw: data,
+        };
+      }
+
+      function qs(id) {
+        return document.getElementById(id);
+      }
+
+      const cityBtn = qs("cityBtn");
+      const gpsBtn = qs("gpsBtn");
+      const settingsBtn = qs("settingsBtn");
+      const refreshBtn = qs("refreshBtn");
+
+      const settingsPanel = qs("settingsPanel");
+      const searchBox = qs("searchBox");
+      const cityGrid = qs("cityGrid");
+      const methodSelect = qs("methodSelect");
+      const settingsApplyBtn = qs("settingsApplyBtn");
+      const settingsContentEl = qs("settingsContent");
+      const locationDisplay = qs("locationDisplay");
+      const nestedToggles = document.querySelectorAll(
+        "#settingsContent .section-title.collapsible.nested"
+      );
+
+      function setNestedExpanded(button, expanded) {
+        const targetId = button.getAttribute("data-target");
+        const target = targetId ? document.getElementById(targetId) : null;
+        button.classList.toggle("collapsed", !expanded);
+        button.setAttribute("aria-expanded", expanded.toString());
+        if (target) {
+          target.classList.toggle("collapsed", !expanded);
+          target.hidden = !expanded;
+        }
+      }
+
+      function ensureNestedExpanded(targetId) {
+        const button = document.querySelector(
+          `#settingsContent .section-title.collapsible.nested[data-target="${targetId}"]`
+        );
+        if (button) {
+          const expanded = button.getAttribute("aria-expanded") === "true";
+          if (!expanded) {
+            setNestedExpanded(button, true);
+          }
+        }
+      }
+
+      nestedToggles.forEach((button) => {
+        button.addEventListener("click", () => {
+          const expanded = button.getAttribute("aria-expanded") === "true";
+          setNestedExpanded(button, !expanded);
+        });
+      });
+
+      function hasSettingsChanges() {
+        const methodChanged = pendingMethod !== prayerMethod;
+        const cityChanged =
+          pendingCity !== currentCity ||
+          pendingCountry !== currentCountry ||
+          (pendingCountryCode || null) !== (currentCountryCode || null);
+        return methodChanged || cityChanged;
+      }
+
+      function updateApplyButtonState() {
+        if (!settingsApplyBtn) return;
+        const hasChanges = hasSettingsChanges();
+        settingsApplyBtn.classList.toggle("no-changes", !hasChanges);
+        if (hasChanges) {
+          settingsApplyBtn.removeAttribute("aria-disabled");
+        } else {
+          settingsApplyBtn.setAttribute("aria-disabled", "true");
+        }
+      }
+
+      function renderCityList(list) {
+        cityGrid.innerHTML = "";
+        if (!list.length) {
+          const empty = document.createElement("div");
+          empty.className = "city-empty";
+          empty.textContent = "Şehir bulunamadı.";
+          cityGrid.appendChild(empty);
+          return;
+        }
+        list.forEach((c) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "city-btn";
+          btn.textContent = c.display;
+          const isSelected =
+            c.display === pendingCity &&
+            c.country === pendingCountry &&
+            (c.countryCode || null) === (pendingCountryCode || null);
+          if (isSelected) {
+            btn.classList.add("selected");
+          }
+          btn.addEventListener("click", () => {
+            pendingCity = c.display;
+            pendingCountry = c.country;
+            pendingCountryCode = c.countryCode || null;
+            cityGrid
+              .querySelectorAll(".city-btn")
+              .forEach((b) => b.classList.remove("selected"));
+            btn.classList.add("selected");
+            updateApplyButtonState();
+          });
+          cityGrid.appendChild(btn);
+        });
+      }
+
+      function refreshCityList() {
+        if (!cityGrid) return;
+        if (!cities.length) {
+          cityGrid.innerHTML =
+            '<div class="loading">Şehirler yükleniyor...</div>';
+          return;
+        }
+        const query = searchBox ? searchBox.value.trim().toLowerCase() : "";
+        const filtered = query
+          ? cities.filter((c) => c.display.toLowerCase().includes(query))
+          : cities;
+        renderCityList(filtered);
+      }
+
+      function resetPendingSelections() {
+        pendingCity = currentCity;
+        pendingCountry = currentCountry;
+        pendingCountryCode = currentCountryCode;
+        pendingMethod = prayerMethod;
+        if (methodSelect) {
+          methodSelect.value = pendingMethod;
+        }
+        if (searchBox) {
+          searchBox.value = "";
+        }
+        refreshCityList();
+        updateApplyButtonState();
+      }
+
+      function setSettingsExpanded(expanded) {
+        if (!settingsContentEl) return;
+        settingsContentEl.classList.toggle("collapsed", !expanded);
+        settingsContentEl.hidden = !expanded;
+        if (!expanded) {
+          nestedToggles.forEach((button) => setNestedExpanded(button, false));
+        }
+      }
+
+      function showSettingsPanel(show) {
+        if (settingsPanel) {
+          settingsPanel.hidden = !show;
+        }
+      }
+
+      function openSettingsPanel({ focusCity = false } = {}) {
+        showSettingsPanel(true);
+        setSettingsExpanded(true);
+        if (settingsBtn) {
+          settingsBtn.classList.add("active");
+          settingsBtn.setAttribute("aria-selected", "true");
+        }
+        if (focusCity) {
+          if (cityBtn) {
+            cityBtn.classList.add("active");
+            cityBtn.setAttribute("aria-selected", "true");
+          }
+          ensureNestedExpanded("citySettings");
+          requestAnimationFrame(() => {
+            if (searchBox) {
+              searchBox.focus();
+            }
+          });
+        } else if (cityBtn) {
+          cityBtn.classList.remove("active");
+          cityBtn.setAttribute("aria-selected", "false");
+        }
+        refreshCityList();
+        updateApplyButtonState();
+      }
+
+      function closeSettingsPanel() {
+        setSettingsExpanded(false);
+        showSettingsPanel(false);
+        if (settingsBtn) {
+          settingsBtn.classList.remove("active");
+          settingsBtn.setAttribute("aria-selected", "false");
+        }
+        if (cityBtn) {
+          cityBtn.classList.remove("active");
+          cityBtn.setAttribute("aria-selected", "false");
+        }
+        resetPendingSelections();
+      }
+
+      if (cityBtn) {
+        cityBtn.addEventListener("click", () => {
+          const isActive =
+            settingsPanel &&
+            !settingsPanel.hidden &&
+            cityBtn.classList.contains("active");
+          if (isActive) {
+            closeSettingsPanel();
+          } else {
+            openSettingsPanel({ focusCity: true });
           }
         });
+      }
 
-        // --- Other JavaScript for your page can go here ---
+      if (settingsBtn) {
+        settingsBtn.addEventListener("click", () => {
+          const isOpen = settingsPanel && !settingsPanel.hidden;
+          if (isOpen) {
+            closeSettingsPanel();
+          } else {
+            openSettingsPanel();
+          }
+        });
+      }
 
+      function setThemeMode(mode) {
+        const theme = mode === "light" ? "light" : "dark";
+        const isDark = theme === "dark";
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("namaz-theme", theme);
+        if (themeSwitch) {
+          themeSwitch.classList.toggle("active", isDark);
+        }
+        if (themeLabel) {
+          themeLabel.textContent = isDark ? "Karanlık" : "Aydınlık";
+        }
+        if (themeToggleButton) {
+          themeToggleButton.setAttribute("aria-pressed", isDark.toString());
+        }
+      }
+
+      function toggleThemeMode() {
+        const isDark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        setThemeMode(isDark ? "light" : "dark");
+      }
+      /* Dummy loadCities (short sample) */
+      async function loadCitiesFromAPI() {
+        const citiesData = [
+          { display: "Berlin", country: "Almanya", countryCode: "DE" },
+          { display: "Hamburg", country: "Almanya", countryCode: "DE" },
+          { display: "München", country: "Almanya", countryCode: "DE" },
+          { display: "İstanbul", country: "Türkiye", countryCode: "TR" },
+          { display: "Ankara", country: "Türkiye", countryCode: "TR" },
+          { display: "İzmir", country: "Türkiye", countryCode: "TR" },
+        ];
+        cities = citiesData;
+        refreshCityList();
+        updateApplyButtonState();
+      }
+
+      if (searchBox) {
+        searchBox.addEventListener("input", () => {
+          refreshCityList();
+        });
+      }
+
+      async function fetchPrayerTimes() {
+        setStatus("loading");
+        const grid = document.getElementById("prayerTimesGrid");
+        if (grid) {
+          grid.innerHTML =
+            '<div class="loading">Namaz vakitleri yükleniyor...</div>';
+        }
+
+        try {
+          const timestamp = Math.floor(Date.now() / 1000);
+          let endpoint;
+
+          if (useGPS && currentLat !== null && currentLon !== null) {
+            endpoint = `https://api.aladhan.com/v1/timings/${timestamp}?latitude=${encodeURIComponent(
+              currentLat
+            )}&longitude=${encodeURIComponent(
+              currentLon
+            )}&method=${prayerMethod}`;
+          } else {
+            const countryParam =
+              resolveCountryForApi(currentCountry, currentCountryCode) ||
+              currentCountry;
+            endpoint = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(
+              currentCity
+            )}&country=${encodeURIComponent(
+              countryParam
+            )}&method=${prayerMethod}`;
+          }
+
+          const response = await fetch(endpoint);
+          if (!response.ok) {
+            throw new Error(`API hatası (${response.status})`);
+          }
+
+          const payload = await response.json();
+          if (payload.code !== 200 || !payload.data) {
+            throw new Error("Beklenmeyen API yanıtı");
+          }
+
+          const { timings, meta, date } = payload.data;
+
+          prayerData = {
+            Fajr: cleanTimeString(timings.Fajr || timings.Imsak),
+            Sunrise: cleanTimeString(timings.Sunrise),
+            Dhuhr: cleanTimeString(timings.Dhuhr || timings.Zuhr),
+            Asr: cleanTimeString(timings.Asr),
+            Maghrib: cleanTimeString(timings.Maghrib),
+            Isha: cleanTimeString(timings.Isha),
+          };
+
+          currentTimezone =
+            meta?.timezone || currentTimezone || TIMEZONE_FALLBACK;
+          prayerDateInfo = {
+            gregorian: date?.gregorian || null,
+            hijri: date?.hijri || null,
+          };
+
+          renderPrayerTimes();
+          updateDate();
+          updateClock();
+
+          updateLocationDisplay();
+
+          setStatus("success");
+        } catch (error) {
+          console.error("Namaz vakitleri yüklenemedi:", error);
+          setStatus("error");
+          prayerData = null;
+          prayerDateInfo = null;
+          if (grid) {
+            grid.innerHTML =
+              '<div class="error-msg">Vakitler yüklenemedi. Lütfen tekrar deneyin.</div>';
+          }
+        } finally {
+          if (gpsBtn) {
+            gpsBtn.textContent = useGPS ? "📡" : "📍";
+            gpsBtn.disabled = false;
+          }
+        }
+      }
+
+      function renderPrayerTimes() {
+        const grid = document.getElementById("prayerTimesGrid");
+        if (!grid) {
+          return;
+        }
+        if (!prayerData) {
+          grid.innerHTML =
+            '<div class="loading">Namaz vakitleri bekleniyor...</div>';
+          return;
+        }
+
+        grid.innerHTML = "";
+        PRAYER_SEQUENCE.forEach((item) => {
+          const time = cleanTimeString(prayerData[item.key]) || "--:--";
+          const card = document.createElement("div");
+          card.className = "prayer-card";
+          card.dataset.prayerKey = item.key;
+          card.innerHTML =
+            '<div class="prayer-name">' +
+            item.label +
+            '</div><div class="prayer-time">' +
+            time +
+            "</div>";
+          grid.appendChild(card);
+        });
+
+        updateCountdown();
+      }
+
+      function updateClock() {
+        const display = document.getElementById("currentTime");
+        if (display) {
+          const formatter = new Intl.DateTimeFormat("tr-TR", {
+            timeZone: getActiveTimezone(),
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+          });
+          display.textContent = formatter.format(new Date());
+        }
+
+        updateCountdown();
+      }
+
+      function updateCountdown() {
+        const nextInfo = document.getElementById("nextPrayerInfo");
+        const countdownEl = document.getElementById("countdownTimer");
+
+        if (!prayerData) {
+          if (nextInfo) {
+            nextInfo.textContent = "--";
+          }
+          if (countdownEl) {
+            countdownEl.textContent = "--:--:--";
+          }
+          return;
+        }
+
+        const schedule = buildPrayerSchedule();
+        if (!schedule.length) {
+          return;
+        }
+
+        const nowParts = getNowPartsInTimezone(getActiveTimezone());
+        const nowSeconds = nowParts.totalSeconds;
+
+        let nextIndex = schedule.findIndex(
+          (entry) => entry.seconds > nowSeconds
+        );
+        if (nextIndex === -1) {
+          nextIndex = 0;
+        }
+        const nextPrayer = schedule[nextIndex];
+        const currentIndex =
+          nextIndex === 0 ? schedule.length - 1 : nextIndex - 1;
+        const currentPrayer = schedule[currentIndex];
+
+        const targetSeconds =
+          nextPrayer.seconds > nowSeconds
+            ? nextPrayer.seconds
+            : nextPrayer.seconds + 86400;
+        const remainingSeconds = targetSeconds - nowSeconds;
+        const hours = Math.floor(remainingSeconds / 3600);
+        const minutes = Math.floor((remainingSeconds % 3600) / 60);
+        const seconds = remainingSeconds % 60;
+
+        if (nextInfo) {
+          nextInfo.textContent = `Sonraki: ${nextPrayer.label} (${nextPrayer.rawTime})`;
+        }
+
+        if (countdownEl) {
+          countdownEl.textContent = [hours, minutes, seconds]
+            .map((value) => String(value).padStart(2, "0"))
+            .join(":");
+        }
+
+        const cards = document.querySelectorAll(".prayer-card");
+        cards.forEach((card) => card.classList.remove("active", "upcoming"));
+
+        const activeCard = document.querySelector(
+          `.prayer-card[data-prayer-key="${currentPrayer.key}"]`
+        );
+        if (activeCard) {
+          activeCard.classList.add("active");
+        }
+
+        const upcomingCard = document.querySelector(
+          `.prayer-card[data-prayer-key="${nextPrayer.key}"]`
+        );
+        if (upcomingCard && upcomingCard !== activeCard) {
+          upcomingCard.classList.add("upcoming");
+        }
+      }
+
+      setInterval(updateClock, 1000);
+      updateClock();
+
+      function updateDate() {
+        const tz = getActiveTimezone();
+        const now = new Date();
+        const gregorianDisplay = document.getElementById("gregorianDate");
+        if (gregorianDisplay) {
+          gregorianDisplay.textContent = new Intl.DateTimeFormat("tr-TR", {
+            timeZone: tz,
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }).format(now);
+        }
+
+        const hijriDisplay = document.getElementById("hijriDate");
+        if (hijriDisplay) {
+          if (prayerDateInfo?.hijri) {
+            const hijri = prayerDateInfo.hijri;
+            const weekday = hijri.weekday?.en || "";
+            const month = hijri.month?.en || "";
+            hijriDisplay.textContent =
+              `${weekday} ${hijri.day} ${month} ${hijri.year}`.trim();
+          } else {
+            hijriDisplay.textContent = "--";
+          }
+        }
+      }
+      updateDate();
+
+      refreshBtn.addEventListener("click", () => fetchPrayerTimes());
+      gpsBtn.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          alert("Bu tarayıcı GPS desteklemiyor.");
+          return;
+        }
+
+        setStatus("loading");
+        gpsBtn.textContent = "📡 Konum alınıyor...";
+        gpsBtn.disabled = true;
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            currentLat = position.coords.latitude;
+            currentLon = position.coords.longitude;
+            useGPS = true;
+            gpsResolvedAddress = null;
+            if (!currentCity) {
+              currentCity = "";
+            }
+            if (!currentCountry) {
+              currentCountry = "";
+            }
+            currentCountryCode = null;
+            pendingCity = currentCity;
+            pendingCountry = currentCountry;
+            pendingCountryCode = currentCountryCode;
+
+            updateLocationDisplay();
+
+            fetchPrayerTimes();
+
+            reverseGeocode(currentLat, currentLon)
+              .then((result) => {
+                const hasCity = Boolean(result.city);
+                const hasCountry = Boolean(result.country);
+                if (hasCity) {
+                  currentCity = result.city;
+                }
+                if (hasCountry) {
+                  currentCountry = result.country;
+                }
+                if (result.countryCode) {
+                  currentCountryCode = result.countryCode;
+                }
+                if (hasCity || hasCountry) {
+                  gpsResolvedAddress = {
+                    city: hasCity ? result.city : currentCity || "",
+                    country: hasCountry ? result.country : currentCountry || "",
+                    countryCode: currentCountryCode,
+                  };
+                } else {
+                  gpsResolvedAddress = null;
+                }
+                pendingCity = currentCity;
+                pendingCountry = currentCountry;
+                pendingCountryCode = currentCountryCode;
+                refreshCityList();
+                updateApplyButtonState();
+              })
+              .catch((err) => {
+                console.error("GPS reverse geocode hatası:", err);
+              })
+              .finally(() => {
+                updateLocationDisplay();
+              });
+          },
+          (error) => {
+            console.error("GPS hatası:", error);
+            setStatus("error");
+            alert("Konum alınamadı. Lütfen konum erişimine izin verin.");
+            useGPS = false;
+            gpsResolvedAddress = null;
+            updateLocationDisplay();
+            gpsBtn.textContent = "📍";
+            gpsBtn.disabled = false;
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+        );
       });
+
+      // Initialize application
+      document.addEventListener("DOMContentLoaded", () => {
+        loadCitiesFromAPI();
+        fetchPrayerTimes();
+
+        // Load saved preferences
+        const savedMethod = localStorage.getItem("namaz-method");
+        if (savedMethod) {
+          prayerMethod = savedMethod;
+        }
+        pendingMethod = prayerMethod;
+        if (methodSelect) {
+          methodSelect.value = pendingMethod;
+        }
+        closeSettingsPanel();
+      });
+
+      if (methodSelect) {
+        methodSelect.addEventListener("change", (e) => {
+          pendingMethod = e.target.value;
+          updateApplyButtonState();
+        });
+      }
+
+      if (settingsApplyBtn) {
+        settingsApplyBtn.addEventListener("click", () => {
+          const hasChanges = hasSettingsChanges();
+          if (!hasChanges) {
+            closeSettingsPanel();
+            return;
+          }
+
+          const methodChanged = pendingMethod !== prayerMethod;
+          const cityChanged =
+            pendingCity !== currentCity ||
+            pendingCountry !== currentCountry ||
+            (pendingCountryCode || null) !== (currentCountryCode || null);
+
+          prayerMethod = pendingMethod;
+          if (methodChanged) {
+            localStorage.setItem("namaz-method", prayerMethod);
+          }
+
+          if (cityChanged) {
+            currentCity = pendingCity;
+            currentCountry = pendingCountry;
+            currentCountryCode = pendingCountryCode || null;
+            useGPS = false;
+            gpsResolvedAddress = null;
+            currentLat = null;
+            currentLon = null;
+          }
+
+          updateApplyButtonState();
+          fetchPrayerTimes();
+          updateLocationDisplay();
+          closeSettingsPanel();
+        });
+      }
+
+      /* Theme toggle */
+      themeToggleButton = document.getElementById("themeToggle");
+      themeSwitch = document.getElementById("themeSwitch");
+      themeLabel = document.getElementById("themeLabel");
+
+      const storedTheme = localStorage.getItem("namaz-theme");
+      const existingTheme = document.documentElement.getAttribute("data-theme");
+      setThemeMode(storedTheme || existingTheme || "dark");
+
+      if (themeToggleButton) {
+        themeToggleButton.addEventListener("click", () => {
+          toggleThemeMode();
+        });
+      }
     </script>
   </body>
 </html>
