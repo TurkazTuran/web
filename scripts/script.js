@@ -8,7 +8,7 @@ const pages = [
   },
   {
     title: "Quran",
-    href: "quran.html",
+    href: "quran/quran.html",
     desc: "Quran-i Kərim",
     icon: "moon",
     colors: ["#0f172a", "#1d4ed8"],
