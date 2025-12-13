@@ -10,7 +10,7 @@ const pages = [
     title: "Quran",
     href: "quran/quran.html",
     desc: "Quran-i Kərim",
-    icon: "moon",
+    icon: "quran",
     colors: ["#0f172a", "#1d4ed8"],
   },
   {
@@ -42,6 +42,10 @@ function iconSVG(kind) {
     case "moon":
       return `
       <img src="images/moon.svg" width="100%" height="100%" alt="moon" decoding="async" />
+    `;
+    case "quran":
+      return `
+      <img src="images/quran.png" width="100%" height="100%" alt="Quran" decoding="async" />
     `;
     default:
       return ``;
