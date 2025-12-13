@@ -7,6 +7,13 @@ const pages = [
     colors: ["#0f172a", "#1d4ed8"],
   },
   {
+    title: "Quran",
+    href: "quran.html",
+    desc: "Quran-i Kərim",
+    icon: "moon",
+    colors: ["#0f172a", "#1d4ed8"],
+  },
+  {
     title: "Aylıq Xərclər",
     href: "masraflar.html",
     desc: "Aylıq xərclər kalkulyatoru",
