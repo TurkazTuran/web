@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ValCurs Date="19.12.2025" Name="AZN məzənnələri" Description="Azərbaycan Respublikası Mərkəzi Bankının 19.12.2025 tarixdən etibarən xarici valyutaların və bank metallarının Azərbaycan manatına qarşı rəsmi məzənnələri bülleteni">
+<ValCurs Date="22.12.2025" Name="AZN məzənnələri" Description="Azərbaycan Respublikası Mərkəzi Bankının 22.12.2025 tarixdən etibarən xarici valyutaların və bank metallarının Azərbaycan manatına qarşı rəsmi məzənnələri bülleteni">
 
     <ValType Type="Bank metalları">
         <Valute Code="XPD">
             <Nominal>1 t.u.</Nominal>
             <Name>Palladium</Name>
-            <Value>2872.949</Value>
+            <Value>3037.543</Value>
         </Valute>
         <Valute Code="XPT">
             <Nominal>1 t.u.</Nominal>
             <Name>Platin</Name>
-            <Value>3270.511</Value>
+            <Value>3507.542</Value>
         </Valute>
         <Valute Code="XAG">
             <Nominal>1 t.u.</Nominal>
             <Name>Gümüş</Name>
-            <Value>111.2846</Value>
+            <Value>117.8941</Value>
         </Valute>
         <Valute Code="XAU">
             <Nominal>1 t.u.</Nominal>
             <Name>Qızıl</Name>
-            <Value>7350.6045</Value>
+            <Value>7475.9965</Value>
         </Valute>
     </ValType>
 
@@ -58,7 +58,7 @@
 
 
                         
-                    <Value>1.9921</Value>
+                    <Value>1.9924</Value>
                 </Valute>
             
         
@@ -76,7 +76,7 @@
 
 
                         
-                    <Value>1.1235</Value>
+                    <Value>1.1267</Value>
                 </Valute>
             
         
@@ -114,7 +114,7 @@
 
 
                         
-                    <Value>1.0186</Value>
+                    <Value>1.0182</Value>
                 </Valute>
             
         
@@ -134,7 +134,7 @@
 
 
                         
-                    <Value>0.4629</Value>
+                    <Value>0.4628</Value>
                 </Valute>
             
         
@@ -154,7 +154,7 @@
 
 
                         
-                    <Value>0.115</Value>
+                    <Value>0.1148</Value>
                 </Valute>
             
         
@@ -172,7 +172,7 @@
 
 
                         
-                    <Value>0.0818</Value>
+                    <Value>0.0819</Value>
                 </Valute>
             
         
@@ -192,7 +192,7 @@
 
 
                         
-                    <Value>0.2414</Value>
+                    <Value>0.2415</Value>
                 </Valute>
             
         
@@ -210,7 +210,7 @@
 
 
                         
-                    <Value>0.2667</Value>
+                    <Value>0.2668</Value>
                 </Valute>
             
         
@@ -266,7 +266,7 @@
 
 
                         
-                    <Value>0.0189</Value>
+                    <Value>0.019</Value>
                 </Valute>
             
         
@@ -284,7 +284,7 @@
 
 
                         
-                    <Value>2.2735</Value>
+                    <Value>2.2778</Value>
                 </Valute>
             
         
@@ -308,7 +308,7 @@
 
 
                         
-                    <Value>0.183</Value>
+                    <Value>0.1835</Value>
                 </Valute>
             
         
@@ -326,7 +326,7 @@
 
 
                         
-                    <Value>2.138</Value>
+                    <Value>2.1397</Value>
                 </Valute>
             
         
@@ -344,7 +344,7 @@
 
 
                         
-                    <Value>0.5295</Value>
+                    <Value>0.5308</Value>
                 </Valute>
             
         
@@ -362,7 +362,7 @@
 
 
                         
-                    <Value>1.2331</Value>
+                    <Value>1.2324</Value>
                 </Valute>
             
         
@@ -380,7 +380,7 @@
 
 
                         
-                    <Value>5.5347</Value>
+                    <Value>5.5314</Value>
                 </Valute>
             
         
@@ -398,7 +398,7 @@
 
 
                         
-                    <Value>0.3296</Value>
+                    <Value>0.3285</Value>
                 </Valute>
             
         
@@ -454,7 +454,7 @@
 
 
                         
-                    <Value>0.5142</Value>
+                    <Value>0.5157</Value>
                 </Valute>
             
         
@@ -478,7 +478,7 @@
 
 
                         
-                    <Value>0.1012</Value>
+                    <Value>0.1008</Value>
                 </Valute>
             
         
@@ -500,7 +500,7 @@
 
 
                         
-                    <Value>0.1673</Value>
+                    <Value>0.1679</Value>
                 </Valute>
             
         
@@ -518,7 +518,7 @@
 
 
                         
-                    <Value>0.0141</Value>
+                    <Value>0.0142</Value>
                 </Valute>
             
         
@@ -536,7 +536,7 @@
 
 
                         
-                    <Value>0.6052</Value>
+                    <Value>0.6066</Value>
                 </Valute>
             
         
@@ -554,7 +554,7 @@
 
 
                         
-                    <Value>0.4741</Value>
+                    <Value>0.4738</Value>
                 </Valute>
             
         
@@ -572,7 +572,7 @@
 
 
                         
-                    <Value>0.3914</Value>
+                    <Value>0.3918</Value>
                 </Valute>
             
         
@@ -590,7 +590,7 @@
 
 
                         
-                    <Value>2.128</Value>
+                    <Value>2.1118</Value>
                 </Valute>
             
         
@@ -626,7 +626,7 @@
 
 
                         
-                    <Value>1.3167</Value>
+                    <Value>1.3157</Value>
                 </Valute>
             
         
@@ -662,7 +662,7 @@
 
 
                         
-                    <Value>2.3239</Value>
+                    <Value>2.3219</Value>
                 </Valute>
             
         
@@ -742,7 +742,7 @@
 
 
                         
-                    <Value>1.0894</Value>
+                    <Value>1.0806</Value>
                 </Valute>
             
         
@@ -760,7 +760,7 @@
 
 
                         
-                    <Value>0.9795</Value>
+                    <Value>0.9809</Value>
                 </Valute>
             
         
