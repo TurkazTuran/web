@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prüfvermerk Generator</title>
+
+<style>
+:root {
+  --bg: #e8e8e8;
+  --surface: #f5f5f5;
+  --border: #c0c0c0;
+  --text: #000000;
+  --muted: #666666;
+  --accent: #0066cc;
+  --danger: #cc0000;
+  --header-bg: #d4d4d4;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.app-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h2 { 
+  margin: 0 0 20px; 
+  font-size: 16px; 
+  font-weight: 600;
+  color: var(--text);
+}
+
+button, input, select, textarea {
+  font: inherit;
+  padding: 6px 10px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+}
+
+input::placeholder { color: var(--muted); }
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+  background: #e0e0e0;
+  color: var(--text);
+  font-weight: normal;
+  border: 1px solid var(--border);
+}
+
+button:hover {
+  background: #d0d0d0;
+}
+
+button.primary {
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid #0052a3;
+}
+
+button.primary:hover {
+  background: #6700a3;
+}
+
+button.delete {
+  background: #c0bdbd;
+  border: #ff0000;
+  color: var(--danger);
+  font-weight: 700;
+  padding: 2px 6px;
+  font-size: 14px;
+}
+
+button.delete:hover {
+  color: #6700a3;
+}
+
+.tabs { 
+  display: flex; 
+  gap: 4px; 
+  margin-bottom: 15px; 
+}
+
+.tab-btn { 
+  background: #e0e0e0;
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+.bulk-panel {
+  display: grid-template-columns;
+  gap: 8px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 10px;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.checklist { 
+  padding: 8px;
+  display: grid; 
+  gap: 2px;
+}
+
+.checklist label {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  font-size: 11px;
+  padding: 4px 0;
+}
+
+.checklist input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.checklist label:hover {
+  background: rgba(0, 102, 204, 0.05);
+}
+
+.summary {
+  margin-top: 15px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 12px;
+}
+
+.summary h3 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.summary-col textarea {
+  min-height: 140px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  padding: 6px;
+}
+
+.splash-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 20px 40px;
+  border-radius: 12px;
+  font-family: sans-serif;
+  font-size: 1.2rem;
+  z-index: 10000;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.splash-message.fade-out {
+  opacity: 0;
+}
+</style>
+</head>
+
+<body>
+<div class="app-shell">
+  <h2>Prüfvermerk Generator</h2>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showView('inputView', this)">Werte eingeben</button>
+    <button class="tab-btn" onclick="showView('selectView', this)">Auswahlliste</button>
+  </div>
+
+  <!-- Eingabe -->
+  <div id="inputView" class="view active">
+    <div class="bulk-panel">
+      <textarea id="bulkInput" rows="3" placeholder="Mehrere Zeilen einfügen (jede Zeile = Checkbox)"></textarea>
+      <select id="bulkCategorySelector"></select>
+      <button class="primary" onclick="addBulkItems()">Werte hinzufügen</button>
+    </div>
+
+    <div class="section-grid" id="inputListGrid"></div>
+  </div>
+
+  <!-- Auswahl -->
+  <div id="selectView" class="view">
+    <div class="section-grid" id="selectGrid"></div>
+
+    <div class="summary">
+      <div class="summary-grid">
+        <div class="summary-col">
+          <h3>Ausgewählte Werte</h3>
+          <textarea id="selectedText" readonly></textarea>
+        </div>
+
+        <div class="summary-col">
+          <h3>Manuelle Ergänzung</h3>
+          <textarea id="manualText" placeholder="Zusätzliche eigene Texte..."></textarea>
+        </div>
+      </div>
+
+      <div style="margin-top:10px; display:flex; gap:8px;">
+        <button class="primary" onclick="copySummary()">Texte kopieren</button>
+        <button onclick="resetSummary()">Zurücksetzen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const categories = [
+    "Zeitliche Voraussetzung",
+    "Lebensunterhalt",
+    "Rentenversicherung",
+    "Sicherheit",
+    "Sprachkenntnisse",
+    "Rechts- und Gesellschaftsordnung"
+];
+
+let data = JSON.parse(localStorage.getItem("checklistData")) || {};
+categories.forEach(c => data[c] ||= []);
+
+const bulkCategorySelector = document.getElementById("bulkCategorySelector");
+const inputListGrid = document.getElementById("inputListGrid");
+const selectGrid = document.getElementById("selectGrid");
+const selectedText = document.getElementById("selectedText");
+const manualText = document.getElementById("manualText");
+
+function showView(id, btn) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active");
+  if (id === "selectView") renderSelectView();
+}
+
+function renderCategorySelector() {
+  bulkCategorySelector.innerHTML = '<option value="">Kategorie auswählen</option>';
+  categories.forEach(cat => {
+    const o = document.createElement("option");
+    o.value = cat;
+    o.textContent = cat;
+    bulkCategorySelector.appendChild(o);
+  });
+}
+
+function renderInputView() {
+  inputListGrid.innerHTML = "";
+  categories.forEach(cat => {
+    const sec = document.createElement("div");
+    sec.className = "section";
+    sec.innerHTML = `
+      <div class="section-title">${cat}</div>
+      <div class="checklist">
+        ${data[cat].map((v, i) => `
+          <label>
+            <input type="checkbox" disabled>
+            <span>${v}</span>
+            <button class="delete" onclick="removeItem('${cat}', ${i})">✕</button>
+          </label>
+        `).join("")}
+      </div>
+    `;
+    inputListGrid.appendChild(sec);
+  });
+}
+
+function renderSelectView() {
+  selectGrid.innerHTML = "";
+  categories.forEach(cat => {
+    const id = cssId(cat);
+    const sec = document.createElement("div");
+    sec.className = "section";
+    sec.innerHTML = `
+      <div class="section-title">${cat}</div>
+      <div class="checklist">
+        ${data[cat].map(v => `
+          <label>
+            <input type="checkbox" data-cat="${id}" onchange="onlyOnePerCategory(this); updateSummary();">
+            <span>${v}</span>
+          </label>
+        `).join("")}
+      </div>
+      <div style="padding: 8px; border-top: 1px solid var(--border); background: #fff;">
+        <input type="text" 
+               placeholder="Manuelle Ergänzung für ${cat}..." 
+               data-manual-cat="${id}"
+               onchange="updateSummary()"
+               style="width: 100%; font-size: 11px; padding: 4px 6px;">
+      </div>
+    `;
+    selectGrid.appendChild(sec);
+  });
+  updateSummary();
+}
+
+function onlyOnePerCategory(checkbox) {
+  if (!checkbox.checked) return;
+  const cat = checkbox.dataset.cat;
+  document.querySelectorAll(`input[data-cat="${cat}"]`).forEach(cb => {
+    if (cb !== checkbox) cb.checked = false;
+  });
+}
+
+function addBulkItems() {
+  if (!bulkInput.value.trim() || !bulkCategorySelector.value) return alert("Bitte alles ausfüllen.");
+  const lines = bulkInput.value
+    .split(/\r?\n/)
+    .map(l => l.trim())
+    .filter(Boolean);
+  if (!lines.length) return;
+
+  data[bulkCategorySelector.value].push(...lines);
+  saveAll();
+  bulkInput.value = "";
+  renderInputView();
+}
+
+function removeItem(category, index) {
+  data[category].splice(index, 1);
+  saveAll();
+  renderInputView();
+}
+
+function formatWithTabDash(lines) {
+  return lines.map(line => `\t- ${line}`).join("\n");
+}
+
+function updateSummary() {
+  const selected = [];
+  
+  document.querySelectorAll("#selectGrid label").forEach(l => {
+    if (l.querySelector("input").checked) {
+      selected.push(l.querySelector("span").textContent);
+    }
+  });
+  
+  document.querySelectorAll("#selectGrid input[data-manual-cat]").forEach(input => {
+    if (input.value.trim()) {
+      selected.push(input.value.trim());
+    }
+  });
+
+  selectedText.value = selected.length ? formatWithTabDash(selected) : "";
+}
+
+function copySummary() {
+  const selected = selectedText.value.trimEnd();
+  const manualLines = manualText.value
+    .split(/\r?\n/)
+    .map(l => l.trim())
+    .filter(Boolean);
+
+  const formattedManual = manualLines.length ? formatWithTabDash(manualLines) : "";
+  const merged = [selected, formattedManual].filter(Boolean).join("\n");
+
+  navigator.clipboard.writeText(merged).then(() => {
+    showSplash("Text kopiert 👍");
+  });
+}
+
+function resetSummary() {
+  document.querySelectorAll('#selectGrid input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+  });
+  selectedText.value = "";
+  manualText.value = "";
+}
+
+function showSplash(message) {
+  const splash = document.createElement("div");
+  splash.className = "splash-message";
+  splash.innerText = message;
+  document.body.appendChild(splash);
+
+  setTimeout(() => {
+    splash.classList.add("fade-out");
+    splash.addEventListener("transitionend", () => splash.remove());
+  }, 2000);
+}
+
+function saveAll() {
+  localStorage.setItem("checklistData", JSON.stringify(data));
+}
+
+function cssId(text) {
+  return text.replace(/\s+/g, "-").replace(/[^\w-]/g, "");
+}
+
+renderCategorySelector();
+renderInputView();
+</script>
+
+</body>
+</html>
