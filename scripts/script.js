@@ -1,3 +1,7 @@
+// Detect base path from script tag or default to root
+const scriptTag = document.currentScript;
+const basePath = scriptTag && scriptTag.dataset.basePath ? scriptTag.dataset.basePath : "";
+
 const pages = [
   {
     title: "Namaz Vakti",
@@ -33,19 +37,19 @@ function iconSVG(kind) {
   switch (kind) {
     case "calc":
       return `
-      <img src="images/calc.svg" width="100%" height="100%" alt="calc" decoding="async" />
+      <img src="${basePath}images/calc.svg" width="100%" height="100%" alt="calc" decoding="async" />
     `;
     case "money":
       return `
-      <img src="images/money.svg" width="100%" height="100%" alt="money" decoding="async" />
+      <img src="${basePath}images/money.svg" width="100%" height="100%" alt="money" decoding="async" />
     `;
     case "moon":
       return `
-      <img src="images/moon.svg" width="100%" height="100%" alt="moon" decoding="async" />
+      <img src="${basePath}images/moon.svg" width="100%" height="100%" alt="moon" decoding="async" />
     `;
     case "quran":
       return `
-      <img src="images/quran.png" width="100%" height="100%" alt="Quran" decoding="async" />
+      <img src="${basePath}images/quran.png" width="100%" height="100%" alt="Quran" decoding="async" />
     `;
     default:
       return ``;
@@ -58,7 +62,7 @@ const empty = document.getElementById("empty");
 function cardHTML(p) {
   return `
   <article class="card" role="listitem">
-    <a class="head" href="${p.href}" aria-label="${p.title}">
+    <a class="head" href="${basePath}${p.href}" aria-label="${p.title}">
       <div class="icon" aria-hidden="true">${iconSVG(p.icon)}</div>
       <div class="meta">
         <div class="title">${p.title}</div>
