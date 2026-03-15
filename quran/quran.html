@@ -8,23 +8,51 @@
         /* Responsive font sizing using clamp for better readability */
         body {
             font-size: clamp(1rem, 2vw + 1rem, 1.5rem);
-            line-height: 1.6; /* Slightly increasing line-height */
+            line-height: 1.6;
+            margin: 1.25rem auto;
+            max-width: 1100px;
+            padding: 0 1rem;
         }
-        /* Adjust list item padding and counter size on small screens */
+
+        /* Keep lists readable */
         ul,
         ol {
             padding-left: 1.5em;
         }
+
         li {
-            padding: 0.5rem 0; /* Adjust padding for list items */
-            font-size: clamp(1rem, 2vw + 1rem, 1.3rem); /* Responsive font sizing for list items */
+            padding: 0.5rem 0;
+            font-size: clamp(1rem, 2vw + 1rem, 1.3rem);
         }
 
         /* Improve touch targets for phones */
         button, a {
-            padding: 12px 16px; /* Increase padding for touch targets */
+            display: inline-block;
+            padding: 12px 16px;
             font-size: clamp(1rem, 2vw + 1rem, 1.5rem);
             line-height: 1.5;
+        }
+
+        /* Phone-specific tuning (prevents "too small" on narrow screens) */
+        @media (max-width: 620px) {
+            body {
+                font-size: 20px; /* comfortable minimum on phones */
+                padding: 0 0.9rem;
+            }
+
+            button, a {
+                padding: 14px 18px;
+            }
+
+            li {
+                padding: 0.65rem 0;
+            }
+        }
+
+        @media (max-width: 380px) {
+            body {
+                font-size: 21px;
+            }
         }
     </style>
     <title>The Quran</title>
