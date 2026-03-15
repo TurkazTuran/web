@@ -1,211 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quran TOC</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      margin: 2rem auto;
-      max-width: 1100px;
-      line-height: 1.5;
-      padding: 0 1rem;
-      background: #f5f7fb;
-    }
-    h1 { margin-bottom: 0.25rem; }
-    p { color: #555; margin-top: 0; }
-    ol {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.9rem;
-      list-style: none;
-      counter-reset: surah;
-      padding: 0;
-      margin: 1rem 0 0;
-    }
-    li {
-      position: relative;
-      counter-increment: surah;
-      margin: 0;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      box-shadow: 0 4px 14px rgba(17, 24, 39, 0.06);
-      transition: transform 0.16s ease, box-shadow 0.16s ease;
-    }
-    li::before {
-      content: counter(surah, decimal-leading-zero) ". ";
-      position: absolute;
-      left: 0.85rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 2.9rem;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      font-weight: 700;
-      color: #334155;
-      font-size: 0.9rem;
-    }
-    li:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(17, 24, 39, 0.12);
-    }
-    a {
-      display: block;
-      text-decoration: none;
-      color: #0b57d0;
-      padding: 0.8rem 0.9rem 0.8rem 4.1rem;
-      font-weight: 500;
-    }
-    a:hover { text-decoration: none; }
-    @media (max-width: 920px) {
-      ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 620px) {
-      ol { grid-template-columns: 1fr; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Responsive font sizing using clamp for better readability */
+        body {
+            font-size: clamp(1rem, 2vw + 1rem, 1.5rem);
+            line-height: 1.6; /* Slightly increasing line-height */
+        }
+        /* Adjust list item padding and counter size on small screens */
+        ul,
+        ol {
+            padding-left: 1.5em;
+        }
+        li {
+            padding: 0.5rem 0; /* Adjust padding for list items */
+            font-size: clamp(1rem, 2vw + 1rem, 1.3rem); /* Responsive font sizing for list items */
+        }
+
+        /* Improve touch targets for phones */
+        button, a {
+            padding: 12px 16px; /* Increase padding for touch targets */
+            font-size: clamp(1rem, 2vw + 1rem, 1.5rem);
+            line-height: 1.5;
+        }
+    </style>
+    <title>The Quran</title>
 </head>
 <body>
-  <h1>Surah List</h1>
-  <ol>
-    <li><a href="Sureler/001.xhtml">001 - سُورَةُ الفَاتِحَةِ</a></li>
-    <li><a href="Sureler/002.xhtml">002 - سُورَةُ البَقَرَةِ</a></li>
-    <li><a href="Sureler/003.xhtml">003 - سُورَةُ آلِ عِمۡرَانَ</a></li>
-    <li><a href="Sureler/004.xhtml">004 - سُورَةُ النِّسَاءِ</a></li>
-    <li><a href="Sureler/005.xhtml">005 - سُورَةُ المَائـِدَةِ</a></li>
-    <li><a href="Sureler/006.xhtml">006 - سُورَةُ الأَنۡعَامِ</a></li>
-    <li><a href="Sureler/007.xhtml">007 - سُورَةُ الأَعۡرَافِ</a></li>
-    <li><a href="Sureler/008.xhtml">008 - سُورَةُ الأَنفَالِ</a></li>
-    <li><a href="Sureler/009.xhtml">009 - سُورَةُ التَّوۡبَةِ</a></li>
-    <li><a href="Sureler/010.xhtml">010 - سُورَةُ يُونُسَ</a></li>
-    <li><a href="Sureler/011.xhtml">011 - سُورَةُ هُودٍ</a></li>
-    <li><a href="Sureler/012.xhtml">012 - سُورَةُ يُوسُفَ</a></li>
-    <li><a href="Sureler/013.xhtml">013 - سُورَةُ الرَّعۡدِ</a></li>
-    <li><a href="Sureler/014.xhtml">014 - سُورَةُ إِبۡرَاهِيمَ</a></li>
-    <li><a href="Sureler/015.xhtml">015 - سُورَةُ الحِجۡرِ</a></li>
-    <li><a href="Sureler/016.xhtml">016 - سُورَةُ النَّحۡلِ</a></li>
-    <li><a href="Sureler/017.xhtml">017 - سُورَةُ الإِسۡرَاءِ</a></li>
-    <li><a href="Sureler/018.xhtml">018 - سُورَةُ الكَهۡفِ</a></li>
-    <li><a href="Sureler/019.xhtml">019 - سُورَةُ مَرۡيَمَ</a></li>
-    <li><a href="Sureler/020.xhtml">020 - سُورَةُ طه</a></li>
-    <li><a href="Sureler/021.xhtml">021 - سُورَةُ الأَنبِيَاءِ</a></li>
-    <li><a href="Sureler/022.xhtml">022 - سُورَةُ الحَجِّ</a></li>
-    <li><a href="Sureler/023.xhtml">023 - سُورَةُ المُؤۡمِنُونَ</a></li>
-    <li><a href="Sureler/024.xhtml">024 - سُورَةُ النُّورِ</a></li>
-    <li><a href="Sureler/025.xhtml">025 - سُورَةُ الفُرۡقَانِ</a></li>
-    <li><a href="Sureler/026.xhtml">026 - سُورَةُ الشُّعَرَاءِ</a></li>
-    <li><a href="Sureler/027.xhtml">027 - سُورَةُ النَّمۡلِ</a></li>
-    <li><a href="Sureler/028.xhtml">028 - سُورَةُ القَصَصِ</a></li>
-    <li><a href="Sureler/029.xhtml">029 - سُورَةُ العَنكَبُوتِ</a></li>
-    <li><a href="Sureler/030.xhtml">030 - سُورَةُ الرُّومِ</a></li>
-    <li><a href="Sureler/031.xhtml">031 - سُورَةُ لُقۡمَانَ</a></li>
-    <li><a href="Sureler/032.xhtml">032 - سُورَةُ السَّجۡدَةِ</a></li>
-    <li><a href="Sureler/033.xhtml">033 - سُورَةُ الأَحۡزَابِ</a></li>
-    <li><a href="Sureler/034.xhtml">034 - سُورَةُ سَبَإٍ</a></li>
-    <li><a href="Sureler/035.xhtml">035 - سُورَةُ فَاطِرٍ</a></li>
-    <li><a href="Sureler/036.xhtml">036 - سُورَةُ يسٓ</a></li>
-    <li><a href="Sureler/037.xhtml">037 - سُورَةُ الصَّافَّاتِ</a></li>
-    <li><a href="Sureler/038.xhtml">038 - سُورَةُ صٓ</a></li>
-    <li><a href="Sureler/039.xhtml">039 - سُورَةُ الزُّمَرِ</a></li>
-    <li><a href="Sureler/040.xhtml">040 - سُورَةُ غَافِرٍ</a></li>
-    <li><a href="Sureler/041.xhtml">041 - سُورَةُ فُصِّلَتۡ</a></li>
-    <li><a href="Sureler/042.xhtml">042 - سُورَةُ الشُّورَىٰ</a></li>
-    <li><a href="Sureler/043.xhtml">043 - سُورَةُ الزُّخۡرُفِ</a></li>
-    <li><a href="Sureler/044.xhtml">044 - سُورَةُ الدُّخَانِ</a></li>
-    <li><a href="Sureler/045.xhtml">045 - سُورَةُ الجَاثِيَةِ</a></li>
-    <li><a href="Sureler/046.xhtml">046 - سُورَةُ الأَحۡقَافِ</a></li>
-    <li><a href="Sureler/047.xhtml">047 - سُورَةُ مُحَمَّدٍ</a></li>
-    <li><a href="Sureler/048.xhtml">048 - سُورَةُ الفَتۡحِ</a></li>
-    <li><a href="Sureler/049.xhtml">049 - سُورَةُ الحُجُرَاتِ</a></li>
-    <li><a href="Sureler/050.xhtml">050 - سُورَةُ قٓ</a></li>
-    <li><a href="Sureler/051.xhtml">051 - سُورَةُ الذَّارِيَاتِ</a></li>
-    <li><a href="Sureler/052.xhtml">052 - سُورَةُ الطُّورِ</a></li>
-    <li><a href="Sureler/053.xhtml">053 - سُورَةُ النَّجۡمِ</a></li>
-    <li><a href="Sureler/054.xhtml">054 - سُورَةُ القَمَرِ</a></li>
-    <li><a href="Sureler/055.xhtml">055 - سُورَةُ الرَّحۡمَٰن</a></li>
-    <li><a href="Sureler/056.xhtml">056 - سُورَةُ الوَاقِعَةِ</a></li>
-    <li><a href="Sureler/057.xhtml">057 - سُورَةُ الحَدِيدِ</a></li>
-    <li><a href="Sureler/058.xhtml">058 - سُورَةُ المُجَادلَةِ</a></li>
-    <li><a href="Sureler/059.xhtml">059 - سُورَةُ الحَشۡرِ</a></li>
-    <li><a href="Sureler/060.xhtml">060 - سُورَةُ المُمۡتَحنَةِ</a></li>
-    <li><a href="Sureler/061.xhtml">061 - سُورَةُ الصَّفِّ</a></li>
-    <li><a href="Sureler/062.xhtml">062 - سُورَةُ الجُمُعَةِ</a></li>
-    <li><a href="Sureler/063.xhtml">063 - سُورَةُ المُنَافِقُونَ</a></li>
-    <li><a href="Sureler/064.xhtml">064 - سُورَةُ التَّغَابُنِ</a></li>
-    <li><a href="Sureler/065.xhtml">065 - سُورَةُ الطَّلَاقِ</a></li>
-    <li><a href="Sureler/066.xhtml">066 - سُورَةُ التَّحۡرِيمِ</a></li>
-    <li><a href="Sureler/067.xhtml">067 - سُورَةُ المُلۡكِ</a></li>
-    <li><a href="Sureler/068.xhtml">068 - سُورَةُ القَلَمِ</a></li>
-    <li><a href="Sureler/069.xhtml">069 - سُورَةُ الحَاقَّةِ</a></li>
-    <li><a href="Sureler/070.xhtml">070 - سُورَةُ المَعَارِجِ</a></li>
-    <li><a href="Sureler/071.xhtml">071 - سُورَةُ نُوحٍ</a></li>
-    <li><a href="Sureler/072.xhtml">072 - سُورَةُ الجِنِّ</a></li>
-    <li><a href="Sureler/073.xhtml">073 - سُورَةُ المُزَّمِّلِ</a></li>
-    <li><a href="Sureler/074.xhtml">074 - سُورَةُ المُدَّثِّرِ</a></li>
-    <li><a href="Sureler/075.xhtml">075 - سُورَةُ القِيَامَةِ</a></li>
-    <li><a href="Sureler/076.xhtml">076 - سُورَةُ الإِنسَانِ</a></li>
-    <li><a href="Sureler/077.xhtml">077 - سُورَةُ المُرۡسَلَاتِ</a></li>
-    <li><a href="Sureler/078.xhtml">078 - سُورَةُ النَّبَإِ</a></li>
-    <li><a href="Sureler/079.xhtml">079 - سُورَةُ النَّازِعَاتِ</a></li>
-    <li><a href="Sureler/080.xhtml">080 - سُورَةُ عَبَسَ</a></li>
-    <li><a href="Sureler/081.xhtml">081 - سُورَةُ التَّكۡوِيرِ</a></li>
-    <li><a href="Sureler/082.xhtml">082 - سُورَةُ الانفِطَارِ</a></li>
-    <li><a href="Sureler/083.xhtml">083 - سُورَةُ المُطَفِّفِينَ</a></li>
-    <li><a href="Sureler/084.xhtml">084 - سُورَةُ الانشِقَاقِ</a></li>
-    <li><a href="Sureler/085.xhtml">085 - سُورَةُ البُرُوجِ</a></li>
-    <li><a href="Sureler/086.xhtml">086 - سُورَةُ الطَّارِقِ</a></li>
-    <li><a href="Sureler/087.xhtml">087 - سُورَةُ الأَعۡلَىٰ</a></li>
-    <li><a href="Sureler/088.xhtml">088 - سُورَةُ الغَاشِيَةِ</a></li>
-    <li><a href="Sureler/089.xhtml">089 - سُورَةُ الفَجۡرِ</a></li>
-    <li><a href="Sureler/090.xhtml">090 - سُورَةُ البَلَدِ</a></li>
-    <li><a href="Sureler/091.xhtml">091 - سُورَةُ الشَّمۡسِ</a></li>
-    <li><a href="Sureler/092.xhtml">092 - سُورَةُ اللَّيۡلِ</a></li>
-    <li><a href="Sureler/093.xhtml">093 - سُورَةُ الضُّحَىٰ</a></li>
-    <li><a href="Sureler/094.xhtml">094 - سُورَةُ الشَّرۡحِ</a></li>
-    <li><a href="Sureler/095.xhtml">095 - سُورَةُ التِّينِ</a></li>
-    <li><a href="Sureler/096.xhtml">096 - سُورَةُ العَلَقِ</a></li>
-    <li><a href="Sureler/097.xhtml">097 - سُورَةُ القَدۡرِ</a></li>
-    <li><a href="Sureler/098.xhtml">098 - سُورَةُ البَيِّنَةِ</a></li>
-    <li><a href="Sureler/099.xhtml">099 - سُورَةُ الزَّلۡزَلَةِ</a></li>
-    <li><a href="Sureler/100.xhtml">100 - سُورَةُ العَادِيَاتِ</a></li>
-    <li><a href="Sureler/101.xhtml">101 - سُورَةُ القَارِعَةِ</a></li>
-    <li><a href="Sureler/102.xhtml">102 - سُورَةُ التَّكَاثُرِ</a></li>
-    <li><a href="Sureler/103.xhtml">103 - سُورَةُ العَصۡرِ</a></li>
-    <li><a href="Sureler/104.xhtml">104 - سُورَةُ الهُمَزَةِ</a></li>
-    <li><a href="Sureler/105.xhtml">105 - سُورَةُ الفِيلِ</a></li>
-    <li><a href="Sureler/106.xhtml">106 - سُورَةُ قُرَيۡشٍ</a></li>
-    <li><a href="Sureler/107.xhtml">107 - سُورَةُ المَاعُونِ</a></li>
-    <li><a href="Sureler/108.xhtml">108 - سُورَةُ الكَوۡثَرِ</a></li>
-    <li><a href="Sureler/109.xhtml">109 - سُورَةُ الكَافِرُونَ</a></li>
-    <li><a href="Sureler/110.xhtml">110 - سُورَةُ النَّصۡرِ</a></li>
-    <li><a href="Sureler/111.xhtml">111 - سُورَةُ المَسَدِ</a></li>
-    <li><a href="Sureler/112.xhtml">112 - سُورَةُ الإِخۡلَاصِ</a></li>
-    <li><a href="Sureler/113.xhtml">113 - سُورَةُ الفَلَقِ</a></li>
-    <li><a href="Sureler/114.xhtml">114 - سُورَةُ النَّاسِ</a></li>
-  </ol>
-  <script>
-    const latinNames = [
-      "Al-Fatihah", "Al-Baqarah", "Ali 'Imran", "An-Nisa", "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus",
-      "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr", "An-Nahl", "Al-Isra", "Al-Kahf", "Maryam", "Taha",
-      "Al-Anbya", "Al-Hajj", "Al-Mu'minun", "An-Nur", "Al-Furqan", "Ash-Shu'ara", "An-Naml", "Al-Qasas", "Al-'Ankabut", "Ar-Rum",
-      "Luqman", "As-Sajdah", "Al-Ahzab", "Saba", "Fatir", "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar", "Ghafir",
-      "Fussilat", "Ash-Shuraa", "Az-Zukhruf", "Ad-Dukhan", "Al-Jathiyah", "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat", "Qaf",
-      "Adh-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar", "Ar-Rahman", "Al-Waqi'ah", "Al-Hadid", "Al-Mujadila", "Al-Hashr", "Al-Mumtahanah",
-      "As-Saf", "Al-Jumu'ah", "Al-Munafiqun", "At-Taghabun", "At-Talaq", "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haqqah", "Al-Ma'arij",
-      "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyamah", "Al-Insan", "Al-Mursalat", "An-Naba", "An-Nazi'at", "'Abasa",
-      "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr", "Al-Balad",
-      "Ash-Shams", "Al-Layl", "Ad-Duhaa", "Ash-Sharh", "At-Tin", "Al-'Alaq", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-'Adiyat",
-      "Al-Qari'ah", "At-Takathur", "Al-'Asr", "Al-Humazah", "Al-Fil", "Quraysh", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun", "An-Nasr",
-      "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
-    ];
-
-    document.querySelectorAll('ol li a').forEach((a, index) => {
-      const arabic = a.textContent.replace(/^\d+\s*-\s*/, '');
-      const latin = latinNames[index] || '';
-      a.textContent = `${latin} - ${arabic}`;
-    });
-  </script>
+    <h1>The Holy Quran</h1>
+    <p>Welcome to the online representation of the Quran. This interface is optimized for mobile readability.</p>
+    <ul>
+        <li>Introduction</li>
+        <li>The message of the Quran</li>
+        <li>Chapters</li>
+    </ul>
 </body>
 </html>
