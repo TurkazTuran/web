@@ -51,17 +51,17 @@ body {
   }
 
   .quran {
-    font-size: 2.55em;
-    line-height: 2.35em;
+    font-size: 2.8em;
+    line-height: 2.45em;
   }
 
   .bismillah {
-    font-size: 2.35em;
+    font-size: 2.6em;
     line-height: 1.8;
   }
 
   .surah_name {
-    font-size: 1.8em;
+    font-size: 2em;
     margin: 1em 0;
     padding: 14pt 8pt;
   }
@@ -73,16 +73,31 @@ body {
   }
 
   .quran {
-    font-size: 2.8em;
-    line-height: 2.45em;
+    font-size: 3.2em;
+    line-height: 2.6em;
   }
 
   .bismillah {
-    font-size: 2.55em;
+    font-size: 2.9em;
   }
 
   .surah_name {
-    font-size: 1.95em;
+    font-size: 2.1em;
     padding: 13pt 6pt;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .quran {
+    font-size: 3.5em;
+    line-height: 2.7em;
+  }
+
+  .bismillah {
+    font-size: 3.1em;
+  }
+
+  .surah_name {
+    font-size: 2.2em;
   }
 }
