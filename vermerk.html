@@ -1,628 +1,670 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 width=%2264%22 height=%2264%22><rect x=%228%22 y=%228%22 width=%2248%22 height=%2248%22 rx=%224%22 fill=%22%23ffffff%22 stroke=%22%23d0d0d0%22 stroke-width=%222%22/><line x1=%2216%22 y1=%2220%22 x2=%2248%22 y2=%2220%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2230%22 x2=%2248%22 y2=%2248%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2240%22 x2=%2236%22 y2=%2240%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/></svg>">
-<title>Prüfvermerk Generator</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 width=%2264%22 height=%2264%22><rect x=%228%22 y=%228%22 width=%2248%22 height=%2248%22 rx=%224%22 fill=%22%23ffffff%22 stroke=%22%23d0d0d0%22 stroke-width=%222%22/><line x1=%2216%22 y1=%2220%22 x2=%2248%22 y2=%2220%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2230%22 x2=%2248%22 y2=%2248%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2240%22 x2=%2236%22 y2=%2240%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/></svg>">
+	<title>Prüfvermerk Generator</title>
+	<style>
+		:root {
+			--bg: #e8e8e8;
+			--surface: #f5f5f5;
+			--border: #c0c0c0;
+			--text: #000000;
+			--muted: #666666;
+			--accent: #0066cc;
+			--danger: #cc0000;
+			--header-bg: #d4d4d4;
+		}
 
-<style>
-:root {
-  --bg: #e8e8e8;
-  --surface: #f5f5f5;
-  --border: #c0c0c0;
-  --text: #000000;
-  --muted: #666666;
-  --accent: #0066cc;
-  --danger: #cc0000;
-  --header-bg: #d4d4d4;
-  --bar-size: 6px;
-}
+		* {
+			box-sizing: border-box;
+		}
 
-* { box-sizing: border-box; }
+		body {
+			margin: 0;
+			padding: 20px;
+			font-family: Arial, sans-serif;
+			background: var(--bg);
+			color: var(--text);
+			font-size: 14px;
+		}
 
-body {
-  margin: 0;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 14px;
-}
+		.app-shell {
+			max-width: 1400px;
+			margin: 0 auto;
+		}
 
-.app-shell {
-  max-width: 1400px;
-  margin: 0 auto;
-}
+		h2 {
+			margin: 0 0 20px;
+			font-size: 16px;
+			font-weight: 600;
+			color: var(--text);
+		}
 
-h2 { 
-  margin: 0 0 20px; 
-  font-size: 16px; 
-  font-weight: 600;
-  color: var(--text);
-}
+		button,
+		input,
+		select,
+		textarea {
+			font: inherit;
+			padding: 6px 10px;
+			border-radius: 3px;
+			border: 1px solid var(--border);
+			background: #fff;
+			color: var(--text);
+		}
 
-button, input, select, textarea {
-  font: inherit;
-  padding: 6px 10px;
-  border-radius: 3px;
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--text);
-}
+		input::placeholder,
+		textarea::placeholder {
+			color: var(--muted);
+		}
 
-input::placeholder { color: var(--muted); }
+		input:focus,
+		select:focus,
+		textarea:focus {
+			border-color: var(--accent);
+			outline: none;
+		}
 
-input:focus, select:focus, textarea:focus {
-  border-color: var(--accent);
-  outline: none;
-}
+		button {
+			cursor: pointer;
+			background: #e0e0e0;
+			color: var(--text);
+			font-weight: normal;
+			border: 1px solid var(--border);
+		}
 
-button {
-  cursor: pointer;
-  background: #e0e0e0;
-  color: var(--text);
-  font-weight: normal;
-  border: 1px solid var(--border);
-}
+		button:hover {
+			background: #d0d0d0;
+		}
 
-button:hover {
-  background: #d0d0d0;
-}
+		button.primary {
+			background: var(--accent);
+			color: #fff;
+			border: 1px solid #0052a3;
+		}
 
-button.primary {
-  background: var(--accent);
-  color: #fff;
-  border: 1px solid #0052a3;
-}
+		button.primary:hover {
+			background: #004f9e;
+		}
 
-button.primary:hover {
-  background: #6700a3;
-}
+		button.delete {
+			background: #eeeeee;
+			border: 1px solid #d2d2d2;
+			color: var(--danger);
+			font-weight: 700;
+			padding: 2px 8px;
+			font-size: 14px;
+		}
 
-button.delete {
-  background: #c0bdbd;
-  border: #ff0000;
-  color: var(--danger);
-  font-weight: 700;
-  padding: 2px 6px;
-  font-size: 14px;
-}
+		button.delete:hover {
+			background: #ffdede;
+		}
 
-button.delete:hover {
-  color: #6700a3;
-}
+		button.edit {
+			background: #eeeeee;
+			border: 1px solid #d2d2d2;
+			color: #333;
+			font-weight: 700;
+			padding: 2px 8px;
+			font-size: 13px;
+		}
 
-.tabs { 
-  display: flex; 
-  gap: 4px; 
-  margin-bottom: 15px; 
-}
+		button.edit:hover {
+			background: #dcecff;
+			color: var(--accent);
+		}
 
-.tab-btn { 
-  background: #e0e0e0;
-  border: 1px solid var(--border);
-  padding: 8px 16px;
-  font-size: 14px;
-}
+		.tabs {
+			display: flex;
+			gap: 4px;
+			margin-bottom: 15px;
+		}
 
-.tab-btn.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
+		.tab-btn {
+			background: #e0e0e0;
+			border: 1px solid var(--border);
+			padding: 8px 16px;
+			font-size: 14px;
+		}
 
-.view { display: none; }
-.view.active { display: block; }
+		.tab-btn.active {
+			background: var(--accent);
+			color: #fff;
+			border-color: var(--accent);
+		}
 
-.bulk-panel {
-  display: grid-template-columns;
-  gap: 8px;
-  margin-bottom: 15px;
-  padding: 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
+		.view {
+			display: none;
+		}
 
-.section-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
+		.view.active {
+			display: block;
+		}
 
-.select-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  align-items: start;
-}
+		.bulk-panel {
+			display: grid;
+			gap: 8px;
+			margin-bottom: 15px;
+			padding: 10px;
+			background: var(--surface);
+			border: 1px solid var(--border);
+		}
 
-.select-panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  padding: 8px;
-}
+		.bulk-actions {
+			display: flex;
+			gap: 8px;
+			flex-wrap: wrap;
+		}
 
-.select-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
+		.section-grid {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 12px;
+		}
 
-.section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
+		.section {
+			background: var(--surface);
+			border: 1px solid var(--border);
+			overflow: hidden;
+		}
 
-.section.bar-section {
-  border-left: var(--bar-size) solid #6b6b6b;
-}
+		.section-title,
+		.accordion-header {
+			font-weight: 600;
+			font-size: 12px;
+			padding: 8px 10px;
+			background: var(--header-bg);
+			border-bottom: 1px solid var(--border);
+			color: var(--text);
+		}
 
-.section-title {
-  font-weight: 600;
-  font-size: 12px;
-  padding: 6px 10px;
-  background: var(--header-bg);
-  border-bottom: 1px solid var(--border);
-  color: var(--text);
-}
+		.accordion {
+			background: var(--surface);
+			border: 1px solid var(--border);
+		}
 
-.checklist { 
-  padding: 8px;
-  display: grid; 
-  gap: 2px;
-}
+		.accordion-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			cursor: pointer;
+			user-select: none;
+		}
 
-.list-rows {
-  padding: 8px;
-  display: grid;
-  gap: 4px;
-}
+		.accordion-header:hover {
+			background: #c9c9c9;
+		}
 
-.list-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
-  align-items: center;
-  font-size: 11px;
-  padding: 6px 8px;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-left: var(--bar-size) solid #8a8a8a;
-}
+		.accordion-title {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
 
-.checklist label {
-  display: grid;
-  grid-template-columns: 20px 1fr auto;
-  gap: 8px;
-  align-items: center;
-  font-size: 11px;
-  padding: 4px 0;
-}
+		.accordion-icon {
+			font-size: 12px;
+			width: 16px;
+			text-align: center;
+		}
 
-.checklist input[type="checkbox"] {
-  width: 15px;
-  height: 15px;
-  margin: 0;
-  cursor: pointer;
-}
+		.accordion-body {
+			display: none;
+			padding: 8px;
+			background: #fafafa;
+		}
 
-.checklist label:hover {
-  background: rgba(0, 102, 204, 0.05);
-}
+		.accordion.open .accordion-body {
+			display: block;
+		}
 
-.dropdown-list {
-  padding: 8px;
-  display: grid;
-  gap: 6px;
-}
+		.checklist {
+			padding: 8px;
+			display: grid;
+			gap: 4px;
+		}
 
-.dropdown-list select {
-  width: 100%;
-  font-size: 11px;
-  padding: 4px 6px;
-  background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
-  border-left: var(--bar-size) solid #6f6f6f;
-}
+		.checklist label {
+			display: grid;
+			grid-template-columns: 22px 1fr auto;
+			gap: 8px;
+			align-items: center;
+			font-size: 11px;
+			padding: 4px 0;
+		}
 
-.summary {
-  margin-top: 15px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  padding: 12px;
-}
+		.checklist input[type="checkbox"] {
+			width: 15px;
+			height: 15px;
+			margin: 0;
+			cursor: pointer;
+		}
 
-.right-panel {
-  margin-bottom: 12px;
-  display: grid;
-  gap: 12px;
-}
+		.checklist label:hover {
+			background: rgba(0, 102, 204, 0.05);
+		}
 
-.summary h3 {
-  margin: 0 0 8px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text);
-}
+		.input-item {
+			display: grid;
+			grid-template-columns: 1fr auto auto;
+			gap: 6px;
+			align-items: center;
+			padding: 5px 0;
+			border-bottom: 1px solid #e5e5e5;
+		}
 
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
+		.input-item:last-child {
+			border-bottom: none;
+		}
 
-.summary-col textarea {
-  min-height: 140px;
-}
+		.input-item-text {
+			font-size: 12px;
+			word-break: break-word;
+		}
 
-textarea {
-  width: 100%;
-  min-height: 80px;
-  resize: vertical;
-  font-size: 14px;
-  font-family: Arial, sans-serif;
-  padding: 6px;
-}
+		.input-item-edit {
+			width: 100%;
+			font-size: 12px;
+			padding: 6px 8px;
+		}
 
-.splash-message {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  
-  background: rgba(0, 0, 0, 0.85);
-  color: white;
-  padding: 20px 40px;
-  border-radius: 12px;
-  font-family: sans-serif;
-  font-size: 1.2rem;
-  z-index: 10000;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
+		.summary {
+			margin-top: 15px;
+			background: var(--surface);
+			border: 1px solid var(--border);
+			padding: 12px;
+		}
 
-.splash-message.fade-out {
-  opacity: 0;
-}
+		.summary h3 {
+			margin: 0 0 8px;
+			font-size: 15px;
+			font-weight: 600;
+			color: var(--text);
+		}
 
-@media (max-width: 980px) {
-  .select-layout {
-    grid-template-columns: 1fr;
-  }
+		.summary-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 12px;
+		}
 
-  .select-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
+		.summary-col textarea {
+			min-height: 160px;
+			font-size: 16px;
+		}
+
+		textarea {
+			width: 100%;
+			min-height: 80px;
+			resize: vertical;
+			font-size: 14px;
+			font-family: Arial, sans-serif;
+			padding: 8px;
+		}
+
+		/* Größere Schrift in Auswahlliste */
+		#selectView .section-title {
+			font-size: 16px;
+			padding: 10px 12px;
+		}
+
+		#selectView .checklist label {
+			font-size: 15px;
+			padding: 6px 0;
+			grid-template-columns: 26px 1fr auto;
+		}
+
+		#selectView .checklist input[type="checkbox"] {
+			width: 18px;
+			height: 18px;
+		}
+
+		#selectView input[data-manual-cat] {
+			font-size: 15px !important;
+			padding: 8px 10px !important;
+		}
+
+		#bulkCategorySelector,
+		#bulkInput,
+		#selectedText,
+		#manualText {
+			font-size: 15px;
+		}
+
+		.splash-message {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: rgba(0, 0, 0, 0.85);
+			color: white;
+			padding: 20px 40px;
+			border-radius: 12px;
+			font-family: sans-serif;
+			font-size: 1.2rem;
+			z-index: 10000;
+			pointer-events: none;
+			transition: opacity 0.5s ease;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+		}
+
+		.splash-message.fade-out {
+			opacity: 0;
+		}
+
+		@media (max-width: 1100px) {
+			.section-grid {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+		}
+
+		@media (max-width: 700px) {
+			.section-grid,
+			.summary-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
 </head>
 
 <body>
-<div class="app-shell">
-  <h2>Prüfvermerk Generator</h2>
+	<div class="app-shell">
+		<h2>Prüfvermerk Generator</h2>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showView('inputView', this)">Werte eingeben</button>
-    <button class="tab-btn" onclick="showView('selectView', this)">Auswahlliste</button>
-  </div>
+		<div class="tabs">
+			<button class="tab-btn active" onclick="showView('inputView', this)">Werte eingeben</button>
+			<button class="tab-btn" onclick="showView('selectView', this)">Auswahlliste</button>
+		</div>
 
-  <!-- Eingabe -->
-  <div id="inputView" class="view active">
-    <div class="bulk-panel">
-      <textarea id="bulkInput" rows="3" placeholder="Es können gleichzeitig mehrere Zeilen eingefügt werden"></textarea>
-      <select id="bulkCategorySelector"></select>
-      <button class="primary" onclick="addBulkItems()">Werte hinzufügen</button>
-    </div>
+		<div id="inputView" class="view active">
+			<div class="bulk-panel">
+				<textarea id="bulkInput" rows="3" placeholder="Mehrere Zeilen einfügen (jede Zeile = Checkbox)"></textarea>
+				<div class="bulk-actions">
+					<select id="bulkCategorySelector"></select>
+					<button class="primary" onclick="addBulkItems()">Werte hinzufügen</button>
+				</div>
+			</div>
 
-    <div class="section-grid" id="inputListGrid"></div>
-  </div>
+			<div id="inputAccordionList" class="section-grid"></div>
+		</div>
 
-  <!-- Auswahl -->
-  <div id="selectView" class="view">
-    <div class="select-layout">
-      <div class="select-panel">
-        <div class="select-grid" id="selectGrid"></div>
-      </div>
+		<div id="selectView" class="view">
+			<div class="section-grid" id="selectGrid"></div>
 
-      <div>
-        <div class="right-panel" id="rightSelectGrid"></div>
+			<div class="summary">
+				<div class="summary-grid">
+					<div class="summary-col">
+						<h3>Ausgewählte Werte</h3>
+						<textarea id="selectedText" readonly></textarea>
+					</div>
+					<div class="summary-col">
+						<h3>Manuelle Ergänzung</h3>
+						<textarea id="manualText" placeholder="Zusätzliche eigene Texte..."></textarea>
+					</div>
+				</div>
 
-        <div class="summary">
-          <div class="summary-grid">
-            <div class="summary-col">
-              <h3>Ausgewählte Werte</h3>
-              <textarea id="selectedText" readonly></textarea>
-            </div>
+				<div style="margin-top:10px; display:flex; gap:8px;">
+					<button class="primary" onclick="copySummary()">Texte kopieren</button>
+					<button onclick="resetSummary()">Zurücksetzen</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-            <div class="summary-col">
-              <h3>Manuelle Ergänzung</h3>
-              <textarea id="manualText" placeholder="Zusätzliche eigene Texte..."></textarea>
-            </div>
-          </div>
+	<script>
+		const categories = [
+			"Zeitliche Voraussetzung",
+			"Lebensunterhalt",
+			"Rentenversicherung",
+			"Sicherheit",
+			"Sprachkenntnisse",
+			"Rechts- und Gesellschaftsordnung",
+			"Erteilung"
+		];
 
-          <div style="margin-top:10px; display:flex; gap:8px;">
-            <button class="primary" onclick="copySummary()">Texte kopieren</button>
-            <button onclick="resetSummary()">Zurücksetzen</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+		let data = JSON.parse(localStorage.getItem("checklistData")) || {};
+		categories.forEach(c => data[c] ||= []);
 
-<script>
-const leftCategories = [
-    "Zeitliche Voraussetzung",
-    "Lebensunterhalt",
-    "Rentenversicherung",
-    "Sicherheit",
-    "Sprachkenntnisse",
-  "Rechts- und Gesellschaftsordnung"
-];
+		const bulkInput = document.getElementById("bulkInput");
+		const bulkCategorySelector = document.getElementById("bulkCategorySelector");
+		const inputAccordionList = document.getElementById("inputAccordionList");
+		const selectGrid = document.getElementById("selectGrid");
+		const selectedText = document.getElementById("selectedText");
+		const manualText = document.getElementById("manualText");
 
-const rightCategories = [
-  "Aktueller Status",
-  "Beantragt",
-  "Erteilung"
-];
+		function showView(id, btn) {
+			document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+			document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+			document.getElementById(id).classList.add("active");
+			btn.classList.add("active");
 
-const categories = [...leftCategories, ...rightCategories];
-const inputCategories = [
-  "Aktueller Status",
-  "Beantragt",
-  ...leftCategories,
-  "Erteilung"
-];
-const summaryOrder = [
-  "Aktueller Status",
-  "Beantragt",
-  ...leftCategories,
-  "Erteilung"
-];
+			if (id === "selectView") {
+				renderSelectView();
+			}
+		}
 
-let data = JSON.parse(localStorage.getItem("checklistData")) || {};
-categories.forEach(c => data[c] ||= []);
+		function renderCategorySelector() {
+			bulkCategorySelector.innerHTML = '<option value="">Kategorie auswählen</option>';
+			categories.forEach(cat => {
+				const o = document.createElement("option");
+				o.value = cat;
+				o.textContent = cat;
+				bulkCategorySelector.appendChild(o);
+			});
+		}
 
-const bulkCategorySelector = document.getElementById("bulkCategorySelector");
-const inputListGrid = document.getElementById("inputListGrid");
-const selectGrid = document.getElementById("selectGrid");
-const selectedText = document.getElementById("selectedText");
-const manualText = document.getElementById("manualText");
-const rightSelectGrid = document.getElementById("rightSelectGrid");
+		function renderInputView() {
+			inputAccordionList.innerHTML = "";
 
-function showView(id, btn) {
-  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  btn.classList.add("active");
-  if (id === "selectView") renderSelectView();
-}
+			categories.forEach(cat => {
+				const wrapper = document.createElement("div");
+				wrapper.className = "accordion open";
 
-function renderCategorySelector() {
-  bulkCategorySelector.innerHTML = '<option value="">Kategorie auswählen</option>';
-  inputCategories.forEach(cat => {
-    const o = document.createElement("option");
-    o.value = cat;
-    o.textContent = cat;
-    bulkCategorySelector.appendChild(o);
-  });
-}
+				const header = document.createElement("div");
+				header.className = "accordion-header";
+				header.innerHTML = `
+					<div class="accordion-title">
+						<span class="accordion-icon">▼</span>
+						<span>${cat}</span>
+					</div>
+					<span>${data[cat].length} Einträge</span>
+				`;
 
-function renderInputView() {
-  inputListGrid.innerHTML = "";
-  inputCategories.forEach(cat => {
-    const sec = document.createElement("div");
-    sec.className = "section bar-section";
-    sec.innerHTML = `
-      <div class="section-title">${cat}</div>
-      <div class="list-rows">
-        ${data[cat].map((v, i) => `
-          <div class="list-row">
-            <span>${v}</span>
-            <button class="delete" onclick="removeItem('${cat}', ${i})">✕</button>
-          </div>
-        `).join("")}
-      </div>
-    `;
-    inputListGrid.appendChild(sec);
-  });
-}
+				header.addEventListener("click", () => {
+					wrapper.classList.toggle("open");
+					const icon = header.querySelector(".accordion-icon");
+					icon.textContent = wrapper.classList.contains("open") ? "▼" : "►";
+				});
 
-function renderSelectView() {
-  selectGrid.innerHTML = "";
-  leftCategories.forEach(cat => {
-    const id = cssId(cat);
-    const sec = document.createElement("div");
-    sec.className = "section bar-section";
-    sec.innerHTML = `
-      <div class="section-title">${cat}</div>
-      <div class="dropdown-list">
-        <select data-cat="${id}" onchange="updateSummary()">
-          <option value="">Bitte waehlen...</option>
-          ${data[cat].map(v => `
-            <option value="${v}">${v}</option>
-          `).join("")}
-        </select>
-      </div>
-      <div style="padding: 8px; border-top: 1px solid var(--border); background: #fff;">
-        <input type="text" 
-               placeholder="Manuelle Ergänzung für ${cat}..." 
-               data-manual-cat="${id}"
-               onchange="updateSummary()"
-               style="width: 100%; font-size: 11px; padding: 4px 6px;">
-      </div>
-    `;
-    selectGrid.appendChild(sec);
-  });
+				const body = document.createElement("div");
+				body.className = "accordion-body";
 
-  rightSelectGrid.innerHTML = "";
-  rightCategories.forEach(cat => {
-    const id = cssId(cat);
-    const sec = document.createElement("div");
-    sec.className = "section bar-section";
-    sec.innerHTML = `
-      <div class="section-title">${cat}</div>
-      <div class="dropdown-list">
-        <select data-cat="${id}" onchange="updateSummary()">
-          <option value="">Bitte waehlen...</option>
-          ${data[cat].map(v => `
-            <option value="${v}">${v}</option>
-          `).join("")}
-        </select>
-      </div>
-      <div style="padding: 8px; border-top: 1px solid var(--border); background: #fff;">
-        <input type="text" 
-               placeholder="Manuelle Ergänzung für ${cat}..." 
-               data-manual-cat="${id}"
-               onchange="updateSummary()"
-               style="width: 100%; font-size: 11px; padding: 4px 6px;">
-      </div>
-    `;
-    rightSelectGrid.appendChild(sec);
-  });
-  updateSummary();
-}
+				if (!data[cat].length) {
+					body.innerHTML = `<div class="input-item-text" style="color:#666;">Keine Einträge vorhanden.</div>`;
+				} else {
+					body.innerHTML = data[cat].map((value, index) => `
+						<div class="input-item">
+							<div class="input-item-text" id="text-${cssId(cat)}-${index}">${escapeHtml(value)}</div>
+							<button class="edit" onclick="editItem('${escapeJs(cat)}', ${index})">✎</button>
+							<button class="delete" onclick="removeItem('${escapeJs(cat)}', ${index})">✕</button>
+						</div>
+					`).join("");
+				}
 
-function addBulkItems() {
-  if (!bulkInput.value.trim() || !bulkCategorySelector.value) return alert("Bitte alles ausfüllen.");
-  const lines = bulkInput.value
-    .split(/\r?\n/)
-    .map(l => l.trim())
-    .filter(Boolean);
-  if (!lines.length) return;
+				wrapper.appendChild(header);
+				wrapper.appendChild(body);
+				inputAccordionList.appendChild(wrapper);
+			});
+		}
 
-  data[bulkCategorySelector.value].push(...lines);
-  saveAll();
-  bulkInput.value = "";
-  renderInputView();
-}
+		function renderSelectView() {
+			selectGrid.innerHTML = "";
 
-function removeItem(category, index) {
-  data[category].splice(index, 1);
-  saveAll();
-  renderInputView();
-}
+			categories.forEach(cat => {
+				const id = cssId(cat);
+				const sec = document.createElement("div");
+				sec.className = "section";
 
-function formatWithTabDash(lines) {
-  return lines.map(line => `- ${line}`).join("\n");
-}
+				sec.innerHTML = `
+					<div class="section-title">${cat}</div>
+					<div class="checklist">
+						${data[cat].map(v => `
+							<label>
+								<input type="checkbox"
+									data-cat="${id}"
+									onchange="onlyOnePerCategory(this); updateSummary();">
+								<span>${escapeHtml(v)}</span>
+							</label>
+						`).join("")}
+					</div>
+					<div style="padding: 8px; border-top: 1px solid var(--border); background: #fff;">
+						<input
+							type="text"
+							placeholder="Manuelle Ergänzung für ${cat}..."
+							data-manual-cat="${id}"
+							oninput="updateSummary()"
+							style="width: 100%;">
+					</div>
+				`;
 
-function updateSummary() {
-  const rightBlocks = [];
-  let erteilungLine = "";
-  const leftLines = [];
+				selectGrid.appendChild(sec);
+			});
 
-  summaryOrder.forEach(cat => {
-    const id = cssId(cat);
-    const select = document.querySelector(`#selectGrid select[data-cat="${id}"]`);
-    const manual = document.querySelector(`#selectGrid input[data-manual-cat="${id}"]`);
-    const rightSelect = document.querySelector(`#rightSelectGrid select[data-cat="${id}"]`);
-    const rightManual = document.querySelector(`#rightSelectGrid input[data-manual-cat="${id}"]`);
-    const entries = [];
+			updateSummary();
+		}
 
-    if (select && select.value.trim()) {
-      entries.push(select.value.trim());
-    }
+		function onlyOnePerCategory(checkbox) {
+			if (!checkbox.checked) return;
+			const cat = checkbox.dataset.cat;
+			document.querySelectorAll(`input[data-cat="${cat}"]`).forEach(cb => {
+				if (cb !== checkbox) cb.checked = false;
+			});
+		}
 
-    if (manual && manual.value.trim()) {
-      entries.push(manual.value.trim());
-    }
+		function addBulkItems() {
+			if (!bulkInput.value.trim() || !bulkCategorySelector.value) {
+				alert("Bitte alles ausfüllen.");
+				return;
+			}
 
-    if (rightSelect && rightSelect.value.trim()) {
-      entries.push(rightSelect.value.trim());
-    }
+			const lines = bulkInput.value
+				.split(/\r?\n/)
+				.map(l => l.trim())
+				.filter(Boolean);
 
-    if (rightManual && rightManual.value.trim()) {
-      entries.push(rightManual.value.trim());
-    }
+			if (!lines.length) return;
 
-    if (!entries.length) return;
+			data[bulkCategorySelector.value].push(...lines);
+			saveAll();
+			bulkInput.value = "";
+			renderInputView();
+		}
 
-    if (rightCategories.includes(cat)) {
-      const line = `${cat}: ${entries.join("; ")}`;
-      if (cat === "Erteilung") {
-        erteilungLine = line;
-      } else if (cat === "Beantragt") {
-        rightBlocks.push(line, "");
-      } else {
-        rightBlocks.push(line, "");
-      }
-      return;
-    }
+		function removeItem(category, index) {
+			data[category].splice(index, 1);
+			saveAll();
+			renderInputView();
+		}
 
-    if (select && select.value.trim()) {
-      leftLines.push(`- ${select.value.trim()}`);
-    }
+		function editItem(category, index) {
+			const currentValue = data[category][index];
+			const newValue = prompt("Eintrag bearbeiten:", currentValue);
 
-    if (manual && manual.value.trim()) {
-      leftLines.push(manual.value.trim());
-    }
-  });
+			if (newValue === null) return;
 
-  const rightText = rightBlocks.join("\n").trimEnd();
-  const leftText = leftLines.join("\n");
-  const merged = [rightText, leftText, erteilungLine].filter(Boolean).join("\n\n");
+			const trimmed = newValue.trim();
+			if (!trimmed) {
+				alert("Der Eintrag darf nicht leer sein.");
+				return;
+			}
 
-  selectedText.value = merged ? merged.trimEnd() : "";
-}
+			data[category][index] = trimmed;
+			saveAll();
+			renderInputView();
+		}
 
-function copySummary() {
-  const selected = selectedText.value.trimEnd();
-  const manualLines = manualText.value
-    .split(/\r?\n/)
-    .map(l => l.trim())
-    .filter(Boolean);
+		function formatWithTabDash(lines) {
+			return lines.map(line => `\t- ${line}`).join("\n");
+		}
 
-  const formattedManual = manualLines.join("\n");
-  const merged = [selected, formattedManual].filter(Boolean).join("\n");
+		function updateSummary() {
+			const selected = [];
 
-  navigator.clipboard.writeText(merged).then(() => {
-    showSplash("Text kopiert 👍");
-  });
-}
+			document.querySelectorAll('#selectGrid input[type="checkbox"]:checked').forEach(cb => {
+				const label = cb.closest("label");
+				const text = label.querySelector("span")?.textContent?.trim();
+				if (text) selected.push(text);
+			});
 
-function resetSummary() {
-  document.querySelectorAll('#selectGrid select[data-cat]').forEach(select => {
-    select.value = "";
-  });
-  document.querySelectorAll('#selectGrid input[data-manual-cat]').forEach(input => {
-    input.value = "";
-  });
-  document.querySelectorAll('#rightSelectGrid select[data-cat]').forEach(select => {
-    select.value = "";
-  });
-  document.querySelectorAll('#rightSelectGrid input[data-manual-cat]').forEach(input => {
-    input.value = "";
-  });
-  selectedText.value = "";
-  manualText.value = "";
-}
+			document.querySelectorAll("#selectGrid input[data-manual-cat]").forEach(input => {
+				const value = input.value.trim();
+				if (value) selected.push(value);
+			});
 
-function showSplash(message) {
-  const splash = document.createElement("div");
-  splash.className = "splash-message";
-  splash.innerText = message;
-  document.body.appendChild(splash);
+			selectedText.value = selected.length ? formatWithTabDash(selected) : "";
+		}
 
-  setTimeout(() => {
-    splash.classList.add("fade-out");
-    splash.addEventListener("transitionend", () => splash.remove());
-  }, 2000);
-}
+		function copySummary() {
+			const selected = selectedText.value.trimEnd();
 
-function saveAll() {
-  localStorage.setItem("checklistData", JSON.stringify(data));
-}
+			const manualLines = manualText.value
+				.split(/\r?\n/)
+				.map(l => l.trim())
+				.filter(Boolean);
 
-function cssId(text) {
-  return text.replace(/\s+/g, "-").replace(/[^\w-]/g, "");
-}
+			const formattedManual = manualLines.length ? formatWithTabDash(manualLines) : "";
+			const merged = [selected, formattedManual].filter(Boolean).join("\n");
 
-renderCategorySelector();
-renderInputView();
-</script>
+			navigator.clipboard.writeText(merged).then(() => {
+				showSplash("Text kopiert 👍");
+			});
+		}
 
+		function resetSummary() {
+			document.querySelectorAll('#selectGrid input[type="checkbox"]').forEach(cb => {
+				cb.checked = false;
+			});
+			document.querySelectorAll('#selectGrid input[data-manual-cat]').forEach(input => {
+				input.value = "";
+			});
+			selectedText.value = "";
+			manualText.value = "";
+		}
+
+		function showSplash(message) {
+			const splash = document.createElement("div");
+			splash.className = "splash-message";
+			splash.innerText = message;
+			document.body.appendChild(splash);
+
+			setTimeout(() => {
+				splash.classList.add("fade-out");
+				splash.addEventListener("transitionend", () => splash.remove());
+			}, 2000);
+		}
+
+		function saveAll() {
+			localStorage.setItem("checklistData", JSON.stringify(data));
+		}
+
+		function cssId(text) {
+			return text.replace(/\s+/g, "-").replace(/[^\w-]/g, "");
+		}
+
+		function escapeHtml(text) {
+			const div = document.createElement("div");
+			div.textContent = text;
+			return div.innerHTML;
+		}
+
+		function escapeJs(text) {
+			return text.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+		}
+
+		renderCategorySelector();
+		renderInputView();
+	</script>
 </body>
+
 </html>
