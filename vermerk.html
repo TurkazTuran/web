@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 width=%2264%22 height=%2264%22><rect x=%228%22 y=%228%22 width=%2248%22 height=%2248%22 rx=%224%22 fill=%22%23ffffff%22 stroke=%22%23d0d0d0%22 stroke-width=%222%22/><line x1=%2216%22 y1=%2220%22 x2=%2248%22 y2=%2220%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2230%22 x2=%2248%22 y2=%2248%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2240%22 x2=%2236%22 y2=%2240%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/></svg>">
+	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 width=%2264%22 height=%2264%22><rect x=%228%22 y=%228%22 width=%2248%22 height=%2248%22 rx=%224%22 fill=%22%23ffffff%22 stroke=%22%23d0d0d0%22 stroke-width=%222%22/><line x1=%2216%22 y1=%2220%22 x2=%2248%22 y2=%2220%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2230%22 x2=%2248%22 y2=%2230%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2240%22 x2=%2236%22 y2=%2240%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/></svg>">
 	<title>Prüfvermerk Generator</title>
 	<style>
 		:root {
@@ -94,7 +94,7 @@
 			border: 1px solid #d2d2d2;
 			color: var(--danger);
 			font-weight: 700;
-			padding: 2px 8px;
+			padding: 4px 10px;
 			font-size: 14px;
 		}
 
@@ -107,7 +107,7 @@
 			border: 1px solid #d2d2d2;
 			color: #333;
 			font-weight: 700;
-			padding: 2px 8px;
+			padding: 4px 10px;
 			font-size: 13px;
 		}
 
@@ -170,97 +170,40 @@
 			overflow: hidden;
 		}
 
-		.section-title,
-		.accordion-header {
+		.section-title {
 			font-weight: 600;
 			font-size: 12px;
-			padding: 8px 10px;
+			padding: 6px 10px;
 			background: var(--header-bg);
 			border-bottom: 1px solid var(--border);
 			color: var(--text);
 		}
 
-		.accordion {
-			background: var(--surface);
-			border: 1px solid var(--border);
-		}
-
-		.accordion-header {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			cursor: pointer;
-			user-select: none;
-		}
-
-		.accordion-header:hover {
-			background: #c9c9c9;
-		}
-
-		.accordion-title {
-			display: flex;
-			align-items: center;
+		.section-body {
+			padding: 8px;
+			display: grid;
 			gap: 8px;
 		}
 
-		.accordion-icon {
+		.item-preview {
+			padding: 8px 10px;
+			background: #fff;
+			border-left: 4px solid #8c8c8c;
 			font-size: 12px;
-			width: 16px;
-			text-align: center;
-		}
-
-		.accordion-body {
-			display: none;
-			padding: 8px;
-			background: #fafafa;
-		}
-
-		.accordion.open .accordion-body {
-			display: block;
-		}
-
-		.checklist {
-			padding: 8px;
-			display: grid;
-			gap: 4px;
-		}
-
-		.checklist label {
-			display: grid;
-			grid-template-columns: 22px 1fr auto;
-			gap: 8px;
+			min-height: 36px;
+			display: flex;
 			align-items: center;
-			font-size: 11px;
-			padding: 4px 0;
-		}
-
-		.checklist input[type="checkbox"] {
-			width: 15px;
-			height: 15px;
-			margin: 0;
-			cursor: pointer;
-		}
-
-		.checklist label:hover {
-			background: rgba(0, 102, 204, 0.05);
-		}
-
-		.input-item {
-			display: grid;
-			grid-template-columns: 1fr auto auto;
-			gap: 6px;
-			align-items: center;
-			padding: 5px 0;
-			border-bottom: 1px solid #e5e5e5;
-		}
-
-		.input-item:last-child {
-			border-bottom: none;
-		}
-
-		.input-item-text {
-			font-size: 12px;
 			word-break: break-word;
+		}
+
+		.item-preview.empty {
+			color: #666;
+			font-style: italic;
+		}
+
+		.item-actions {
+			display: flex;
+			gap: 6px;
 		}
 
 		.summary {
@@ -285,7 +228,6 @@
 
 		.summary-col textarea {
 			min-height: 160px;
-			font-size: 16px;
 		}
 
 		textarea {
@@ -297,26 +239,16 @@
 			padding: 8px;
 		}
 
-		/* Größere Schrift in Auswahlliste (mit Dropdown/Accordion) */
-		#selectView .accordion-header {
+		/* Auswahlliste größer */
+		#selectView .section-title {
 			font-size: 16px;
 			padding: 10px 12px;
 		}
 
-		#selectView .checklist label {
+		#selectView .section-body select,
+		#selectView .section-body input[data-manual-cat],
+		#selectView .section-body .item-preview {
 			font-size: 15px;
-			padding: 6px 0;
-			grid-template-columns: 26px 1fr auto;
-		}
-
-		#selectView .checklist input[type="checkbox"] {
-			width: 18px;
-			height: 18px;
-		}
-
-		#selectView input[data-manual-cat] {
-			font-size: 15px !important;
-			padding: 8px 10px !important;
 		}
 
 		#bulkCategorySelector,
@@ -371,7 +303,6 @@
 			<button class="tab-btn" onclick="showView('selectView', this)">Auswahlliste</button>
 		</div>
 
-		<!-- Eingabe -->
 		<div id="inputView" class="view active">
 			<div class="bulk-panel">
 				<textarea id="bulkInput" rows="3" placeholder="Mehrere Zeilen einfügen (jede Zeile = Checkbox)"></textarea>
@@ -381,10 +312,9 @@
 				</div>
 			</div>
 
-			<div id="inputAccordionList" class="section-grid"></div>
+			<div id="inputListGrid" class="section-grid"></div>
 		</div>
 
-		<!-- Auswahl -->
 		<div id="selectView" class="view">
 			<div class="section-grid" id="selectGrid"></div>
 
@@ -424,7 +354,7 @@
 
 		const bulkInput = document.getElementById("bulkInput");
 		const bulkCategorySelector = document.getElementById("bulkCategorySelector");
-		const inputAccordionList = document.getElementById("inputAccordionList");
+		const inputListGrid = document.getElementById("inputListGrid");
 		const selectGrid = document.getElementById("selectGrid");
 		const selectedText = document.getElementById("selectedText");
 		const manualText = document.getElementById("manualText");
@@ -435,9 +365,8 @@
 			document.getElementById(id).classList.add("active");
 			btn.classList.add("active");
 
-			if (id === "selectView") {
-				renderSelectView();
-			}
+			if (id === "inputView") renderInputView();
+			if (id === "selectView") renderSelectView();
 		}
 
 		function renderCategorySelector() {
@@ -450,113 +379,80 @@
 			});
 		}
 
-		// Werte eingeben: alle Kategorien beim Laden ZUGEKLAPPT
 		function renderInputView() {
-			inputAccordionList.innerHTML = "";
+			inputListGrid.innerHTML = "";
 
 			categories.forEach(cat => {
-				const wrapper = document.createElement("div");
-				wrapper.className = "accordion"; // <- standardmäßig zu
+				const sec = document.createElement("div");
+				sec.className = "section";
 
-				const header = document.createElement("div");
-				header.className = "accordion-header";
-				header.innerHTML = `
-					<div class="accordion-title">
-						<span class="accordion-icon">►</span>
-						<span>${cat}</span>
+				const selectedIndex = getSelectedIndex(cat);
+
+				sec.innerHTML = `
+					<div class="section-title">${escapeHtml(cat)}</div>
+					<div class="section-body">
+						<select data-input-cat="${cssId(cat)}" onchange="setSelectedIndex('${escapeJs(cat)}', this.value); renderInputView();">
+							<option value="">Eintrag auswählen</option>
+							${data[cat].map((value, index) => `
+								<option value="${index}" ${String(selectedIndex) === String(index) ? "selected" : ""}>
+									${escapeHtml(value)}
+								</option>
+							`).join("")}
+						</select>
+
+						<div class="item-preview ${selectedIndex === '' ? 'empty' : ''}">
+							${selectedIndex === '' ? 'Kein Eintrag ausgewählt.' : escapeHtml(data[cat][selectedIndex])}
+						</div>
+
+						<div class="item-actions">
+							<button class="edit" onclick="editSelectedItem('${escapeJs(cat)}')">✎ Bearbeiten</button>
+							<button class="delete" onclick="removeSelectedItem('${escapeJs(cat)}')">✕ Löschen</button>
+						</div>
 					</div>
-					<span>${data[cat].length} Einträge</span>
 				`;
 
-				header.addEventListener("click", () => {
-					wrapper.classList.toggle("open");
-					const icon = header.querySelector(".accordion-icon");
-					icon.textContent = wrapper.classList.contains("open") ? "▼" : "►";
-				});
-
-				const body = document.createElement("div");
-				body.className = "accordion-body";
-
-				if (!data[cat].length) {
-					body.innerHTML = `<div class="input-item-text" style="color:#666;">Keine Einträge vorhanden.</div>`;
-				} else {
-					body.innerHTML = data[cat].map((value, index) => `
-						<div class="input-item">
-							<div class="input-item-text">${escapeHtml(value)}</div>
-							<button class="edit" onclick="editItem('${escapeJs(cat)}', ${index})">✎</button>
-							<button class="delete" onclick="removeItem('${escapeJs(cat)}', ${index})">✕</button>
-						</div>
-					`).join("");
-				}
-
-				wrapper.appendChild(header);
-				wrapper.appendChild(body);
-				inputAccordionList.appendChild(wrapper);
+				inputListGrid.appendChild(sec);
 			});
 		}
 
-		// Auswahlliste: Dropdown/Accordion bleibt erhalten
 		function renderSelectView() {
 			selectGrid.innerHTML = "";
 
 			categories.forEach(cat => {
-				const id = cssId(cat);
-				const wrapper = document.createElement("div");
-				wrapper.className = "accordion";
+				const selectedIndex = getSelectChoice(cat);
 
-				const header = document.createElement("div");
-				header.className = "accordion-header";
-				header.innerHTML = `
-					<div class="accordion-title">
-						<span class="accordion-icon">▼</span>
-						<span>${cat}</span>
-					</div>
-					<span>${data[cat].length} Einträge</span>
-				`;
+				const sec = document.createElement("div");
+				sec.className = "section";
 
-				header.addEventListener("click", () => {
-					wrapper.classList.toggle("open");
-					const icon = header.querySelector(".accordion-icon");
-					icon.textContent = wrapper.classList.contains("open") ? "▼" : "►";
-				});
+				sec.innerHTML = `
+					<div class="section-title">${escapeHtml(cat)}</div>
+					<div class="section-body">
+						<select data-select-cat="${cssId(cat)}" onchange="setSelectChoice('${escapeJs(cat)}', this.value); updateSummary(); renderSelectView();">
+							<option value="">Bitte auswählen</option>
+							${data[cat].map((value, index) => `
+								<option value="${index}" ${String(selectedIndex) === String(index) ? "selected" : ""}>
+									${escapeHtml(value)}
+								</option>
+							`).join("")}
+						</select>
 
-				const body = document.createElement("div");
-				body.className = "accordion-body";
-				body.innerHTML = `
-					<div class="checklist">
-						${data[cat].map(v => `
-							<label>
-								<input type="checkbox"
-									data-cat="${id}"
-									onchange="onlyOnePerCategory(this); updateSummary();">
-								<span>${escapeHtml(v)}</span>
-							</label>
-						`).join("")}
-					</div>
-					<div style="padding: 8px; border-top: 1px solid var(--border); background: #fff;">
+						<div class="item-preview ${selectedIndex === '' ? 'empty' : ''}">
+							${selectedIndex === '' ? 'Kein Wert ausgewählt.' : escapeHtml(data[cat][selectedIndex])}
+						</div>
+
 						<input
 							type="text"
-							placeholder="Manuelle Ergänzung für ${cat}..."
-							data-manual-cat="${id}"
-							oninput="updateSummary()"
-							style="width: 100%;">
+							placeholder="Manuelle Ergänzung für ${escapeHtml(cat)}..."
+							data-manual-cat="${cssId(cat)}"
+							value="${escapeAttribute(getManualCategoryText(cat))}"
+							oninput="setManualCategoryText('${escapeJs(cat)}', this.value); updateSummary();">
 					</div>
 				`;
 
-				wrapper.appendChild(header);
-				wrapper.appendChild(body);
-				selectGrid.appendChild(wrapper);
+				selectGrid.appendChild(sec);
 			});
 
 			updateSummary();
-		}
-
-		function onlyOnePerCategory(checkbox) {
-			if (!checkbox.checked) return;
-			const cat = checkbox.dataset.cat;
-			document.querySelectorAll(`input[data-cat="${cat}"]`).forEach(cb => {
-				if (cb !== checkbox) cb.checked = false;
-			});
 		}
 
 		function addBulkItems() {
@@ -578,13 +474,13 @@
 			renderInputView();
 		}
 
-		function removeItem(category, index) {
-			data[category].splice(index, 1);
-			saveAll();
-			renderInputView();
-		}
+		function editSelectedItem(category) {
+			const index = getSelectedIndex(category);
+			if (index === '') {
+				alert("Bitte zuerst einen Eintrag auswählen.");
+				return;
+			}
 
-		function editItem(category, index) {
 			const currentValue = data[category][index];
 			const newValue = prompt("Eintrag bearbeiten:", currentValue);
 
@@ -599,6 +495,25 @@
 			data[category][index] = trimmed;
 			saveAll();
 			renderInputView();
+			if (document.getElementById("selectView").classList.contains("active")) {
+				renderSelectView();
+			}
+		}
+
+		function removeSelectedItem(category) {
+			const index = getSelectedIndex(category);
+			if (index === '') {
+				alert("Bitte zuerst einen Eintrag auswählen.");
+				return;
+			}
+
+			data[category].splice(index, 1);
+			setSelectedIndex(category, '');
+			saveAll();
+			renderInputView();
+			if (document.getElementById("selectView").classList.contains("active")) {
+				renderSelectView();
+			}
 		}
 
 		function formatWithTabDash(lines) {
@@ -608,16 +523,16 @@
 		function updateSummary() {
 			const selected = [];
 
-			document.querySelectorAll('#selectGrid input[type="checkbox"]:checked').forEach(cb => {
-				const label = cb.closest("label");
-				const text = label.querySelector("span")?.textContent?.trim();
-				if (text) selected.push(text);
-			});
+			categories.forEach(cat => {
+				const selectedIndex = getSelectChoice(cat);
+				if (selectedIndex !== '' && data[cat][selectedIndex]) {
+					selected.push(data[cat][selectedIndex]);
+				}
 
-			// manuelle Eingaben aus Kategorien -> auch mit "-"
-			document.querySelectorAll("#selectGrid input[data-manual-cat]").forEach(input => {
-				const value = input.value.trim();
-				if (value) selected.push(value);
+				const manualValue = getManualCategoryText(cat).trim();
+				if (manualValue) {
+					selected.push(manualValue);
+				}
 			});
 
 			selectedText.value = selected.length ? formatWithTabDash(selected) : "";
@@ -640,14 +555,13 @@
 		}
 
 		function resetSummary() {
-			document.querySelectorAll('#selectGrid input[type="checkbox"]').forEach(cb => {
-				cb.checked = false;
-			});
-			document.querySelectorAll('#selectGrid input[data-manual-cat]').forEach(input => {
-				input.value = "";
+			categories.forEach(cat => {
+				setSelectChoice(cat, '');
+				setManualCategoryText(cat, '');
 			});
 			selectedText.value = "";
 			manualText.value = "";
+			renderSelectView();
 		}
 
 		function showSplash(message) {
@@ -658,12 +572,36 @@
 
 			setTimeout(() => {
 				splash.classList.add("fade-out");
-				splash.addEventListener("transitionend", () => splash.remove());
+				splash.addEventListener("transitionend", () => splash.remove(), { once: true });
 			}, 2000);
 		}
 
 		function saveAll() {
 			localStorage.setItem("checklistData", JSON.stringify(data));
+		}
+
+		function getSelectedIndex(category) {
+			return localStorage.getItem(`inputSelected:${category}`) ?? '';
+		}
+
+		function setSelectedIndex(category, index) {
+			localStorage.setItem(`inputSelected:${category}`, index);
+		}
+
+		function getSelectChoice(category) {
+			return localStorage.getItem(`selectChoice:${category}`) ?? '';
+		}
+
+		function setSelectChoice(category, index) {
+			localStorage.setItem(`selectChoice:${category}`, index);
+		}
+
+		function getManualCategoryText(category) {
+			return localStorage.getItem(`manualCat:${category}`) ?? '';
+		}
+
+		function setManualCategoryText(category, value) {
+			localStorage.setItem(`manualCat:${category}`, value);
 		}
 
 		function cssId(text) {
@@ -672,12 +610,20 @@
 
 		function escapeHtml(text) {
 			const div = document.createElement("div");
-			div.textContent = text;
+			div.textContent = text ?? "";
 			return div.innerHTML;
 		}
 
+		function escapeAttribute(text) {
+			return String(text ?? "")
+				.replace(/&/g, "&amp;")
+				.replace(/"/g, "&quot;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;");
+		}
+
 		function escapeJs(text) {
-			return text.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+			return String(text ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 		}
 
 		renderCategorySelector();
