@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 width=%2264%22 height=%2264%22><rect x=%228%22 y=%228%22 width=%2248%22 height=%2248%22 rx=%224%22 fill=%22%23ffffff%22 stroke=%22%23d0d0d0%22 stroke-width=%222%22/><line x1=%2216%22 y1=%2220%22 x2=%2248%22 y2=%2220%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2230%22 x2=%2248%22 y2=%2230%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2240%22 x2=%2236%22 y2=%2240%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/></svg>">
 	<title>Prüfvermerk Generator</title>
+
 	<style>
 		:root {
 			--bg: #e8e8e8;
@@ -16,6 +17,7 @@
 			--accent: #0066cc;
 			--danger: #cc0000;
 			--header-bg: #d4d4d4;
+			--bar-size: 6px;
 		}
 
 		* {
@@ -62,7 +64,8 @@
 
 		input:focus,
 		select:focus,
-		textarea:focus {
+		textarea:focus,
+		button:focus {
 			border-color: var(--accent);
 			outline: none;
 		}
@@ -94,8 +97,9 @@
 			border: 1px solid #d2d2d2;
 			color: var(--danger);
 			font-weight: 700;
-			padding: 4px 10px;
+			padding: 2px 8px;
 			font-size: 14px;
+			min-width: 34px;
 		}
 
 		button.delete:hover {
@@ -107,8 +111,9 @@
 			border: 1px solid #d2d2d2;
 			color: #333;
 			font-weight: 700;
-			padding: 4px 10px;
+			padding: 2px 8px;
 			font-size: 13px;
+			min-width: 34px;
 		}
 
 		button.edit:hover {
@@ -167,7 +172,7 @@
 		.section {
 			background: var(--surface);
 			border: 1px solid var(--border);
-			overflow: hidden;
+			overflow: visible;
 		}
 
 		.section-title {
@@ -183,27 +188,7 @@
 			padding: 8px;
 			display: grid;
 			gap: 8px;
-		}
-
-		.item-preview {
-			padding: 8px 10px;
-			background: #fff;
-			border-left: 4px solid #8c8c8c;
-			font-size: 12px;
-			min-height: 36px;
-			display: flex;
-			align-items: center;
-			word-break: break-word;
-		}
-
-		.item-preview.empty {
-			color: #666;
-			font-style: italic;
-		}
-
-		.item-actions {
-			display: flex;
-			gap: 6px;
+			position: relative;
 		}
 
 		.summary {
@@ -239,15 +224,108 @@
 			padding: 8px;
 		}
 
+		.custom-dropdown {
+			position: relative;
+		}
+
+		.dropdown-trigger {
+			width: 100%;
+			text-align: left;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 8px;
+			background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
+			border-left: var(--bar-size) solid #6f6f6f;
+			min-height: 36px;
+		}
+
+		.dropdown-trigger-text {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.dropdown-trigger-arrow {
+			flex: 0 0 auto;
+			color: #555;
+			font-size: 12px;
+		}
+
+		.dropdown-menu {
+			display: none;
+			position: absolute;
+			top: calc(100% + 2px);
+			left: 0;
+			right: 0;
+			background: #fff;
+			border: 1px solid var(--border);
+			box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+			z-index: 2000;
+			max-height: 260px;
+			overflow-y: auto;
+		}
+
+		.custom-dropdown.open .dropdown-menu {
+			display: block;
+		}
+
+		.dropdown-empty {
+			padding: 10px;
+			color: var(--muted);
+			font-size: 12px;
+		}
+
+		.dropdown-item {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 8px;
+			align-items: center;
+			padding: 6px 8px;
+			border-bottom: 1px solid #ececec;
+		}
+
+		.dropdown-item.no-actions {
+			grid-template-columns: 1fr;
+		}
+
+		.dropdown-item:last-child {
+			border-bottom: none;
+		}
+
+		.dropdown-item.selected {
+			background: rgba(0, 102, 204, 0.08);
+		}
+
+		.dropdown-label {
+			min-width: 0;
+			padding: 6px 8px;
+			border-left: var(--bar-size) solid #8a8a8a;
+			background: #fafafa;
+			cursor: pointer;
+			font-size: 12px;
+			word-break: break-word;
+		}
+
+		.dropdown-label:hover {
+			background: #eef5ff;
+		}
+
+		.dropdown-actions {
+			display: flex;
+			gap: 4px;
+			align-items: center;
+		}
+
 		/* Auswahlliste größer */
 		#selectView .section-title {
 			font-size: 16px;
 			padding: 10px 12px;
 		}
 
-		#selectView .section-body select,
-		#selectView .section-body input[data-manual-cat],
-		#selectView .section-body .item-preview {
+		#selectView .dropdown-trigger,
+		#selectView .dropdown-label,
+		#selectView .section-body input[data-manual-cat] {
 			font-size: 15px;
 		}
 
@@ -367,6 +445,8 @@
 			document.getElementById(id).classList.add("active");
 			btn.classList.add("active");
 
+			closeAllDropdowns();
+
 			if (id === "inputView") renderInputView();
 			if (id === "selectView") renderSelectView();
 		}
@@ -388,28 +468,10 @@
 				const sec = document.createElement("div");
 				sec.className = "section";
 
-				const selectedIndex = getSelectedIndex(cat);
-
 				sec.innerHTML = `
 					<div class="section-title">${escapeHtml(cat)}</div>
 					<div class="section-body">
-						<select data-input-cat="${cssId(cat)}" onchange="setSelectedIndex('${escapeJs(cat)}', this.value); renderInputView();">
-							<option value="">Eintrag auswählen</option>
-							${data[cat].map((value, index) => `
-								<option value="${index}" ${String(selectedIndex) === String(index) ? "selected" : ""}>
-									${escapeHtml(value)}
-								</option>
-							`).join("")}
-						</select>
-
-						<div class="item-preview ${selectedIndex === '' ? 'empty' : ''}">
-							${selectedIndex === '' ? 'Kein Eintrag ausgewählt.' : escapeHtml(data[cat][selectedIndex])}
-						</div>
-
-						<div class="item-actions">
-							<button class="edit" onclick="editSelectedItem('${escapeJs(cat)}')">✎ Bearbeiten</button>
-							<button class="delete" onclick="removeSelectedItem('${escapeJs(cat)}')">✕ Löschen</button>
-						</div>
+						${renderCustomDropdown(cat, "input")}
 					</div>
 				`;
 
@@ -421,27 +483,13 @@
 			selectGrid.innerHTML = "";
 
 			categories.forEach(cat => {
-				const selectedIndex = getSelectChoice(cat);
-
 				const sec = document.createElement("div");
 				sec.className = "section";
 
 				sec.innerHTML = `
 					<div class="section-title">${escapeHtml(cat)}</div>
 					<div class="section-body">
-						<select data-select-cat="${cssId(cat)}" onchange="setSelectChoice('${escapeJs(cat)}', this.value); updateSummary(); renderSelectView();">
-							<option value="">Bitte auswählen</option>
-							${data[cat].map((value, index) => `
-								<option value="${index}" ${String(selectedIndex) === String(index) ? "selected" : ""}>
-									${escapeHtml(value)}
-								</option>
-							`).join("")}
-						</select>
-
-						<div class="item-preview ${selectedIndex === '' ? 'empty' : ''}">
-							${selectedIndex === '' ? 'Kein Wert ausgewählt.' : escapeHtml(data[cat][selectedIndex])}
-						</div>
-
+						${renderCustomDropdown(cat, "select")}
 						<input
 							type="text"
 							placeholder="Manuelle Ergänzung für ${escapeHtml(cat)}..."
@@ -455,6 +503,133 @@
 			});
 
 			updateSummary();
+		}
+
+		function renderCustomDropdown(category, mode) {
+			const selectedIndex = mode === "input" ? getSelectedIndex(category) : getSelectChoice(category);
+			const selectedValue = selectedIndex !== '' && data[category][selectedIndex]
+				? data[category][selectedIndex]
+				: "Bitte auswählen";
+
+			const withActions = mode === "input";
+
+			return `
+				<div class="custom-dropdown" data-category="${escapeAttribute(category)}" data-mode="${mode}">
+					<button type="button" class="dropdown-trigger" onclick="toggleDropdown(this)">
+						<span class="dropdown-trigger-text">${escapeHtml(selectedValue)}</span>
+						<span class="dropdown-trigger-arrow">▼</span>
+					</button>
+					<div class="dropdown-menu">
+						${data[category].length ? data[category].map((value, index) => `
+							<div class="dropdown-item ${String(selectedIndex) === String(index) ? 'selected' : ''} ${withActions ? '' : 'no-actions'}">
+								<div class="dropdown-label"
+									onclick="selectDropdownItem('${escapeJs(category)}', ${index}, '${mode}')">
+									${escapeHtml(value)}
+								</div>
+								${withActions ? `
+									<div class="dropdown-actions">
+										<button type="button" class="edit"
+											onclick="event.stopPropagation(); editItemFromDropdown('${escapeJs(category)}', ${index}, '${mode}')">✎</button>
+										<button type="button" class="delete"
+											onclick="event.stopPropagation(); deleteItemFromDropdown('${escapeJs(category)}', ${index}, '${mode}')">✕</button>
+									</div>
+								` : ''}
+							</div>
+						`).join('') : '<div class="dropdown-empty">Keine Einträge vorhanden.</div>'}
+					</div>
+				</div>
+			`;
+		}
+
+		function toggleDropdown(button) {
+			const current = button.closest(".custom-dropdown");
+			const isOpen = current.classList.contains("open");
+
+			closeAllDropdowns();
+
+			if (!isOpen) {
+				current.classList.add("open");
+			}
+		}
+
+		function closeAllDropdowns() {
+			document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
+				dropdown.classList.remove("open");
+			});
+		}
+
+		function selectDropdownItem(category, index, mode) {
+			if (mode === "input") {
+				setSelectedIndex(category, String(index));
+				renderInputView();
+			} else {
+				setSelectChoice(category, String(index));
+				renderSelectView();
+				updateSummary();
+			}
+			closeAllDropdowns();
+		}
+
+		function editItemFromDropdown(category, index, mode) {
+			const currentValue = data[category][index];
+			const newValue = prompt("Eintrag bearbeiten:", currentValue);
+
+			if (newValue === null) return;
+
+			const trimmed = newValue.trim();
+			if (!trimmed) {
+				alert("Der Eintrag darf nicht leer sein.");
+				return;
+			}
+
+			data[category][index] = trimmed;
+			saveAll();
+
+			if (mode === "input") {
+				setSelectedIndex(category, String(index));
+				renderInputView();
+			} else {
+				setSelectChoice(category, String(index));
+				renderSelectView();
+				updateSummary();
+			}
+		}
+
+		function deleteItemFromDropdown(category, index, mode) {
+			const selectedInput = getSelectedIndex(category);
+			const selectedSelect = getSelectChoice(category);
+
+			data[category].splice(index, 1);
+
+			fixSelectionAfterDelete(category, index, selectedInput, "input");
+			fixSelectionAfterDelete(category, index, selectedSelect, "select");
+
+			saveAll();
+
+			if (mode === "input") {
+				renderInputView();
+			} else {
+				renderSelectView();
+				updateSummary();
+			}
+		}
+
+		function fixSelectionAfterDelete(category, deletedIndex, selectedIndex, mode) {
+			if (selectedIndex === '') return;
+
+			const current = Number(selectedIndex);
+			const deleted = Number(deletedIndex);
+
+			if (current === deleted) {
+				if (mode === "input") setSelectedIndex(category, '');
+				if (mode === "select") setSelectChoice(category, '');
+				return;
+			}
+
+			if (current > deleted) {
+				if (mode === "input") setSelectedIndex(category, String(current - 1));
+				if (mode === "select") setSelectChoice(category, String(current - 1));
+			}
 		}
 
 		function addBulkItems() {
@@ -474,45 +649,7 @@
 			saveAll();
 			bulkInput.value = "";
 			renderInputView();
-		}
 
-		function editSelectedItem(category) {
-			const index = getSelectedIndex(category);
-			if (index === '') {
-				alert("Bitte zuerst einen Eintrag auswählen.");
-				return;
-			}
-
-			const currentValue = data[category][index];
-			const newValue = prompt("Eintrag bearbeiten:", currentValue);
-
-			if (newValue === null) return;
-
-			const trimmed = newValue.trim();
-			if (!trimmed) {
-				alert("Der Eintrag darf nicht leer sein.");
-				return;
-			}
-
-			data[category][index] = trimmed;
-			saveAll();
-			renderInputView();
-			if (document.getElementById("selectView").classList.contains("active")) {
-				renderSelectView();
-			}
-		}
-
-		function removeSelectedItem(category) {
-			const index = getSelectedIndex(category);
-			if (index === '') {
-				alert("Bitte zuerst einen Eintrag auswählen.");
-				return;
-			}
-
-			data[category].splice(index, 1);
-			setSelectedIndex(category, '');
-			saveAll();
-			renderInputView();
 			if (document.getElementById("selectView").classList.contains("active")) {
 				renderSelectView();
 			}
@@ -627,6 +764,14 @@
 		function escapeJs(text) {
 			return String(text ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 		}
+
+		document.addEventListener("click", function(event) {
+			document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
+				if (!dropdown.contains(event.target)) {
+					dropdown.classList.remove("open");
+				}
+			});
+		});
 
 		renderCategorySelector();
 		renderInputView();
