@@ -1,48 +1,96 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 width=%2264%22 height=%2264%22><rect x=%228%22 y=%228%22 width=%2248%22 height=%2248%22 rx=%224%22 fill=%22%23ffffff%22 stroke=%22%23d0d0d0%22 stroke-width=%222%22/><line x1=%2216%22 y1=%2220%22 x2=%2248%22 y2=%2220%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2230%22 x2=%2248%22 y2=%2230%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2240%22 x2=%2236%22 y2=%2240%22 stroke=%22%23a0a0a0%22 stroke-width=%222%22 stroke-linecap=%22round%22/></svg>">
 	<title>Prüfvermerk Generator</title>
-
+	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect x=%228%22 y=%228%22 width=%2248%22 height=%2248%22 rx=%2210%22 fill=%22%23ffffff%22 stroke=%22%23d0d0d0%22 stroke-width=%222%22/><line x1=%2216%22 y1=%2220%22 x2=%2248%22 y2=%2220%22 stroke=%22%23909090%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2230%22 x2=%2248%22 y2=%2230%22 stroke=%22%23909090%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2240%22 x2=%2236%22 y2=%2240%22 stroke=%22%23909090%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/></svg>">
 	<style>
 		:root {
-			--bg: #e8e8e8;
-			--surface: #f5f5f5;
-			--border: #c0c0c0;
-			--text: #000000;
-			--muted: #666666;
-			--accent: #0066cc;
-			--danger: #cc0000;
-			--header-bg: #d4d4d4;
-			--bar-size: 6px;
+			--bg: #f3f6fb;
+			--surface: #ffffff;
+			--surface-2: #f8fafc;
+			--border: #d8e0ea;
+			--text: #16202a;
+			--muted: #66758a;
+			--accent: #2563eb;
+			--accent-2: #1d4ed8;
+			--danger: #dc2626;
+			--danger-bg: #fef2f2;
+			--success: #059669;
+			--header-bg: #eef3f9;
+			--shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+			--shadow-soft: 0 4px 14px rgba(15, 23, 42, 0.06);
+			--radius: 16px;
+			--radius-sm: 12px;
+			--bar-size: 4px;
 		}
 
-		* {
-			box-sizing: border-box;
+		body.dark {
+			--bg: #0f172a;
+			--surface: #111827;
+			--surface-2: #172033;
+			--border: #25324a;
+			--text: #e5edf8;
+			--muted: #95a4bd;
+			--accent: #60a5fa;
+			--accent-2: #3b82f6;
+			--danger: #f87171;
+			--danger-bg: #2b1720;
+			--success: #34d399;
+			--header-bg: #182235;
+			--shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+			--shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.25);
+		}
+
+		* { box-sizing: border-box; }
+
+		html, body {
+			margin: 0;
+			padding: 0;
 		}
 
 		body {
-			margin: 0;
-			padding: 20px;
-			font-family: Arial, sans-serif;
-			background: var(--bg);
+			font-family: Inter, Arial, sans-serif;
+			background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, #ffffff 12%) 100%);
 			color: var(--text);
 			font-size: 14px;
+			padding: 24px;
+			transition: background .25s ease, color .25s ease;
 		}
 
 		.app-shell {
-			max-width: 1400px;
+			max-width: 1500px;
 			margin: 0 auto;
 		}
 
-		h2 {
-			margin: 0 0 20px;
-			font-size: 16px;
-			font-weight: 600;
-			color: var(--text);
+		.topbar {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 12px;
+			margin-bottom: 18px;
+			flex-wrap: wrap;
+		}
+
+		.title-wrap h2 {
+			margin: 0;
+			font-size: 24px;
+			font-weight: 800;
+			letter-spacing: -0.02em;
+		}
+
+		.title-wrap .subtitle {
+			margin-top: 4px;
+			color: var(--muted);
+			font-size: 14px;
+		}
+
+		.toolbar {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+			align-items: center;
 		}
 
 		button,
@@ -50,11 +98,12 @@
 		select,
 		textarea {
 			font: inherit;
-			padding: 6px 10px;
-			border-radius: 3px;
+			border-radius: 12px;
 			border: 1px solid var(--border);
-			background: #fff;
+			background: var(--surface);
 			color: var(--text);
+			padding: 10px 12px;
+			transition: all .2s ease;
 		}
 
 		input::placeholder,
@@ -66,162 +115,174 @@
 		select:focus,
 		textarea:focus,
 		button:focus {
-			border-color: var(--accent);
 			outline: none;
+			border-color: var(--accent);
+			box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
 		}
 
 		button {
 			cursor: pointer;
-			background: #e0e0e0;
-			color: var(--text);
-			font-weight: normal;
-			border: 1px solid var(--border);
+			background: var(--surface);
+			box-shadow: var(--shadow-soft);
+			font-weight: 600;
 		}
 
 		button:hover {
-			background: #d0d0d0;
+			transform: translateY(-1px);
+			border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
 		}
 
 		button.primary {
-			background: var(--accent);
+			background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
 			color: #fff;
-			border: 1px solid #0052a3;
+			border-color: transparent;
 		}
 
 		button.primary:hover {
-			background: #004f9e;
+			filter: brightness(1.03);
+		}
+
+		button.ghost {
+			background: transparent;
+			box-shadow: none;
 		}
 
 		button.delete {
-			background: #eeeeee;
-			border: 1px solid #d2d2d2;
 			color: var(--danger);
-			font-weight: 700;
-			padding: 2px 8px;
-			font-size: 14px;
-			min-width: 34px;
-		}
-
-		button.delete:hover {
-			background: #ffdede;
+			background: var(--danger-bg);
+			border-color: color-mix(in srgb, var(--danger) 25%, var(--border));
+			padding: 7px 10px;
+			min-width: 38px;
 		}
 
 		button.edit {
-			background: #eeeeee;
-			border: 1px solid #d2d2d2;
-			color: #333;
-			font-weight: 700;
-			padding: 2px 8px;
-			font-size: 13px;
-			min-width: 34px;
+			padding: 7px 10px;
+			min-width: 38px;
 		}
 
-		button.edit:hover {
-			background: #dcecff;
-			color: var(--accent);
+		button.move {
+			padding: 7px 10px;
+			min-width: 38px;
+		}
+
+		.toggle-theme {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 10px 14px;
 		}
 
 		.tabs {
 			display: flex;
-			gap: 4px;
-			margin-bottom: 15px;
+			gap: 8px;
+			margin-bottom: 18px;
+			flex-wrap: wrap;
 		}
 
 		.tab-btn {
-			background: #e0e0e0;
-			border: 1px solid var(--border);
-			padding: 8px 16px;
-			font-size: 14px;
+			padding: 11px 16px;
+			border-radius: 999px;
+			background: var(--surface);
 		}
 
 		.tab-btn.active {
-			background: var(--accent);
+			background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
 			color: #fff;
-			border-color: var(--accent);
+			border-color: transparent;
 		}
 
-		.view {
-			display: none;
-		}
+		.view { display: none; }
+		.view.active { display: block; }
 
-		.view.active {
-			display: block;
+		.card {
+			background: color-mix(in srgb, var(--surface) 92%, transparent);
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			box-shadow: var(--shadow);
 		}
 
 		.bulk-panel {
 			display: grid;
-			gap: 8px;
-			margin-bottom: 15px;
-			padding: 10px;
-			background: var(--surface);
-			border: 1px solid var(--border);
+			gap: 10px;
+			margin-bottom: 18px;
+			padding: 16px;
 		}
 
 		.bulk-actions {
 			display: flex;
-			gap: 8px;
+			gap: 10px;
 			flex-wrap: wrap;
+			align-items: center;
+		}
+
+		.bulk-actions select {
+			min-width: 260px;
+			flex: 1;
 		}
 
 		.section-grid {
 			display: grid;
-			grid-template-columns: repeat(4, minmax(0, 1fr));
-			gap: 12px;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 16px;
 		}
 
 		.section {
 			background: var(--surface);
 			border: 1px solid var(--border);
+			border-radius: var(--radius);
 			overflow: visible;
+			box-shadow: var(--shadow-soft);
 		}
 
 		.section-title {
-			font-weight: 600;
-			font-size: 12px;
-			padding: 6px 10px;
+			padding: 14px 16px;
 			background: var(--header-bg);
 			border-bottom: 1px solid var(--border);
-			color: var(--text);
+			font-weight: 700;
+			font-size: 14px;
+			letter-spacing: -.01em;
+			border-radius: var(--radius) var(--radius) 0 0;
 		}
 
 		.section-body {
-			padding: 8px;
+			padding: 12px;
 			display: grid;
-			gap: 8px;
+			gap: 10px;
 			position: relative;
 		}
 
 		.summary {
-			margin-top: 15px;
-			background: var(--surface);
-			border: 1px solid var(--border);
-			padding: 12px;
-		}
-
-		.summary h3 {
-			margin: 0 0 8px;
-			font-size: 15px;
-			font-weight: 600;
-			color: var(--text);
+			margin-top: 18px;
+			padding: 16px;
 		}
 
 		.summary-grid {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
-			gap: 12px;
+			gap: 14px;
 		}
 
-		.summary-col textarea {
-			min-height: 160px;
+		.summary h3 {
+			margin: 0 0 8px;
+			font-size: 14px;
+			font-weight: 700;
 		}
 
 		textarea {
 			width: 100%;
-			min-height: 80px;
+			min-height: 150px;
 			resize: vertical;
-			font-size: 14px;
-			font-family: Arial, sans-serif;
-			padding: 8px;
+		}
+
+		.summary-actions {
+			margin-top: 12px;
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+
+		.import-input {
+			display: none;
 		}
 
 		.custom-dropdown {
@@ -234,127 +295,147 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			gap: 8px;
-			background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
-			border-left: var(--bar-size) solid #6f6f6f;
-			min-height: 36px;
+			gap: 10px;
+			min-height: 46px;
+			background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+			border: 1px solid var(--border);
+			border-left: var(--bar-size) solid var(--accent);
+			box-shadow: none;
 		}
 
 		.dropdown-trigger-text {
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+			font-weight: 500;
 		}
 
 		.dropdown-trigger-arrow {
-			flex: 0 0 auto;
-			color: #555;
+			color: var(--muted);
 			font-size: 12px;
 		}
 
 		.dropdown-menu {
 			display: none;
 			position: absolute;
-			top: calc(100% + 2px);
+			top: calc(100% + 8px);
 			left: 0;
 			right: 0;
-			background: #fff;
+			background: var(--surface);
 			border: 1px solid var(--border);
-			box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-			z-index: 2000;
-			max-height: 260px;
-			overflow-y: auto;
+			box-shadow: var(--shadow);
+			border-radius: 14px;
+			z-index: 3000;
+			max-height: 320px;
+			overflow: hidden;
 		}
 
 		.custom-dropdown.open .dropdown-menu {
 			display: block;
 		}
 
-		.dropdown-empty {
+		.dropdown-search {
 			padding: 10px;
+			border-bottom: 1px solid var(--border);
+			background: var(--surface-2);
+		}
+
+		.dropdown-search input {
+			width: 100%;
+			padding: 9px 10px;
+		}
+
+		.dropdown-list {
+			max-height: 250px;
+			overflow-y: auto;
+		}
+
+		.dropdown-empty {
+			padding: 14px;
 			color: var(--muted);
-			font-size: 12px;
 		}
 
 		.dropdown-item {
 			display: grid;
 			grid-template-columns: 1fr auto;
-			gap: 8px;
+			gap: 10px;
 			align-items: center;
-			padding: 6px 8px;
-			border-bottom: 1px solid #ececec;
-		}
-
-		.dropdown-item.no-actions {
-			grid-template-columns: 1fr;
+			padding: 8px 10px;
+			border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
 		}
 
 		.dropdown-item:last-child {
 			border-bottom: none;
 		}
 
+		.dropdown-item.no-actions {
+			grid-template-columns: 1fr;
+		}
+
 		.dropdown-item.selected {
-			background: rgba(0, 102, 204, 0.08);
+			background: color-mix(in srgb, var(--accent) 10%, var(--surface));
 		}
 
 		.dropdown-label {
 			min-width: 0;
-			padding: 6px 8px;
-			border-left: var(--bar-size) solid #8a8a8a;
-			background: #fafafa;
+			padding: 10px 12px;
+			border-radius: 12px;
+			background: var(--surface-2);
+			border-left: var(--bar-size) solid color-mix(in srgb, var(--accent) 60%, #64748b);
 			cursor: pointer;
-			font-size: 12px;
 			word-break: break-word;
+			line-height: 1.35;
 		}
 
 		.dropdown-label:hover {
-			background: #eef5ff;
+			background: color-mix(in srgb, var(--accent) 8%, var(--surface-2));
 		}
 
 		.dropdown-actions {
 			display: flex;
-			gap: 4px;
+			gap: 6px;
+			flex-wrap: wrap;
 			align-items: center;
 		}
 
-		/* Auswahlliste größer */
+		.manual-input {
+			width: 100%;
+		}
+
 		#selectView .section-title {
-			font-size: 16px;
-			padding: 10px 12px;
+			font-size: 15px;
 		}
 
 		#selectView .dropdown-trigger,
 		#selectView .dropdown-label,
-		#selectView .section-body input[data-manual-cat] {
+		#selectView .manual-input {
 			font-size: 15px;
 		}
 
-		#bulkCategorySelector,
-		#bulkInput,
-		#selectedText,
-		#manualText {
-			font-size: 15px;
-		}
-
-		.splash-message {
+		.toast {
 			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			background: rgba(0, 0, 0, 0.85);
-			color: white;
-			padding: 20px 40px;
-			border-radius: 12px;
-			font-family: sans-serif;
-			font-size: 1.2rem;
-			z-index: 10000;
+			right: 20px;
+			bottom: 20px;
+			background: rgba(15, 23, 42, 0.92);
+			color: #fff;
+			padding: 14px 18px;
+			border-radius: 14px;
+			box-shadow: var(--shadow);
+			z-index: 9999;
+			opacity: 0;
+			transform: translateY(10px);
+			transition: all .25s ease;
 			pointer-events: none;
-			transition: opacity 0.5s ease;
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 		}
 
-		.splash-message.fade-out {
-			opacity: 0;
+		.toast.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.helper-text {
+			color: var(--muted);
+			font-size: 13px;
 		}
 
 		@media (max-width: 1100px) {
@@ -363,10 +444,28 @@
 			}
 		}
 
-		@media (max-width: 700px) {
+		@media (max-width: 760px) {
+			body {
+				padding: 16px;
+			}
+
 			.section-grid,
 			.summary-grid {
 				grid-template-columns: 1fr;
+			}
+
+			.bulk-actions {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.bulk-actions select,
+			.bulk-actions button {
+				width: 100%;
+			}
+
+			.toolbar {
+				width: 100%;
 			}
 		}
 	</style>
@@ -374,7 +473,20 @@
 
 <body>
 	<div class="app-shell">
-		<h2>Prüfvermerk Generator</h2>
+		<div class="topbar">
+			<div class="title-wrap">
+				<h2>Prüfvermerk Generator</h2>
+				<div class="subtitle">Modernes Custom-Dropdown, Dark Mode, Suche, Sortierung, Export/Import</div>
+			</div>
+
+			<div class="toolbar">
+				<button class="toggle-theme" onclick="toggleTheme()">🌙 / ☀️ Theme</button>
+				<button onclick="exportData()">Export JSON</button>
+				<button onclick="document.getElementById('importFile').click()">Import JSON</button>
+				<button class="ghost" onclick="resetAllData()">Alles löschen</button>
+				<input class="import-input" id="importFile" type="file" accept=".json,application/json" onchange="importData(event)">
+			</div>
+		</div>
 
 		<div class="tabs">
 			<button class="tab-btn active" onclick="showView('inputView', this)">Werte eingeben</button>
@@ -382,12 +494,13 @@
 		</div>
 
 		<div id="inputView" class="view active">
-			<div class="bulk-panel">
-				<textarea id="bulkInput" rows="3" placeholder="Mehrere Zeilen einfügen (jede Zeile = Checkbox)"></textarea>
+			<div class="bulk-panel card">
+				<textarea id="bulkInput" rows="4" placeholder="Mehrere Zeilen einfügen – jede Zeile wird als eigener Wert gespeichert"></textarea>
 				<div class="bulk-actions">
 					<select id="bulkCategorySelector"></select>
 					<button class="primary" onclick="addBulkItems()">Werte hinzufügen</button>
 				</div>
+				<div class="helper-text">Im Dropdown bei „Werte eingeben“ kannst du Werte auswählen, suchen, bearbeiten, löschen und mit ↑/↓ verschieben.</div>
 			</div>
 
 			<div id="inputListGrid" class="section-grid"></div>
@@ -396,25 +509,28 @@
 		<div id="selectView" class="view">
 			<div class="section-grid" id="selectGrid"></div>
 
-			<div class="summary">
+			<div class="summary card">
 				<div class="summary-grid">
 					<div class="summary-col">
 						<h3>Ausgewählte Werte</h3>
 						<textarea id="selectedText" readonly></textarea>
 					</div>
+
 					<div class="summary-col">
 						<h3>Manuelle Ergänzung</h3>
 						<textarea id="manualText" placeholder="Zusätzliche eigene Texte..."></textarea>
 					</div>
 				</div>
 
-				<div style="margin-top:10px; display:flex; gap:8px;">
+				<div class="summary-actions">
 					<button class="primary" onclick="copySummary()">Texte kopieren</button>
-					<button onclick="resetSummary()">Zurücksetzen</button>
+					<button onclick="resetSummary()">Auswahl zurücksetzen</button>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<div id="toast" class="toast"></div>
 
 	<script>
 		const categories = [
@@ -438,13 +554,23 @@
 		const selectGrid = document.getElementById("selectGrid");
 		const selectedText = document.getElementById("selectedText");
 		const manualText = document.getElementById("manualText");
+		const toast = document.getElementById("toast");
+
+		function initTheme() {
+			const saved = localStorage.getItem("themeMode") || "light";
+			document.body.classList.toggle("dark", saved === "dark");
+		}
+
+		function toggleTheme() {
+			const dark = document.body.classList.toggle("dark");
+			localStorage.setItem("themeMode", dark ? "dark" : "light");
+		}
 
 		function showView(id, btn) {
 			document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
 			document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
 			document.getElementById(id).classList.add("active");
 			btn.classList.add("active");
-
 			closeAllDropdowns();
 
 			if (id === "inputView") renderInputView();
@@ -463,34 +589,30 @@
 
 		function renderInputView() {
 			inputListGrid.innerHTML = "";
-
 			categories.forEach(cat => {
 				const sec = document.createElement("div");
 				sec.className = "section";
-
 				sec.innerHTML = `
 					<div class="section-title">${escapeHtml(cat)}</div>
 					<div class="section-body">
 						${renderCustomDropdown(cat, "input")}
 					</div>
 				`;
-
 				inputListGrid.appendChild(sec);
 			});
 		}
 
 		function renderSelectView() {
 			selectGrid.innerHTML = "";
-
 			categories.forEach(cat => {
 				const sec = document.createElement("div");
 				sec.className = "section";
-
 				sec.innerHTML = `
 					<div class="section-title">${escapeHtml(cat)}</div>
 					<div class="section-body">
 						${renderCustomDropdown(cat, "select")}
 						<input
+							class="manual-input"
 							type="text"
 							placeholder="Manuelle Ergänzung für ${escapeHtml(cat)}..."
 							data-manual-cat="${cssId(cat)}"
@@ -498,10 +620,8 @@
 							oninput="setManualCategoryText('${escapeJs(cat)}', this.value); updateSummary();">
 					</div>
 				`;
-
 				selectGrid.appendChild(sec);
 			});
-
 			updateSummary();
 		}
 
@@ -512,6 +632,10 @@
 				: "Bitte auswählen";
 
 			const withActions = mode === "input";
+			const searchValue = getDropdownSearch(category, mode);
+			const filteredItems = data[category]
+				.map((value, index) => ({ value, index }))
+				.filter(item => item.value.toLowerCase().includes(searchValue.toLowerCase()));
 
 			return `
 				<div class="custom-dropdown" data-category="${escapeAttribute(category)}" data-mode="${mode}">
@@ -519,36 +643,77 @@
 						<span class="dropdown-trigger-text">${escapeHtml(selectedValue)}</span>
 						<span class="dropdown-trigger-arrow">▼</span>
 					</button>
+
 					<div class="dropdown-menu">
-						${data[category].length ? data[category].map((value, index) => `
-							<div class="dropdown-item ${String(selectedIndex) === String(index) ? 'selected' : ''} ${withActions ? '' : 'no-actions'}">
-								<div class="dropdown-label"
-									onclick="selectDropdownItem('${escapeJs(category)}', ${index}, '${mode}')">
-									${escapeHtml(value)}
-								</div>
-								${withActions ? `
-									<div class="dropdown-actions">
-										<button type="button" class="edit"
-											onclick="event.stopPropagation(); editItemFromDropdown('${escapeJs(category)}', ${index}, '${mode}')">✎</button>
-										<button type="button" class="delete"
-											onclick="event.stopPropagation(); deleteItemFromDropdown('${escapeJs(category)}', ${index}, '${mode}')">✕</button>
+						<div class="dropdown-search">
+							<input
+								type="text"
+								placeholder="Suchen..."
+								value="${escapeAttribute(searchValue)}"
+								onclick="event.stopPropagation()"
+								oninput="setDropdownSearch('${escapeJs(category)}', '${mode}', this.value); rerenderCurrentViewKeepDropdown('${escapeJs(category)}', '${mode}')">
+						</div>
+
+						<div class="dropdown-list">
+							${filteredItems.length ? filteredItems.map(item => `
+								<div class="dropdown-item ${String(selectedIndex) === String(item.index) ? 'selected' : ''} ${withActions ? '' : 'no-actions'}">
+									<div class="dropdown-label" onclick="selectDropdownItem('${escapeJs(category)}', ${item.index}, '${mode}')">
+										${escapeHtml(item.value)}
 									</div>
-								` : ''}
-							</div>
-						`).join('') : '<div class="dropdown-empty">Keine Einträge vorhanden.</div>'}
+									${withActions ? `
+										<div class="dropdown-actions">
+											<button type="button" class="move" title="Nach oben"
+												onclick="event.stopPropagation(); moveItem('${escapeJs(category)}', ${item.index}, -1)">↑</button>
+											<button type="button" class="move" title="Nach unten"
+												onclick="event.stopPropagation(); moveItem('${escapeJs(category)}', ${item.index}, 1)">↓</button>
+											<button type="button" class="edit" title="Bearbeiten"
+												onclick="event.stopPropagation(); editItemFromDropdown('${escapeJs(category)}', ${item.index}, '${mode}')">✎</button>
+											<button type="button" class="delete" title="Löschen"
+												onclick="event.stopPropagation(); deleteItemFromDropdown('${escapeJs(category)}', ${item.index}, '${mode}')">✕</button>
+										</div>
+									` : ''}
+								</div>
+							`).join("") : '<div class="dropdown-empty">Keine passenden Einträge gefunden.</div>'}
+						</div>
 					</div>
 				</div>
 			`;
 		}
 
+		function rerenderCurrentViewKeepDropdown(category, mode) {
+			if (mode === "input") {
+				renderInputView();
+			} else {
+				renderSelectView();
+			}
+
+			requestAnimationFrame(() => {
+				const selector = `.custom-dropdown[data-category="${cssId(category)}"], .custom-dropdown[data-category="${category}"]`;
+				document.querySelectorAll(".custom-dropdown").forEach(dd => {
+					const cat = dd.getAttribute("data-category");
+					const md = dd.getAttribute("data-mode");
+					if (cat === category && md === mode) {
+						dd.classList.add("open");
+						const input = dd.querySelector(".dropdown-search input");
+						if (input) {
+							input.focus();
+							input.setSelectionRange(input.value.length, input.value.length);
+						}
+					}
+				});
+			});
+		}
+
 		function toggleDropdown(button) {
 			const current = button.closest(".custom-dropdown");
 			const isOpen = current.classList.contains("open");
-
 			closeAllDropdowns();
-
 			if (!isOpen) {
 				current.classList.add("open");
+				const search = current.querySelector(".dropdown-search input");
+				if (search) {
+					setTimeout(() => search.focus(), 0);
+				}
 			}
 		}
 
@@ -573,7 +738,6 @@
 		function editItemFromDropdown(category, index, mode) {
 			const currentValue = data[category][index];
 			const newValue = prompt("Eintrag bearbeiten:", currentValue);
-
 			if (newValue === null) return;
 
 			const trimmed = newValue.trim();
@@ -593,9 +757,16 @@
 				renderSelectView();
 				updateSummary();
 			}
+
+			closeAllDropdowns();
+			showToast("Eintrag bearbeitet");
 		}
 
 		function deleteItemFromDropdown(category, index, mode) {
+			const value = data[category][index];
+			const ok = confirm(`Diesen Eintrag wirklich löschen?\n\n${value}`);
+			if (!ok) return;
+
 			const selectedInput = getSelectedIndex(category);
 			const selectedSelect = getSelectChoice(category);
 
@@ -612,11 +783,47 @@
 				renderSelectView();
 				updateSummary();
 			}
+
+			closeAllDropdowns();
+			showToast("Eintrag gelöscht");
+		}
+
+		function moveItem(category, index, direction) {
+			const newIndex = index + direction;
+			if (newIndex < 0 || newIndex >= data[category].length) return;
+
+			const arr = data[category];
+			[arr[index], arr[newIndex]] = [arr[newIndex], arr[index]];
+
+			shiftSelectionOnMove(category, index, newIndex, "input");
+			shiftSelectionOnMove(category, index, newIndex, "select");
+
+			saveAll();
+			renderInputView();
+
+			if (document.getElementById("selectView").classList.contains("active")) {
+				renderSelectView();
+			}
+
+			showToast("Reihenfolge geändert");
+		}
+
+		function shiftSelectionOnMove(category, oldIndex, newIndex, mode) {
+			const current = mode === "input" ? getSelectedIndex(category) : getSelectChoice(category);
+			if (current === '') return;
+			const currentNum = Number(current);
+
+			if (currentNum === oldIndex) {
+				if (mode === "input") setSelectedIndex(category, String(newIndex));
+				if (mode === "select") setSelectChoice(category, String(newIndex));
+			} else if (currentNum === newIndex) {
+				if (mode === "input") setSelectedIndex(category, String(oldIndex));
+				if (mode === "select") setSelectChoice(category, String(oldIndex));
+			}
 		}
 
 		function fixSelectionAfterDelete(category, deletedIndex, selectedIndex, mode) {
 			if (selectedIndex === '') return;
-
 			const current = Number(selectedIndex);
 			const deleted = Number(deletedIndex);
 
@@ -653,10 +860,8 @@
 			if (document.getElementById("selectView").classList.contains("active")) {
 				renderSelectView();
 			}
-		}
 
-		function formatWithTabDash(lines) {
-			return lines.map(line => `\t- ${line}`).join("\n");
+			showToast(`${lines.length} Wert(e) hinzugefügt`);
 		}
 
 		function updateSummary() {
@@ -674,22 +879,25 @@
 				}
 			});
 
-			selectedText.value = selected.length ? formatWithTabDash(selected) : "";
+			selectedText.value = selected.length ? formatWithDash(selected) : "";
+		}
+
+		function formatWithDash(lines) {
+			return lines.map(line => `- ${line}`).join("\n");
 		}
 
 		function copySummary() {
 			const selected = selectedText.value.trimEnd();
-
 			const manualLines = manualText.value
 				.split(/\r?\n/)
 				.map(l => l.trim())
 				.filter(Boolean);
 
-			const formattedManual = manualLines.length ? formatWithTabDash(manualLines) : "";
+			const formattedManual = manualLines.length ? formatWithDash(manualLines) : "";
 			const merged = [selected, formattedManual].filter(Boolean).join("\n");
 
 			navigator.clipboard.writeText(merged).then(() => {
-				showSplash("Text kopiert 👍");
+				showToast("Text kopiert");
 			});
 		}
 
@@ -701,18 +909,91 @@
 			selectedText.value = "";
 			manualText.value = "";
 			renderSelectView();
+			showToast("Auswahl zurückgesetzt");
 		}
 
-		function showSplash(message) {
-			const splash = document.createElement("div");
-			splash.className = "splash-message";
-			splash.innerText = message;
-			document.body.appendChild(splash);
+		function exportData() {
+			const payload = {
+				version: 8,
+				exported_at: new Date().toISOString(),
+				data,
+				theme: localStorage.getItem("themeMode") || "light"
+			};
 
-			setTimeout(() => {
-				splash.classList.add("fade-out");
-				splash.addEventListener("transitionend", () => splash.remove(), { once: true });
-			}, 2000);
+			const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = "pruefvermerk-generator-v8-export.json";
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			URL.revokeObjectURL(url);
+			showToast("Export erstellt");
+		}
+
+		function importData(event) {
+			const file = event.target.files?.[0];
+			if (!file) return;
+
+			const reader = new FileReader();
+			reader.onload = e => {
+				try {
+					const parsed = JSON.parse(e.target.result);
+					const importedData = parsed.data ?? parsed;
+
+					categories.forEach(cat => {
+						data[cat] = Array.isArray(importedData[cat]) ? importedData[cat] : [];
+					});
+
+					saveAll();
+					renderInputView();
+					if (document.getElementById("selectView").classList.contains("active")) {
+						renderSelectView();
+					}
+					showToast("Import erfolgreich");
+				} catch (err) {
+					alert("Import fehlgeschlagen. Bitte gültige JSON-Datei wählen.");
+				} finally {
+					event.target.value = "";
+				}
+			};
+			reader.readAsText(file);
+		}
+
+		function resetAllData() {
+			const ok = confirm("Wirklich alle gespeicherten Daten löschen?");
+			if (!ok) return;
+
+			categories.forEach(cat => {
+				data[cat] = [];
+				localStorage.removeItem(`inputSelected:${cat}`);
+				localStorage.removeItem(`selectChoice:${cat}`);
+				localStorage.removeItem(`manualCat:${cat}`);
+				localStorage.removeItem(`dropdownSearch:input:${cat}`);
+				localStorage.removeItem(`dropdownSearch:select:${cat}`);
+			});
+
+			saveAll();
+			selectedText.value = "";
+			manualText.value = "";
+			bulkInput.value = "";
+
+			renderInputView();
+			if (document.getElementById("selectView").classList.contains("active")) {
+				renderSelectView();
+			}
+
+			showToast("Alle Daten gelöscht");
+		}
+
+		function showToast(message) {
+			toast.textContent = message;
+			toast.classList.add("show");
+			clearTimeout(showToast._timer);
+			showToast._timer = setTimeout(() => {
+				toast.classList.remove("show");
+			}, 1800);
 		}
 
 		function saveAll() {
@@ -743,13 +1024,21 @@
 			localStorage.setItem(`manualCat:${category}`, value);
 		}
 
+		function getDropdownSearch(category, mode) {
+			return localStorage.getItem(`dropdownSearch:${mode}:${category}`) ?? '';
+		}
+
+		function setDropdownSearch(category, mode, value) {
+			localStorage.setItem(`dropdownSearch:${mode}:${category}`, value);
+		}
+
 		function cssId(text) {
 			return text.replace(/\s+/g, "-").replace(/[^\w-]/g, "");
 		}
 
 		function escapeHtml(text) {
 			const div = document.createElement("div");
-			div.textContent = text ?? "";
+			div.textContent = String(text ?? "");
 			return div.innerHTML;
 		}
 
@@ -762,10 +1051,12 @@
 		}
 
 		function escapeJs(text) {
-			return String(text ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+			return String(text ?? "")
+				.replace(/\\/g, "\\\\")
+				.replace(/'/g, "\\'");
 		}
 
-		document.addEventListener("click", function(event) {
+		document.addEventListener("click", function (event) {
 			document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
 				if (!dropdown.contains(event.target)) {
 					dropdown.classList.remove("open");
@@ -773,9 +1064,9 @@
 			});
 		});
 
+		initTheme();
 		renderCategorySelector();
 		renderInputView();
 	</script>
 </body>
-
 </html>
