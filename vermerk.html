@@ -263,12 +263,6 @@
 			word-break: break-word;
 		}
 
-		.input-item-edit {
-			width: 100%;
-			font-size: 12px;
-			padding: 6px 8px;
-		}
-
 		.summary {
 			margin-top: 15px;
 			background: var(--surface);
@@ -303,8 +297,8 @@
 			padding: 8px;
 		}
 
-		/* Größere Schrift in Auswahlliste */
-		#selectView .section-title {
+		/* Größere Schrift in Auswahlliste (mit Dropdown/Accordion) */
+		#selectView .accordion-header {
 			font-size: 16px;
 			padding: 10px 12px;
 		}
@@ -377,6 +371,7 @@
 			<button class="tab-btn" onclick="showView('selectView', this)">Auswahlliste</button>
 		</div>
 
+		<!-- Eingabe -->
 		<div id="inputView" class="view active">
 			<div class="bulk-panel">
 				<textarea id="bulkInput" rows="3" placeholder="Mehrere Zeilen einfügen (jede Zeile = Checkbox)"></textarea>
@@ -389,6 +384,7 @@
 			<div id="inputAccordionList" class="section-grid"></div>
 		</div>
 
+		<!-- Auswahl -->
 		<div id="selectView" class="view">
 			<div class="section-grid" id="selectGrid"></div>
 
@@ -454,18 +450,19 @@
 			});
 		}
 
+		// Werte eingeben: alle Kategorien beim Laden ZUGEKLAPPT
 		function renderInputView() {
 			inputAccordionList.innerHTML = "";
 
 			categories.forEach(cat => {
 				const wrapper = document.createElement("div");
-				wrapper.className = "accordion open";
+				wrapper.className = "accordion"; // <- standardmäßig zu
 
 				const header = document.createElement("div");
 				header.className = "accordion-header";
 				header.innerHTML = `
 					<div class="accordion-title">
-						<span class="accordion-icon">▼</span>
+						<span class="accordion-icon">►</span>
 						<span>${cat}</span>
 					</div>
 					<span>${data[cat].length} Einträge</span>
@@ -485,7 +482,7 @@
 				} else {
 					body.innerHTML = data[cat].map((value, index) => `
 						<div class="input-item">
-							<div class="input-item-text" id="text-${cssId(cat)}-${index}">${escapeHtml(value)}</div>
+							<div class="input-item-text">${escapeHtml(value)}</div>
 							<button class="edit" onclick="editItem('${escapeJs(cat)}', ${index})">✎</button>
 							<button class="delete" onclick="removeItem('${escapeJs(cat)}', ${index})">✕</button>
 						</div>
@@ -498,16 +495,34 @@
 			});
 		}
 
+		// Auswahlliste: Dropdown/Accordion bleibt erhalten
 		function renderSelectView() {
 			selectGrid.innerHTML = "";
 
 			categories.forEach(cat => {
 				const id = cssId(cat);
-				const sec = document.createElement("div");
-				sec.className = "section";
+				const wrapper = document.createElement("div");
+				wrapper.className = "accordion";
 
-				sec.innerHTML = `
-					<div class="section-title">${cat}</div>
+				const header = document.createElement("div");
+				header.className = "accordion-header";
+				header.innerHTML = `
+					<div class="accordion-title">
+						<span class="accordion-icon">▼</span>
+						<span>${cat}</span>
+					</div>
+					<span>${data[cat].length} Einträge</span>
+				`;
+
+				header.addEventListener("click", () => {
+					wrapper.classList.toggle("open");
+					const icon = header.querySelector(".accordion-icon");
+					icon.textContent = wrapper.classList.contains("open") ? "▼" : "►";
+				});
+
+				const body = document.createElement("div");
+				body.className = "accordion-body";
+				body.innerHTML = `
 					<div class="checklist">
 						${data[cat].map(v => `
 							<label>
@@ -528,7 +543,9 @@
 					</div>
 				`;
 
-				selectGrid.appendChild(sec);
+				wrapper.appendChild(header);
+				wrapper.appendChild(body);
+				selectGrid.appendChild(wrapper);
 			});
 
 			updateSummary();
@@ -597,6 +614,7 @@
 				if (text) selected.push(text);
 			});
 
+			// manuelle Eingaben aus Kategorien -> auch mit "-"
 			document.querySelectorAll("#selectGrid input[data-manual-cat]").forEach(input => {
 				const value = input.value.trim();
 				if (value) selected.push(value);
