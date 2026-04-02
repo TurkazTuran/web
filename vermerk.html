@@ -7,18 +7,18 @@
 	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect x=%228%22 y=%228%22 width=%2248%22 height=%2248%22 rx=%2210%22 fill=%22%23ffffff%22 stroke=%22%23d0d0d0%22 stroke-width=%222%22/><line x1=%2216%22 y1=%2220%22 x2=%2248%22 y2=%2220%22 stroke=%22%23909090%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2230%22 x2=%2248%22 y2=%2230%22 stroke=%22%23909090%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2240%22 x2=%2236%22 y2=%2240%22 stroke=%22%23909090%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/></svg>">
 	<style>
 		:root {
-			--bg: #f3f6fb;
-			--surface: #ffffff;
-			--surface-2: #f8fafc;
-			--border: #d8e0ea;
-			--text: #16202a;
-			--muted: #66758a;
-			--accent: #2563eb;
-			--accent-2: #1d4ed8;
-			--danger: #dc2626;
-			--danger-bg: #fef2f2;
-			--success: #059669;
-			--header-bg: #eef3f9;
+			--bg: #eff2f8ff;
+  --surface: #e3ebecff;
+  --surface-2: #d4d9dfff;
+  --border: #545d68ff;
+  --text: #16202a;
+  --muted: #66758a;
+  --accent: #2563eb;
+  --accent-2: #1d4ed8;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --success: #059669;
+  --header-bg: #eef3f9;
 			--shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 			--shadow-soft: 0 4px 14px rgba(15, 23, 42, 0.06);
 			--radius: 16px;
@@ -54,8 +54,8 @@
 			font-family: Inter, Arial, sans-serif;
 			background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, #ffffff 12%) 100%);
 			color: var(--text);
-			font-size: 14px;
-			padding: 24px;
+			font-size: 12px;
+			padding: 18px;
 			transition: background .25s ease, color .25s ease;
 		}
 
@@ -78,12 +78,6 @@
 			font-size: 24px;
 			font-weight: 800;
 			letter-spacing: -0.02em;
-		}
-
-		.title-wrap .subtitle {
-			margin-top: 4px;
-			color: var(--muted);
-			font-size: 14px;
 		}
 
 		.toolbar {
@@ -235,11 +229,10 @@
 		}
 
 		.section-title {
-			padding: 14px 16px;
-			background: var(--header-bg);
-			border-bottom: 1px solid var(--border);
+			padding: 10px 16px;
+			background: #a7afbd;
+			border-bottom: 1px solid #0b0e93;
 			font-weight: 700;
-			font-size: 14px;
 			letter-spacing: -.01em;
 			border-radius: var(--radius) var(--radius) 0 0;
 		}
@@ -296,7 +289,9 @@
 			align-items: center;
 			justify-content: space-between;
 			gap: 10px;
-			min-height: 46px;
+			min-height: 40px;
+			padding: 8px 10px;
+			font-size: 13px;
 			background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
 			border: 1px solid var(--border);
 			border-left: var(--bar-size) solid var(--accent);
@@ -312,7 +307,7 @@
 
 		.dropdown-trigger-arrow {
 			color: var(--muted);
-			font-size: 12px;
+			font-size: 18px;
 		}
 
 		.dropdown-menu {
@@ -335,14 +330,15 @@
 		}
 
 		.dropdown-search {
-			padding: 10px;
+			padding: 8px;
 			border-bottom: 1px solid var(--border);
 			background: var(--surface-2);
 		}
 
 		.dropdown-search input {
 			width: 100%;
-			padding: 9px 10px;
+			padding: 7px 9px;
+			font-size: 13px;
 		}
 
 		.dropdown-list {
@@ -351,16 +347,17 @@
 		}
 
 		.dropdown-empty {
-			padding: 14px;
+			padding: 12px;
 			color: var(--muted);
+			font-size: 13px;
 		}
 
 		.dropdown-item {
 			display: grid;
 			grid-template-columns: 1fr auto;
-			gap: 10px;
+			gap: 8px;
 			align-items: center;
-			padding: 8px 10px;
+			padding: 2px 4px;
 			border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
 		}
 
@@ -378,13 +375,14 @@
 
 		.dropdown-label {
 			min-width: 0;
-			padding: 10px 12px;
+			padding: 7px 10px;
 			border-radius: 12px;
 			background: var(--surface-2);
 			border-left: var(--bar-size) solid color-mix(in srgb, var(--accent) 60%, #64748b);
 			cursor: pointer;
 			word-break: break-word;
-			line-height: 1.35;
+			line-height: 1.25;
+			font-size: 13px;
 		}
 
 		.dropdown-label:hover {
@@ -403,13 +401,13 @@
 		}
 
 		#selectView .section-title {
-			font-size: 15px;
+			font-size: 14px;
 		}
 
 		#selectView .dropdown-trigger,
 		#selectView .dropdown-label,
 		#selectView .manual-input {
-			font-size: 15px;
+			font-size: 12px;
 		}
 
 		.toast {
@@ -476,13 +474,12 @@
 		<div class="topbar">
 			<div class="title-wrap">
 				<h2>Prüfvermerk Generator</h2>
-				<div class="subtitle">Modernes Custom-Dropdown, Dark Mode, Suche, Sortierung, Export/Import</div>
 			</div>
 
 			<div class="toolbar">
 				<button class="toggle-theme" onclick="toggleTheme()">🌙 / ☀️ Theme</button>
-				<button onclick="exportData()">Export JSON</button>
-				<button onclick="document.getElementById('importFile').click()">Import JSON</button>
+				<button onclick="exportData()">Export Listenwerte</button>
+				<button onclick="document.getElementById('importFile').click()">Import Listenwerte</button>
 				<button class="ghost" onclick="resetAllData()">Alles löschen</button>
 				<input class="import-input" id="importFile" type="file" accept=".json,application/json" onchange="importData(event)">
 			</div>
@@ -500,7 +497,6 @@
 					<select id="bulkCategorySelector"></select>
 					<button class="primary" onclick="addBulkItems()">Werte hinzufügen</button>
 				</div>
-				<div class="helper-text">Im Dropdown bei „Werte eingeben“ kannst du Werte auswählen, suchen, bearbeiten, löschen und mit ↑/↓ verschieben.</div>
 			</div>
 
 			<div id="inputListGrid" class="section-grid"></div>
@@ -517,7 +513,7 @@
 					</div>
 
 					<div class="summary-col">
-						<h3>Manuelle Ergänzung</h3>
+						<h3>Manuelle Eingabe</h3>
 						<textarea id="manualText" placeholder="Zusätzliche eigene Texte..."></textarea>
 					</div>
 				</div>
@@ -614,7 +610,7 @@
 						<input
 							class="manual-input"
 							type="text"
-							placeholder="Manuelle Ergänzung für ${escapeHtml(cat)}..."
+							placeholder="Manuelle Eingabe für ${escapeHtml(cat)}..."
 							data-manual-cat="${cssId(cat)}"
 							value="${escapeAttribute(getManualCategoryText(cat))}"
 							oninput="setManualCategoryText('${escapeJs(cat)}', this.value); updateSummary();">
@@ -663,13 +659,13 @@
 									${withActions ? `
 										<div class="dropdown-actions">
 											<button type="button" class="move" title="Nach oben"
-												onclick="event.stopPropagation(); moveItem('${escapeJs(category)}', ${item.index}, -1)">↑</button>
+												onclick="event.stopPropagation(); moveItem('${escapeJs(category)}', ${item.index}, -1)">⬆️</button>
 											<button type="button" class="move" title="Nach unten"
-												onclick="event.stopPropagation(); moveItem('${escapeJs(category)}', ${item.index}, 1)">↓</button>
+												onclick="event.stopPropagation(); moveItem('${escapeJs(category)}', ${item.index}, 1)">⬇️</button>
 											<button type="button" class="edit" title="Bearbeiten"
-												onclick="event.stopPropagation(); editItemFromDropdown('${escapeJs(category)}', ${item.index}, '${mode}')">✎</button>
+												onclick="event.stopPropagation(); editItemFromDropdown('${escapeJs(category)}', ${item.index}, '${mode}')">✏️</button>
 											<button type="button" class="delete" title="Löschen"
-												onclick="event.stopPropagation(); deleteItemFromDropdown('${escapeJs(category)}', ${item.index}, '${mode}')">✕</button>
+												onclick="event.stopPropagation(); deleteItemFromDropdown('${escapeJs(category)}', ${item.index}, '${mode}')">❌</button>
 										</div>
 									` : ''}
 								</div>
@@ -1045,7 +1041,7 @@
 		function escapeAttribute(text) {
 			return String(text ?? "")
 				.replace(/&/g, "&amp;")
-				.replace(/"/g, "&quot;")
+				replace(/"/g, "&quot;")
 				.replace(/</g, "&lt;")
 				.replace(/>/g, "&gt;");
 		}
