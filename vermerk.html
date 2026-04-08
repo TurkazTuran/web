@@ -984,11 +984,11 @@
 			}
 
 			if (bulletItems.length) {
-				html += `<div style="height:12px;"></div>`;
-				bulletItems.forEach(item => {
-					html += `<div style="margin:0 0 8px 0;${lineStyle}">✓ ${escapeHtml(item)}</div><div></div>`;
-				});
-			}
+	html += `<div style="height:12px;"></div>`;
+	bulletItems.forEach(item => {
+		html += `<div style="margin:0 0 8px 0;${lineStyle}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;${escapeHtml(item)}</div><div></div>`;
+	});
+}
 
 			if (erteilung) {
 				html += `<div style="height:12px;"></div>`;
