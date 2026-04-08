@@ -8,17 +8,17 @@
 	<style>
 		:root {
 			--bg: #eff2f8ff;
-  --surface: #e3ebecff;
-  --surface-2: #d7e4f3ff;
-  --border: #545d68ff;
-  --text: #16202a;
-  --muted: #66758a;
-  --accent: #c50fadff;
-  --accent-2: #702f60ff;
-  --danger: #dc2626;
-  --danger-bg: #fef2f2;
-  --success: #059669;
-  --header-bg: #eef3f9;
+			--surface: #e3ebecff;
+			--surface-2: #d7e4f3ff;
+			--border: #545d68ff;
+			--text: #16202a;
+			--muted: #66758a;
+			--accent: #c50fadff;
+			--accent-2: #702f60ff;
+			--danger: #dc2626;
+			--danger-bg: #fef2f2;
+			--success: #059669;
+			--header-bg: #eef3f9;
 			--shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 			--shadow-soft: 0 4px 14px rgba(15, 23, 42, 0.06);
 			--radius: 16px;
@@ -164,13 +164,6 @@
 			align-items: center;
 			gap: 8px;
 			padding: 10px 14px;
-		}
-
-		.tabs {
-			display: flex;
-			gap: 8px;
-			margin-bottom: 18px;
-			flex-wrap: wrap;
 		}
 
 		.tab-btn {
@@ -431,9 +424,53 @@
 			transform: translateY(0);
 		}
 
-		.helper-text {
-			color: var(--muted);
-			font-size: 13px;
+		.result-output {
+			width: 100%;
+			min-height: 150px;
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			background: var(--surface);
+			padding: 14px;
+			line-height: 1.7;
+			font-size: 14px;
+		}
+
+		.result-line {
+			margin-bottom: 4px;
+			font-size: 14px;
+		}
+
+		.result-label {
+			color: var(--text);
+			font-weight: 400;
+		}
+
+		.result-value-blue {
+			color: #0b66d6;
+			font-weight: 700;
+		}
+
+		.result-value-orange {
+			color: #e46c0a;
+			font-weight: 700;
+		}
+
+		.result-value-green {
+			color: #00a651;
+			font-weight: 700;
+		}
+
+		.result-spacer {
+			height: 14px;
+		}
+
+		.copy-source {
+			position: fixed;
+			left: -99999px;
+			top: 0;
+			opacity: 0;
+			pointer-events: none;
+			white-space: normal;
 		}
 
 		@media (max-width: 1100px) {
@@ -466,43 +503,41 @@
 				width: 100%;
 			}
 		}
-	
-/* ===== Unified Toolbar Buttons ===== */
-.toolbar button {
-	padding: 10px 14px;
-	border-radius: 999px;
-	background: var(--surface);
-	border: 1px solid var(--border);
-	box-shadow: var(--shadow-soft);
-	font-weight: 600;
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-}
 
-.toolbar button:hover {
-	transform: translateY(-1px);
-	border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
-}
+		.toolbar button {
+			padding: 10px 14px;
+			border-radius: 999px;
+			background: var(--surface);
+			border: 1px solid var(--border);
+			box-shadow: var(--shadow-soft);
+			font-weight: 600;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+		}
 
-.toolbar .tab-btn.active {
-	background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
-	color: #fff;
-	border-color: transparent;
-}
+		.toolbar button:hover {
+			transform: translateY(-1px);
+			border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+		}
 
-.toolbar .ghost {
-	background: transparent;
-	box-shadow: none;
-	border: 1px solid var(--border);
-}
+		.toolbar .tab-btn.active {
+			background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+			color: #fff;
+			border-color: transparent;
+		}
 
-.toolbar .toggle-theme {
-	padding: 10px 14px;
-	border-radius: 999px;
-}
+		.toolbar .ghost {
+			background: transparent;
+			box-shadow: none;
+			border: 1px solid var(--border);
+		}
 
-</style>
+		.toolbar .toggle-theme {
+			padding: 10px 14px;
+			border-radius: 999px;
+		}
+	</style>
 </head>
 
 <body>
@@ -513,8 +548,8 @@
 			</div>
 
 			<div class="toolbar">
-        <button class="tab-btn active" onclick="showView('inputView', this)">Werte eingeben</button>
-			<button class="tab-btn" onclick="showView('selectView', this)">Auswahlliste</button>
+				<button class="tab-btn active" onclick="showView('inputView', this)">Werte eingeben</button>
+				<button class="tab-btn" onclick="showView('selectView', this)">Auswahlliste</button>
 				<button class="toggle-theme" onclick="toggleTheme()">🌙 / ☀️ Theme</button>
 				<button onclick="exportData()">Export Listenwerte</button>
 				<button onclick="document.getElementById('importFile').click()">Import Listenwerte</button>
@@ -523,7 +558,7 @@
 			</div>
 		</div>
 
-				<div id="inputView" class="view active">
+		<div id="inputView" class="view active">
 			<div class="bulk-panel card">
 				<textarea id="bulkInput" rows="4" placeholder="Mehrere Zeilen einfügen – jede Zeile wird als eigener Wert gespeichert"></textarea>
 				<div class="bulk-actions">
@@ -542,7 +577,7 @@
 				<div class="summary-grid">
 					<div class="summary-col">
 						<h3>Ausgewählte Werte</h3>
-						<textarea id="selectedText" readonly></textarea>
+						<div id="selectedText" class="result-output"></div>
 					</div>
 
 					<div class="summary-col">
@@ -560,6 +595,7 @@
 	</div>
 
 	<div id="toast" class="toast"></div>
+	<div id="copySource" class="copy-source" contenteditable="true"></div>
 
 	<script>
 		const categories = [
@@ -584,6 +620,7 @@
 		const selectedText = document.getElementById("selectedText");
 		const manualText = document.getElementById("manualText");
 		const toast = document.getElementById("toast");
+		const copySource = document.getElementById("copySource");
 
 		function initTheme() {
 			const saved = localStorage.getItem("themeMode") || "light";
@@ -717,7 +754,6 @@
 			}
 
 			requestAnimationFrame(() => {
-				const selector = `.custom-dropdown[data-category="${cssId(category)}"], .custom-dropdown[data-category="${category}"]`;
 				document.querySelectorAll(".custom-dropdown").forEach(dd => {
 					const cat = dd.getAttribute("data-category");
 					const md = dd.getAttribute("data-mode");
@@ -740,9 +776,7 @@
 			if (!isOpen) {
 				current.classList.add("open");
 				const search = current.querySelector(".dropdown-search input");
-				if (search) {
-					setTimeout(() => search.focus(), 0);
-				}
+				if (search) setTimeout(() => search.focus(), 0);
 			}
 		}
 
@@ -893,41 +927,178 @@
 			showToast(`${lines.length} Wert(e) hinzugefügt`);
 		}
 
+		function getSelectedCategoryValue(category) {
+			const selectedIndex = getSelectChoice(category);
+			if (selectedIndex !== '' && data[category][selectedIndex]) {
+				return data[category][selectedIndex];
+			}
+
+			const manualValue = getManualCategoryText(category).trim();
+			return manualValue || "";
+		}
+
 		function updateSummary() {
-			const selected = [];
-
-			categories.forEach(cat => {
-				const selectedIndex = getSelectChoice(cat);
-				if (selectedIndex !== '' && data[cat][selectedIndex]) {
-					selected.push(data[cat][selectedIndex]);
-				}
-
-				const manualValue = getManualCategoryText(cat).trim();
-				if (manualValue) {
-					selected.push(manualValue);
-				}
-			});
-
-			selectedText.value = selected.length ? formatWithDash(selected) : "";
+			selectedText.innerHTML = buildFormattedHtml(false);
 		}
 
-		function formatWithDash(lines) {
-			return lines.map(line => `- ${line}`).join("\n");
-		}
+		function buildFormattedHtml(forClipboard = false) {
+			const aktuellerStatus = getSelectedCategoryValue("Aktueller Status");
+			const beantragt = getSelectedCategoryValue("Beantragt");
+			const zeitlicheVoraussetzung = getSelectedCategoryValue("Zeitliche Voraussetzung");
+			const lebensunterhalt = getSelectedCategoryValue("Lebensunterhalt");
+			const rentenversicherung = getSelectedCategoryValue("Rentenversicherung");
+			const sicherheit = getSelectedCategoryValue("Sicherheit");
+			const sprachkenntnisse = getSelectedCategoryValue("Sprachkenntnisse");
+			const rechtsordnung = getSelectedCategoryValue("Rechts- und Gesellschaftsordnung");
+			const erteilung = getSelectedCategoryValue("Erteilung");
 
-		function copySummary() {
-			const selected = selectedText.value.trimEnd();
+			const bulletItems = [
+				zeitlicheVoraussetzung,
+				lebensunterhalt,
+				rentenversicherung,
+				sicherheit,
+				sprachkenntnisse,
+				rechtsordnung
+			].filter(Boolean);
+
 			const manualLines = manualText.value
 				.split(/\r?\n/)
 				.map(l => l.trim())
 				.filter(Boolean);
 
-			const formattedManual = manualLines.length ? formatWithDash(manualLines) : "";
-			const merged = [selected, formattedManual].filter(Boolean).join("\n");
+			const baseStyle = forClipboard
+				? 'font-family:Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000000;'
+				: '';
 
-			navigator.clipboard.writeText(merged).then(() => {
-				showToast("Text kopiert");
-			});
+			let html = `<div style="${baseStyle}">`;
+
+			if (aktuellerStatus) {
+				html += `<div style="margin:0 0 8px 0;"><span>Aktueller Status: </span><span style="color:#0b66d6;font-weight:700;">${escapeHtml(aktuellerStatus)}</span></div>`;
+			}
+
+			if (beantragt) {
+				html += `<div style="margin:0 0 8px 0;"><span>Beantragt: </span><span style="color:#e46c0a;font-weight:700;">${escapeHtml(beantragt)}</span></div>`;
+			}
+
+			if (bulletItems.length) {
+				html += `<div style="height:12px;"></div>`;
+				bulletItems.forEach(item => {
+					html += `<div style="margin:0;">- ${escapeHtml(item)}</div>`;
+				});
+			}
+
+			if (erteilung) {
+				html += `<div style="height:12px;"></div>`;
+				html += `<div style="margin:0;"><span>Erteilung: </span><span style="color:#00a651;font-weight:700;">${escapeHtml(erteilung)}</span></div>`;
+			}
+
+			if (manualLines.length) {
+				html += `<div style="height:12px;"></div>`;
+				manualLines.forEach(line => {
+					html += `<div style="margin:0;">- ${escapeHtml(line)}</div>`;
+				});
+			}
+
+			html += `</div>`;
+			return html;
+		}
+
+		function buildPlainText() {
+			const lines = [];
+
+			const aktuellerStatus = getSelectedCategoryValue("Aktueller Status");
+			const beantragt = getSelectedCategoryValue("Beantragt");
+			const zeitlicheVoraussetzung = getSelectedCategoryValue("Zeitliche Voraussetzung");
+			const lebensunterhalt = getSelectedCategoryValue("Lebensunterhalt");
+			const rentenversicherung = getSelectedCategoryValue("Rentenversicherung");
+			const sicherheit = getSelectedCategoryValue("Sicherheit");
+			const sprachkenntnisse = getSelectedCategoryValue("Sprachkenntnisse");
+			const rechtsordnung = getSelectedCategoryValue("Rechts- und Gesellschaftsordnung");
+			const erteilung = getSelectedCategoryValue("Erteilung");
+
+			const bulletItems = [
+				zeitlicheVoraussetzung,
+				lebensunterhalt,
+				rentenversicherung,
+				sicherheit,
+				sprachkenntnisse,
+				rechtsordnung
+			].filter(Boolean);
+
+			const manualLines = manualText.value
+				.split(/\r?\n/)
+				.map(l => l.trim())
+				.filter(Boolean);
+
+			if (aktuellerStatus) lines.push(`Aktueller Status: ${aktuellerStatus}`);
+			if (beantragt) lines.push(`Beantragt: ${beantragt}`);
+
+			if (bulletItems.length) {
+				lines.push("");
+				bulletItems.forEach(item => lines.push(`- ${item}`));
+			}
+
+			if (erteilung) {
+				lines.push("");
+				lines.push(`Erteilung: ${erteilung}`);
+			}
+
+			if (manualLines.length) {
+				lines.push("");
+				manualLines.forEach(line => lines.push(`- ${line}`));
+			}
+
+			return lines.join("\n");
+		}
+
+		async function copySummary() {
+			const htmlContent = buildFormattedHtml(true);
+			const textContent = buildPlainText();
+
+			copySource.innerHTML = htmlContent;
+
+			let copied = false;
+
+			try {
+				const selection = window.getSelection();
+				const range = document.createRange();
+				range.selectNodeContents(copySource);
+
+				selection.removeAllRanges();
+				selection.addRange(range);
+
+				copied = document.execCommand("copy");
+				selection.removeAllRanges();
+			} catch (e) {
+				copied = false;
+			}
+
+			if (!copied && navigator.clipboard && window.ClipboardItem) {
+				try {
+					await navigator.clipboard.write([
+						new ClipboardItem({
+							"text/html": new Blob([htmlContent], { type: "text/html" }),
+							"text/plain": new Blob([textContent], { type: "text/plain" })
+						})
+					]);
+					copied = true;
+				} catch (e) {
+					copied = false;
+				}
+			}
+
+			if (!copied) {
+				try {
+					await navigator.clipboard.writeText(textContent);
+					showToast("Nur Text kopiert");
+					return;
+				} catch (e) {
+					alert("Kopieren fehlgeschlagen.");
+					return;
+				}
+			}
+
+			showToast("Formatierter Text kopiert");
 		}
 
 		function resetSummary() {
@@ -935,7 +1106,7 @@
 				setSelectChoice(cat, '');
 				setManualCategoryText(cat, '');
 			});
-			selectedText.value = "";
+			selectedText.innerHTML = "";
 			manualText.value = "";
 			renderSelectView();
 			showToast("Auswahl zurückgesetzt");
@@ -943,7 +1114,7 @@
 
 		function exportData() {
 			const payload = {
-				version: 8,
+				version: 9,
 				exported_at: new Date().toISOString(),
 				data,
 				theme: localStorage.getItem("themeMode") || "light"
@@ -953,7 +1124,7 @@
 			const url = URL.createObjectURL(blob);
 			const a = document.createElement("a");
 			a.href = url;
-			a.download = "pruefvermerk-generator-v8-export.json";
+			a.download = "pruefvermerk-generator-v9-export.json";
 			document.body.appendChild(a);
 			a.click();
 			a.remove();
@@ -1004,7 +1175,7 @@
 			});
 
 			saveAll();
-			selectedText.value = "";
+			selectedText.innerHTML = "";
 			manualText.value = "";
 			bulkInput.value = "";
 
@@ -1074,7 +1245,7 @@
 		function escapeAttribute(text) {
 			return String(text ?? "")
 				.replace(/&/g, "&amp;")
-				replace(/"/g, "&quot;")
+				.replace(/"/g, "&quot;")
 				.replace(/</g, "&lt;")
 				.replace(/>/g, "&gt;");
 		}
