@@ -6,19 +6,20 @@
 	<title>Prüfvermerk</title>
 	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect x=%228%22 y=%228%22 width=%2248%22 height=%2248%22 rx=%2210%22 fill=%22%23ffffff%22 stroke=%22%23d0d0d0%22 stroke-width=%222%22/><line x1=%2216%22 y1=%2220%22 x2=%2248%22 y2=%2220%22 stroke=%22%23909090%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2230%22 x2=%2248%22 y2=%2230%22 stroke=%22%23909090%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/><line x1=%2216%22 y1=%2240%22 x2=%2236%22 y2=%2240%22 stroke=%22%23909090%22 stroke-width=%222.5%22 stroke-linecap=%22round%22/></svg>">
 	<style>
-@font-face {
-	font-family: "BerlinTypeOffice";
-	src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Regular.ttf") format("truetype");
-	font-weight: 400;
-	font-style: normal;
-}
+		@font-face {
+			font-family: "BerlinTypeOffice";
+			src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Regular.ttf") format("truetype");
+			font-weight: 400;
+			font-style: normal;
+		}
 
-@font-face {
-	font-family: "BerlinTypeOffice";
-	src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Bold.ttf") format("truetype");
-	font-weight: 700;
-	font-style: normal;
-}
+		@font-face {
+			font-family: "BerlinTypeOffice";
+			src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Bold.ttf") format("truetype");
+			font-weight: 700;
+			font-style: normal;
+		}
+
 		:root {
 			--bg: #eff2f8ff;
 			--surface: #e3ebecff;
@@ -56,7 +57,10 @@
 			--shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.25);
 		}
 
-		* { box-sizing: border-box; }
+		* {
+			box-sizing: border-box;
+			font-family: "BerlinTypeOffice", "Berlin Type Office", Arial, sans-serif;
+		}
 
 		html, body {
 			margin: 0;
@@ -64,7 +68,7 @@
 		}
 
 		body {
-			font-family: "BerlinTypeOffice", sans-serif;
+			font-family: "BerlinTypeOffice", "Berlin Type Office", Arial, sans-serif;
 			background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, #ffffff 12%) 100%);
 			color: var(--text);
 			font-size: 12px;
@@ -101,11 +105,11 @@
 		}
 
 		button,
-input,
-select,
-textarea {
-	font: inherit;
-	font-family: "BerlinTypeOffice", sans-serif;
+		input,
+		select,
+		textarea {
+			font: inherit;
+			font-family: "BerlinTypeOffice", "Berlin Type Office", Arial, sans-serif;
 			border-radius: 12px;
 			border: 1px solid var(--border);
 			background: var(--surface);
@@ -163,11 +167,7 @@ textarea {
 			min-width: 38px;
 		}
 
-		button.edit {
-			padding: 7px 10px;
-			min-width: 38px;
-		}
-
+		button.edit,
 		button.move {
 			padding: 7px 10px;
 			min-width: 38px;
@@ -447,35 +447,7 @@ textarea {
 			padding: 14px;
 			line-height: 1.7;
 			font-size: 14px;
-		}
-
-		.result-line {
-			margin-bottom: 4px;
-			font-size: 14px;
-		}
-
-		.result-label {
-			color: var(--text);
-			font-weight: 400;
-		}
-
-		.result-value-blue {
-			color: #0b66d6;
-			font-weight: 700;
-		}
-
-		.result-value-orange {
-			color: #e46c0a;
-			font-weight: 700;
-		}
-
-		.result-value-green {
-			color: #00a651;
-			font-weight: 700;
-		}
-
-		.result-spacer {
-			height: 14px;
+			font-family: "BerlinTypeOffice", "Berlin Type Office", Arial, sans-serif;
 		}
 
 		.copy-source {
@@ -612,6 +584,8 @@ textarea {
 	<div id="copySource" class="copy-source" contenteditable="true"></div>
 
 	<script>
+		const FONT_STACK = `'BerlinTypeOffice','Berlin Type Office',Arial,sans-serif`;
+
 		const categories = [
 			"Aktueller Status",
 			"Beantragt",
@@ -980,36 +954,56 @@ textarea {
 				.map(l => l.trim())
 				.filter(Boolean);
 
-			const baseStyle = forClipboard
-	? 'font-family:BerlinTypeOffice, sans-serif;font-size:12pt;line-height:1.5;color:#000000;'
-	: 'font-family:BerlinTypeOffice, sans-serif;font-size:14px;line-height:1.7;color:inherit;';
+			const lineStyle = forClipboard
+				? `font-family:${FONT_STACK};font-size:12pt;line-height:1.5;`
+				: `font-family:${FONT_STACK};font-size:16px;line-height:1.7;`;
 
-			let html = `<div style="${baseStyle}">`;
+			const labelStyle = `${lineStyle}font-weight:400;`;
+			const blueStyle = `${lineStyle}color:#0b66d6;font-weight:700;`;
+			const orangeStyle = `${lineStyle}color:#e46c0a;font-weight:700;`;
+			const greenStyle = `${lineStyle}color:#00a651;font-weight:700;`;
+
+			let html = `<div style="${lineStyle}color:${forClipboard ? "#000000" : "inherit"};">`;
 
 			if (aktuellerStatus) {
-				html += `<div style="margin:0 0 8px 0;"><span>Aktueller Status: </span><span style="color:#0b66d6;font-weight:700;">${escapeHtml(aktuellerStatus)}</span></div>`;
+				html += `
+					<div style="margin:0 0 8px 0;${lineStyle}">
+						<span style="${labelStyle}">Aktueller Status: </span>
+						<span style="${blueStyle}">${escapeHtml(aktuellerStatus)}</span>
+					</div><div></div> 
+				`;
 			}
 
 			if (beantragt) {
-				html += `<div style="margin:0 0 8px 0;"><span>Beantragt: </span><span style="color:#e46c0a;font-weight:700;">${escapeHtml(beantragt)}</span></div>`;
+				html += `
+					<div style="margin:0 0 8px 0;${lineStyle}">
+						<span style="${labelStyle}">Beantragt: </span>
+						<span style="${orangeStyle}">${escapeHtml(beantragt)}</span>
+					</div><div></div>
+				`;
 			}
 
 			if (bulletItems.length) {
 				html += `<div style="height:12px;"></div>`;
 				bulletItems.forEach(item => {
-					html += `<div style="margin:0;">- ${escapeHtml(item)}</div>`;
+					html += `<div style="margin:0 0 8px 0;${lineStyle}">✓ ${escapeHtml(item)}</div><div></div>`;
 				});
 			}
 
 			if (erteilung) {
 				html += `<div style="height:12px;"></div>`;
-				html += `<div style="margin:0;"><span>Erteilung: </span><span style="color:#00a651;font-weight:700;">${escapeHtml(erteilung)}</span></div>`;
+				html += `
+					<div style="margin:0;${lineStyle}">
+						<span style="${labelStyle}">Erteilung: </span>
+						<span style="${greenStyle}">${escapeHtml(erteilung)}</span>
+					</div>
+				`;
 			}
 
 			if (manualLines.length) {
 				html += `<div style="height:12px;"></div>`;
 				manualLines.forEach(line => {
-					html += `<div style="margin:0;">- ${escapeHtml(line)}</div>`;
+					html += `<div style="margin:0 0 8px 0;${lineStyle}">- ${escapeHtml(line)}</div>`;
 				});
 			}
 
@@ -1128,7 +1122,7 @@ textarea {
 
 		function exportData() {
 			const payload = {
-				version: 9,
+				version: 11,
 				exported_at: new Date().toISOString(),
 				data,
 				theme: localStorage.getItem("themeMode") || "light"
@@ -1138,7 +1132,7 @@ textarea {
 			const url = URL.createObjectURL(blob);
 			const a = document.createElement("a");
 			a.href = url;
-			a.download = "pruefvermerk-generator-v9-export.json";
+			a.download = "pruefvermerk-generator-v11-export.json";
 			document.body.appendChild(a);
 			a.click();
 			a.remove();
