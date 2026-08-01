@@ -90,6 +90,29 @@
       padding: 16px;
     }
 
+    .sync-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(10, 20, 36, 0.72);
+      border: 1px solid rgba(116, 174, 255, 0.18);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .sync-pill::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: var(--glow);
+    }
+
     .card {
       background: linear-gradient(180deg, var(--panel), rgba(8, 14, 25, 0.95));
       border: 1px solid rgba(116, 174, 255, 0.16);
@@ -158,6 +181,11 @@
       line-height: 1.5;
     }
 
+    .footer strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
     .desktop-block {
       display: none;
     }
@@ -196,26 +224,21 @@
     <header class="topbar">
       <div class="eyebrow">Teiba e.V.</div>
       <h1>Gebetszeiten</h1>
-      <p class="subtitle">Mobile version mit modernem Dark-Blue Glow Look.</p>
+      <p class="subtitle">Live aus Teiba, automatisch zur naechsten Gebetszeit aktualisiert.</p>
     </header>
 
     <section class="content">
+      <div class="sync-pill" id="syncStatus">Daten werden geladen…</div>
       <div class="card">
         <div class="card-title">Gebetszeiten</div>
-        <div class="rows" id="rows">
-          <div class="row" data-time="03:41"><div class="name">Morgengebet</div><div class="time">03:41</div></div>
-          <div class="row" data-time="05:18"><div class="name">Sonnenaufgang</div><div class="time">05:18</div></div>
-          <div class="row" data-time="13:18"><div class="name">Mittagsgebet</div><div class="time">13:18</div></div>
-          <div class="row active" data-time="17:28"><div class="name">Nachmittagsgebet</div><div class="time">17:28</div></div>
-          <div class="row" data-time="21:07"><div class="name">Sonnenuntergang</div><div class="time">21:07</div></div>
-          <div class="row" data-time="22:34"><div class="name">Nachtgebet</div><div class="time">22:34</div></div>
-          <div class="row" data-time="01:07"><div class="name">Mitternacht</div><div class="time">01:07</div></div>
+        <div class="rows" id="rows" aria-live="polite">
+          <div class="row"><div class="name">Laden…</div><div class="time">—</div></div>
         </div>
       </div>
     </section>
 
     <div class="footer">
-      Direktes Layout der Zeiten von teiba.de, neu gestaltet fuer mobile Ansicht.
+      Quelle: <strong>teiba.de/gebetszeiten.php</strong>. Die Anzeige laedt die Zeiten live und markiert die aktuelle Gebetszeit automatisch.
     </div>
   </main>
 
@@ -228,34 +251,139 @@
 
   <script>
     (function () {
-      const rows = Array.from(document.querySelectorAll('.row[data-time]'));
-      const toMinutes = (t) => {
-        const [h, m] = t.split(':').map(Number);
-        return h * 60 + m;
+      const fallback = {
+        sourceUrl: 'https://teiba.de/gebetszeiten.php',
+        fetchedAt: null,
+        prayers: [
+          { label: 'Morgengebet', time: '03:41' },
+          { label: 'Sonnenaufgang', time: '05:18' },
+          { label: 'Mittagsgebet', time: '13:18' },
+          { label: 'Nachmittagsgebet', time: '17:28' },
+          { label: 'Sonnenuntergang', time: '21:07' },
+          { label: 'Nachtgebet', time: '22:34' },
+          { label: 'Mitternacht', time: '01:07' },
+        ],
       };
 
-      const now = new Date();
-      const current = now.getHours() * 60 + now.getMinutes();
-      const times = rows.map((row) => ({ row, minutes: toMinutes(row.dataset.time) }));
-      let active = times[0].row;
+      const rowsEl = document.getElementById('rows');
+      const syncStatus = document.getElementById('syncStatus');
+      const dataUrl = 'teiba-prayer-times.json';
+      let prayerData = fallback;
+      let minuteTimer = null;
+      let reloadTimer = null;
 
-      for (let i = 0; i < times.length; i += 1) {
-        const currentItem = times[i];
-        const nextItem = times[(i + 1) % times.length];
-        const start = currentItem.minutes;
-        const end = nextItem.minutes;
-        const inRange = start <= end
-          ? current >= start && current < end
-          : current >= start || current < end;
+      const toMinutes = (value) => {
+        const [hours, minutes] = value.split(':').map(Number);
+        return hours * 60 + minutes;
+      };
 
-        if (inRange) {
-          active = currentItem.row;
-          break;
+      const render = () => {
+        rowsEl.innerHTML = prayerData.prayers
+          .map((prayer) => (
+            `<div class="row" data-time="${prayer.time}">
+              <div class="name">${prayer.label}</div>
+              <div class="time">${prayer.time}</div>
+            </div>`
+          ))
+          .join('');
+      };
+
+      const setSyncMessage = (message) => {
+        syncStatus.textContent = message;
+      };
+
+      const setActivePrayer = () => {
+        const rows = Array.from(rowsEl.querySelectorAll('.row[data-time]'));
+        if (!rows.length) return;
+
+        const times = rows.map((row) => ({
+          row,
+          minutes: toMinutes(row.dataset.time),
+        }));
+
+        const now = new Date();
+        const current = now.getHours() * 60 + now.getMinutes();
+        let active = times[0].row;
+
+        for (let i = 0; i < times.length; i += 1) {
+          const currentItem = times[i];
+          const nextItem = times[(i + 1) % times.length];
+          const start = currentItem.minutes;
+          const end = nextItem.minutes;
+          const inRange = start <= end
+            ? current >= start && current < end
+            : current >= start || current < end;
+
+          if (inRange) {
+            active = currentItem.row;
+            break;
+          }
         }
-      }
 
-      rows.forEach((row) => row.classList.remove('active'));
-      active.classList.add('active');
+        rows.forEach((row) => row.classList.remove('active'));
+        active.classList.add('active');
+      };
+
+      const scheduleMinuteTick = () => {
+        if (minuteTimer) clearTimeout(minuteTimer);
+        const now = new Date();
+        const wait = ((60 - now.getSeconds()) * 1000) - now.getMilliseconds() + 50;
+        minuteTimer = setTimeout(() => {
+          setActivePrayer();
+          scheduleMinuteTick();
+        }, wait);
+      };
+
+      const scheduleReload = () => {
+        if (reloadTimer) clearTimeout(reloadTimer);
+
+        const rows = Array.from(rowsEl.querySelectorAll('.row[data-time]'));
+        if (!rows.length) return;
+
+        const times = rows.map((row) => toMinutes(row.dataset.time));
+        const now = new Date();
+        const current = now.getHours() * 60 + now.getMinutes() + (now.getSeconds() / 60);
+        let nextMinutes = times.find((minutes) => minutes > current);
+        if (nextMinutes === undefined) nextMinutes = times[0] + 24 * 60;
+
+        const minutesUntil = nextMinutes - current;
+        const delay = Math.max((minutesUntil * 60 * 1000) + 500, 60_000);
+        reloadTimer = setTimeout(() => {
+          loadPrayerTimes();
+        }, delay);
+      };
+
+      const loadPrayerTimes = async () => {
+        try {
+          const response = await fetch(dataUrl, { cache: 'no-store' });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          if (!data || !Array.isArray(data.prayers) || !data.prayers.length) {
+            throw new Error('Invalid prayer data');
+          }
+          prayerData = data;
+          render();
+          setSyncMessage(`Live from teiba.de · synced ${new Date(data.fetchedAt).toLocaleString('de-DE')}`);
+        } catch (error) {
+          prayerData = fallback;
+          render();
+          setSyncMessage('Teiba sync unavailable · showing cached snapshot');
+        }
+
+        setActivePrayer();
+        scheduleMinuteTick();
+        scheduleReload();
+      };
+
+      render();
+      setActivePrayer();
+      scheduleMinuteTick();
+      scheduleReload();
+      loadPrayerTimes();
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) loadPrayerTimes();
+      });
     })();
   </script>
 </body>

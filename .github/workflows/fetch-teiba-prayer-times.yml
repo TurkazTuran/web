@@ -1,0 +1,42 @@
+name: Manage Teiba Prayer Times
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '5 1 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Configure git safe directory (CI)
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Sync Teiba prayer times
+        run: php .github/scripts/manage-teiba-prayer-times.php
+
+      - name: Commit and push changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update Teiba prayer times snapshot"
+            git push
+          fi
