@@ -1,8 +1,8 @@
 const pages = [
   {
-    title: "Namaz Vakti",
-    href: "namaz.html",
-    desc: "Namaz vaxtları və məlumat",
+    title: "Gebetszeiten",
+    href: "teiba-mobile.html",
+    desc: "Mobile Dark-Blue Glow Version",
     icon: "moon",
     colors: ["#0f172a", "#1d4ed8"],
   },
