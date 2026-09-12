@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="de">
+<html lang="tr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07111f">
-  <title>Gebetszeiten für Berlin</title>
+  <title>Berlin Namaz Vakti</title>
   <style>
     :root {
       color-scheme: dark;
@@ -60,7 +60,6 @@
       color: var(--cyan);
       font-size: 12px;
       letter-spacing: 0.16em;
-      text-transform: uppercase;
       opacity: 0.9;
     }
 
@@ -119,14 +118,6 @@
       border-radius: 22px;
       overflow: hidden;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-    }
-
-    .card-title {
-      padding: 16px 18px;
-      font-size: 18px;
-      font-weight: 700;
-      border-bottom: 1px solid rgba(116, 174, 255, 0.12);
-      background: linear-gradient(180deg, rgba(20, 36, 66, 0.95), rgba(11, 20, 35, 0.35));
     }
 
     .rows {
@@ -251,24 +242,24 @@
   </style>
 </head>
 <body>
-  <main class="phone" aria-label="Gebetszeiten">
+  <main class="phone" aria-label="Namaz vakitleri">
     <header class="topbar">
       <div class="eyebrow">Teiba e.V.</div>
-      <h1>Gebetszeiten für Berlin</h1>
+      <h1>Berlin Namaz Vakti</h1>
     </header>
 
     <section class="content">
-      <div class="sync-pill" id="syncStatus">Daten werden geladen…</div>
+      <div class="sync-pill" id="syncStatus">Veriler yükleniyor…</div>
       <div class="card">
         
         <div class="rows" id="rows" aria-live="polite">
-          <div class="row"><div class="name">Laden…</div><div class="time">—</div></div>
+          <div class="row"><div class="name">Yükleniyor…</div><div class="time">—</div></div>
         </div>
       </div>
     </section>
 
     <div class="footer">
-      <button class="refresh-button" id="refreshButton" type="button">Daten aktualisieren</button>
+      <button class="refresh-button" id="refreshButton" type="button">Verileri güncelle</button>
     </div>
   </main>
 
@@ -278,13 +269,13 @@
         sourceUrl: 'https://teiba.de/gebetszeiten.php',
         fetchedAt: null,
         prayers: [
-          { label: 'Morgengebet', time: '03:41' },
-          { label: 'Sonnenaufgang', time: '05:18' },
-          { label: 'Mittagsgebet', time: '13:18' },
-          { label: 'Nachmittagsgebet', time: '17:28' },
-          { label: 'Sonnenuntergang', time: '21:07' },
-          { label: 'Nachtgebet', time: '22:34' },
-          { label: 'Mitternacht', time: '01:07' },
+          { label: 'Sabah namazı', time: '03:41' },
+          { label: 'Güneş doğuşu', time: '05:18' },
+          { label: 'Öğle namazı', time: '13:18' },
+          { label: 'İkindi namazı', time: '17:28' },
+          { label: 'Akşam namazı', time: '21:07' },
+          { label: 'Yatsı namazı', time: '22:34' },
+          { label: 'Gece yarısı', time: '01:07' },
         ],
       };
 
@@ -383,15 +374,15 @@
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const data = await response.json();
           if (!data || !Array.isArray(data.prayers) || !data.prayers.length) {
-            throw new Error('Invalid prayer data');
+            throw new Error('Geçersiz namaz vakti verileri');
           }
           prayerData = data;
           render();
-          setSyncMessage(`last synced ${new Date(data.fetchedAt).toLocaleString('de-DE')}`);
+          setSyncMessage(`Son güncelleme: ${new Date(data.fetchedAt).toLocaleString('tr-TR')}`);
         } catch (error) {
           prayerData = fallback;
           render();
-          setSyncMessage('Teiba sync unavailable · showing cached snapshot');
+          setSyncMessage('Teiba senkronizasyonu kullanılamıyor · kayıtlı veriler gösteriliyor');
         }
 
         setActivePrayer();
