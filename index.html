@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html lang="az">
   <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <title>TurkazTuran</title>
-  <meta name="description" content="Modern, animated, responsive index with image previews of your HTML pages." />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0b0f14" />
+    <title>Turkaz Turan - Quranic Resources & Utilities</title>
+    <meta name="description" content="Quranic resources, prayer times, expense tracker, and currency converter for Azerbaijani users." />
+    <meta property="og:title" content="Turkaz Turan" />
+    <meta property="og:description" content="Modern Quranic resources and Islamic utilities" />
+    <meta property="og:type" content="website" />
 
-  <!-- SVG Favicon -->
-  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+    <!-- SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
 
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/nav.css" />
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/nav.css" />
   </head>
   <body>
     <div class="gradient-overlay" aria-hidden="true"></div>
@@ -25,8 +29,8 @@
 
     <header class="tt-site-header">
       <nav class="nav" aria-label="Əsas naviqasiya">
-        <a class="brand" href="index.html" aria-label="Turkaz Turan ana səhifə">
-          <img class="logo" src="images/quran.png" alt="Quran loqosu" width="36" height="36" />
+        <a class="brand" href="index.html" aria-label="Turkaz Turan - Ana səhifə">
+          <img class="logo" src="images/quran.png" alt="Quran loqosu" width="36" height="36" loading="eager" />
           <span class="brand-text">
             <span class="title">Turkaz Turan</span>
           </span>
@@ -37,6 +41,7 @@
           type="button"
           aria-expanded="false"
           aria-controls="primary-menu"
+          aria-label="Naviqasiya menüsünü aç"
         >
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <defs>
@@ -69,12 +74,12 @@
           <a href="currency.html">Valyuta</a>
         </div>
         <div class="controls">
-          
           <button
             id="siteThemeToggle"
             class="toggle"
             type="button"
             aria-pressed="false"
+            aria-label="Tema dəyiş"
             title="Tema dəyiş"
           >
             <svg
@@ -102,6 +107,7 @@
                 d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"
                 stroke="url(#themeToggleGradient)"
                 stroke-width="1.6"
+                stroke-linecap="round"
               />
             </svg>
             <span>Tema</span>
@@ -117,12 +123,14 @@
             <img
               class="hero-image"
               src="images/bismillah.png"
-              alt="bismillah"
+              alt="Bismillah - Rəhman rəhimin"
               loading="lazy"
+              width="520"
+              height="340"
             />
           </div>
           <div class="hero-copy">
-            <p class="hero-text" role="text">
+            <p class="hero-text">
               De ki: "Ey haddi aşarak nefislerine karşı zulm etmiş olan
               kullarım! Allah'ın rahmetinden ümid kesmeyin. Çünkü Allah, bütün
               günahları bağışlar. Şüphesiz ki O, çok bağışlayıcı ve çok merhamet
@@ -132,14 +140,17 @@
           </div>
         </div>
       </section>
-      <section>
-        <div id="cards" class="grid" role="list"></div>
-        <div id="empty" class="empty" role="status">
-          Axtarışa uyğun səhifə tapılmadı.
-        </div>
-      </section>
 
+      <section class="content-section" aria-labelledby="features-title">
+        <h2 id="features-title" class="sr-only">Xidmətlərimiz</h2>
+        <div id="cards" class="grid" role="list"></div>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2024 Turkaz Turan. Bütün hüquqlar qorunur.</p>
+    </footer>
+
     <script src="scripts/nav.js" defer></script>
     <script src="scripts/script.js" defer></script>
   </body>
