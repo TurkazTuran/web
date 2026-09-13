@@ -1,7 +1,7 @@
 const pages = [
   {
-    title: "Gebetszeiten",
-    href: "teiba-mobile.html",
+    title: "Namaz Vakti",
+    href: "namaz.html",
     desc: "Mobile Dark-Blue Glow Version",
     icon: "moon",
     colors: ["#0f172a", "#1d4ed8"],
