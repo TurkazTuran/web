@@ -8,7 +8,7 @@
     />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self' https: data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src https://api.aladhan.com;"
+      content="default-src 'self' https: data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self';"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -811,36 +811,7 @@
       </div>
 
       <div class="controls">
-        <button class="btn" id="gpsBtn" title="Use GPS Location">📡</button>
-        <button class="btn" id="settingsBtn" title="Settings">⚙️</button>
         <button class="btn" id="themeBtn" title="Toggle Theme">🌙</button>
-      </div>
-
-      <div class="panel" id="settingsPanel">
-        <div>
-          <label
-            style="
-              display: block;
-              margin-bottom: 8px;
-              font-size: 13px;
-              font-weight: 600;
-              color: var(--text-muted);
-            "
-          >
-            Calculation Method
-          </label>
-          <select class="select-box" id="methodSelect"></select>
-        </div>
-
-        <div class="setting-item">
-          <span class="setting-label">🔔 Notifications</span>
-          <div class="toggle-switch" id="notificationToggle"></div>
-        </div>
-
-        <div class="button-group">
-          <button class="btn" id="copyTimesBtn" style="flex: 1">📋 Copy</button>
-          <button class="btn" id="shareBtn" style="flex: 1">📤 Share</button>
-        </div>
       </div>
 
       <div class="date-section">
@@ -848,7 +819,6 @@
           <span>📅</span>
           <span id="gregorianDate">Loading...</span>
         </div>
-        <div class="hijri-date" id="hijriDate">--</div>
       </div>
 
       <div class="current-time-section">
@@ -881,79 +851,23 @@
         prayerData: null,
         currentCity: "Berlin",
         currentCountry: "Germany",
-        currentLat: null,
-        currentLon: null,
-        useGPS: false,
-        prayerMethod: "4",
-        notificationsEnabled: false,
         theme: localStorage.getItem("theme") || "dark",
         countdownInterval: null,
         lastBadgeState: {},
         timezone: null,
       };
 
-      const PRAYER_METHODS = [
-        { id: "0", name: "Shia Ithna-Ashari, Leva Institute, Qum (JAFARI)" },
-        { id: "1", name: "University of Islamic Sciences, Karachi" },
-        { id: "2", name: "Islamic Society of North America (ISNA)" },
-        { id: "3", name: "Muslim World League (MWL)" },
-        { id: "4", name: "Umm Al-Qura University, Makkah" },
-        { id: "5", name: "Egyptian General Authority of Survey" },
-        { id: "7", name: "Institute of Geophysics, University of Tehran" },
-        { id: "8", name: "Gulf Region" },
-        { id: "9", name: "Kuwait" },
-        { id: "10", name: "Qatar" },
-        { id: "11", name: "Islamic Religious Council of Singapore (MUIS)" },
-        { id: "12", name: "French Union of Islamic Organizations (UOIF)" },
-        { id: "13", name: "Presidency of Religious Affairs (Turkey)" },
-        { id: "14", name: "Spiritual Administration of Muslims of Russia" },
-        { id: "15", name: "Moonsighting Committee Worldwide" },
-        { id: "16", name: "Dubai (experimental)" },
-        {
-          id: "17",
-          name: "Department of Islamic Development Malaysia (JAKIM)",
-        },
-        { id: "18", name: "Tunisia" },
-        { id: "19", name: "Algeria" },
-        { id: "20", name: "Ministry of Religious Affairs (Indonesia)" },
-        { id: "21", name: "Morocco" },
-        { id: "22", name: "Islamic Community of Lisbon (Portugal)" },
-        {
-          id: "23",
-          name: "Ministry of Awqaf, Islamic Affairs and Holy Places, Jordan",
-        },
-        { id: "99", name: "Custom" },
-      ];
-
       const elements = {
         locationDisplay: document.getElementById("locationDisplay"),
         statusIndicator: document.getElementById("statusIndicator"),
-        gpsBtn: document.getElementById("gpsBtn"),
-        settingsBtn: document.getElementById("settingsBtn"),
         themeBtn: document.getElementById("themeBtn"),
-        settingsPanel: document.getElementById("settingsPanel"),
-        methodSelect: document.getElementById("methodSelect"),
-        notificationToggle: document.getElementById("notificationToggle"),
         gregorianDate: document.getElementById("gregorianDate"),
-        hijriDate: document.getElementById("hijriDate"),
         currentTime: document.getElementById("currentTime"),
         nextPrayerInfo: document.getElementById("nextPrayerInfo"),
         countdownTimer: document.getElementById("countdownTimer"),
         prayerTimesContainer: document.getElementById("prayerTimesContainer"),
         refreshBtn: document.getElementById("refreshBtn"),
-        copyTimesBtn: document.getElementById("copyTimesBtn"),
-        shareBtn: document.getElementById("shareBtn"),
       };
-
-      function populateMethodSelect() {
-        elements.methodSelect.innerHTML = "";
-        PRAYER_METHODS.forEach((method) => {
-          const option = document.createElement("option");
-          option.value = method.id;
-          option.textContent = method.name;
-          elements.methodSelect.appendChild(option);
-        });
-      }
 
       function setStatus(status) {
         elements.statusIndicator.className = `status-indicator ${status}`;
@@ -979,13 +893,6 @@
       }
 
       function updateLocationDisplay() {
-        if (state.useGPS && state.currentLat && state.currentLon) {
-          elements.locationDisplay.textContent = `GPS: ${state.currentLat.toFixed(
-            2
-          )}°, ${state.currentLon.toFixed(2)}°`;
-          return;
-        }
-
         const parts = [];
         if (state.currentCity) parts.push(state.currentCity);
 
@@ -1009,39 +916,34 @@
             `;
 
         try {
-          const apiUrl =
-            state.useGPS && state.currentLat && state.currentLon
-              ? `https://api.aladhan.com/v1/timings?latitude=${state.currentLat}&longitude=${state.currentLon}&method=${state.prayerMethod}`
-              : `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(
-                  state.currentCity
-                )}&country=${encodeURIComponent(state.currentCountry)}&method=${
-                  state.prayerMethod
-                }`;
-
-          const response = await fetch(apiUrl);
+          const response = await fetch("teiba-prayer-times.json");
           if (!response.ok)
             throw new Error(`HTTP error! status: ${response.status}`);
 
           const data = await response.json();
-          if (data.code !== 200) throw new Error("API returned an error");
+          // Teiba prayer order: Fajr, Shurooq, Dhuhr, Asr, Maghrib, Isha, Midnight (last entry unused)
+          const [fajr, shurooq, dhuhr, asr, maghrib, isha] = data.prayers.map(
+            (p) => p.time
+          );
 
-          const { timings, date, meta } = data.data;
+          const now = new Date();
 
           state.prayerData = {
-            gregorian: `${String(date.gregorian.day).padStart(2, "0")} ${
-              date.gregorian.month.en
-            } ${date.gregorian.year}`,
-            weekday: date.gregorian.weekday.en,
-            hijri: `${date.hijri.day} ${date.hijri.month.en} ${date.hijri.year}`,
-            fajr: timings.Fajr || timings.Imsak,
-            sunrise: timings.Sunrise,
-            dhuhr: timings.Dhuhr,
-            asr: timings.Asr,
-            maghrib: timings.Maghrib,
-            isha: timings.Isha,
+            gregorian: now.toLocaleDateString("en-US", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            }),
+            weekday: now.toLocaleDateString("en-US", { weekday: "long" }),
+            fajr,
+            shurooq,
+            dhuhr,
+            asr,
+            maghrib,
+            isha,
           };
 
-          state.timezone = meta?.timezone || null;
+          state.timezone = data.timezone || null;
           updateLocationDisplay();
 
           displayPrayerTimes();
@@ -1066,7 +968,6 @@
         if (!state.prayerData) return;
 
         elements.gregorianDate.textContent = `${state.prayerData.weekday} ${state.prayerData.gregorian}`;
-        elements.hijriDate.textContent = state.prayerData.hijri;
 
         const prayers = [
           {
@@ -1076,9 +977,9 @@
             emoji: "🌑",
           },
           {
-            name: "Sunrise",
-            time: state.prayerData.sunrise,
-            key: "sunrise",
+            name: "Shurooq",
+            time: state.prayerData.shurooq,
+            key: "shurooq",
             emoji: "🌄",
           },
           {
@@ -1134,7 +1035,7 @@
 
         const prayerTimes = [
           { name: "Fajr", time: state.prayerData.fajr, key: "fajr" },
-          { name: "Sunrise", time: state.prayerData.sunrise, key: "sunrise" },
+          { name: "Shurooq", time: state.prayerData.shurooq, key: "shurooq" },
           { name: "Dhuhr", time: state.prayerData.dhuhr, key: "dhuhr" },
           { name: "Asr", time: state.prayerData.asr, key: "asr" },
           { name: "Maghrib", time: state.prayerData.maghrib, key: "maghrib" },
@@ -1263,94 +1164,12 @@
         initializeTheme();
       }
 
-      elements.gpsBtn.addEventListener("click", () => {
-        if (state.useGPS) {
-          state.useGPS = false;
-          state.currentLat = null;
-          state.currentLon = null;
-          state.timezone = null;
-          elements.gpsBtn.classList.remove("active");
-          updateLocationDisplay();
-          fetchPrayerTimes();
-          return;
-        }
-
-        if (!navigator.geolocation) {
-          setStatus("error");
-          showToast("GPS is not supported", true);
-          return;
-        }
-
-        setStatus("loading");
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            state.currentLat = position.coords.latitude;
-            state.currentLon = position.coords.longitude;
-            state.useGPS = true;
-            state.timezone = null;
-            elements.gpsBtn.classList.add("active");
-            updateLocationDisplay();
-            fetchPrayerTimes();
-          },
-          () => {
-            setStatus("error");
-            showToast("GPS access failed", true);
-          }
-        );
-      });
-
-      elements.settingsBtn.addEventListener("click", () => {
-        elements.settingsPanel.classList.toggle("active");
-      });
-
       elements.themeBtn.addEventListener("click", toggleTheme);
-
-      elements.methodSelect.addEventListener("change", (e) => {
-        state.prayerMethod = e.target.value;
-        fetchPrayerTimes();
-      });
-
-      elements.notificationToggle.addEventListener("click", function () {
-        state.notificationsEnabled = !state.notificationsEnabled;
-        this.classList.toggle("active");
-        if (state.notificationsEnabled && "Notification" in window) {
-          Notification.requestPermission();
-        }
-        showToast(
-          state.notificationsEnabled
-            ? "Notifications enabled"
-            : "Notifications disabled"
-        );
-      });
 
       elements.refreshBtn.addEventListener("click", fetchPrayerTimes);
 
-      elements.copyTimesBtn.addEventListener("click", () => {
-        if (state.prayerData) {
-          const text = `PRAYER TIMES - ${state.currentCity}\n${state.prayerData.weekday}, ${state.prayerData.gregorian}\n\nFajr: ${state.prayerData.fajr}\nSunrise: ${state.prayerData.sunrise}\nDhuhr: ${state.prayerData.dhuhr}\nAsr: ${state.prayerData.asr}\nMaghrib: ${state.prayerData.maghrib}\nIsha: ${state.prayerData.isha}`;
-          navigator.clipboard.writeText(text);
-          showToast("Prayer times copied!");
-        }
-      });
-
-      elements.shareBtn.addEventListener("click", () => {
-        if (state.prayerData && navigator.share) {
-          navigator
-            .share({
-              title: "Prayer Times",
-              text: `Prayer times for ${state.currentCity}:\n${state.prayerData.gregorian}`,
-              url: window.location.href,
-            })
-            .catch(() => {});
-        } else if (state.prayerData) {
-          showToast("Sharing is not supported", true);
-        }
-      });
-
       document.addEventListener("DOMContentLoaded", () => {
         initializeTheme();
-        populateMethodSelect();
-        elements.methodSelect.value = state.prayerMethod;
         updateLocationDisplay();
         fetchPrayerTimes();
 
