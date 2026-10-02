@@ -954,6 +954,7 @@
 				.split(/\r?\n/)
 				.map(l => l.trim())
 				.filter(Boolean);
+			bulletItems.push(...manualLines);
 
 			const lineStyle = forClipboard
 				? `font-family:${FONT_STACK};font-size:12pt;line-height:1.5;`
@@ -1001,12 +1002,6 @@
 				`;
 			}
 
-			if (manualLines.length) {
-				html += `<div style="height:12px;"></div>`;
-				manualLines.forEach(line => {
-					html += `<div style="margin:0 0 8px 0;${lineStyle}">&#9745;&nbsp;&nbsp;&nbsp;${escapeHtml(line)}</div>`;
-				});
-			}
 
 			html += `</div>`;
 			return html;
@@ -1038,6 +1033,7 @@
 				.split(/\r?\n/)
 				.map(l => l.trim())
 				.filter(Boolean);
+			bulletItems.push(...manualLines);
 
 			if (aktuellerStatus) lines.push(`Aktueller Status: ${aktuellerStatus}`);
 			if (beantragt) lines.push(`Beantragt: ${beantragt}`);
@@ -1052,10 +1048,6 @@
 				lines.push(`Erteilung: ${erteilung}`);
 			}
 
-			if (manualLines.length) {
-				lines.push("");
-				manualLines.forEach(line => lines.push(`☑   ${line}`));
-			}
 
 			return lines.join("\n");
 		}
@@ -1136,6 +1128,7 @@
 				.split(/\r?\n/)
 				.map(line => line.trim())
 				.filter(Boolean);
+			bulletItems.push(...manualLines);
 
 			if (aktuellerStatus) {
 				rows.push({
@@ -1181,18 +1174,6 @@
 				});
 			}
 
-			if (manualLines.length) {
-				rows.push({ type: "spacer", size: 12 });
-				manualLines.forEach(line => {
-					rows.push({
-						type: "segments",
-						segments: [
-							{ text: "☑   ", color: "#16202a", weight: "400" },
-							{ text: line, color: "#16202a", weight: "400" }
-						]
-					});
-				});
-			}
 
 			return rows;
 		}
