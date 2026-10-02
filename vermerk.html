@@ -1519,6 +1519,8 @@
 				.replace(/'/g, "\\'");
 		}
 
+		manualText.addEventListener("input", updateSummary);
+
 		document.addEventListener("click", function (event) {
 			document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
 				if (!dropdown.contains(event.target)) {
