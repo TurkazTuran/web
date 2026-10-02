@@ -1004,7 +1004,7 @@
 			if (manualLines.length) {
 				html += `<div style="height:12px;"></div>`;
 				manualLines.forEach(line => {
-					html += `<div style="margin:0 0 8px 0;${lineStyle}">- ${escapeHtml(line)}</div>`;
+					html += `<div style="margin:0 0 8px 0;${lineStyle}">&#9745;&nbsp;&nbsp;&nbsp;${escapeHtml(line)}</div>`;
 				});
 			}
 
@@ -1054,7 +1054,7 @@
 
 			if (manualLines.length) {
 				lines.push("");
-				manualLines.forEach(line => lines.push(`- ${line}`));
+				manualLines.forEach(line => lines.push(`☑   ${line}`));
 			}
 
 			return lines.join("\n");
@@ -1187,7 +1187,7 @@
 					rows.push({
 						type: "segments",
 						segments: [
-							{ text: "- ", color: "#16202a", weight: "400" },
+							{ text: "☑   ", color: "#16202a", weight: "400" },
 							{ text: line, color: "#16202a", weight: "400" }
 						]
 					});
