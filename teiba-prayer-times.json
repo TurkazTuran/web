@@ -1,15 +1,15 @@
 {
     "sourceUrl": "https://teiba.de/gebetszeiten.php",
     "timezone": "Europe/Berlin",
-    "fetchedAt": "2026-10-06T01:36:42+00:00",
+    "fetchedAt": "2026-10-07T01:41:39+00:00",
     "prayers": [
         {
             "label": "Morgengebet",
-            "time": "05:21"
+            "time": "05:23"
         },
         {
             "label": "Sonnenaufgang",
-            "time": "07:08"
+            "time": "07:10"
         },
         {
             "label": "Mittagsgebet",
@@ -17,19 +17,19 @@
         },
         {
             "label": "Nachmittagsgebet",
-            "time": "15:57"
+            "time": "15:56"
         },
         {
             "label": "Sonnenuntergang",
-            "time": "18:41"
+            "time": "18:39"
         },
         {
             "label": "Nachtgebet",
-            "time": "20:15"
+            "time": "20:12"
         },
         {
             "label": "Mitternacht",
-            "time": "00:48"
+            "time": "00:47"
         }
     ]
 }
