@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Unterlagenliste</title>
+	<style>
+		@font-face {
+			font-family: "BerlinTypeOffice";
+			src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Regular.ttf") format("truetype");
+			font-weight: 400;
+			font-style: normal;
+		}
+
+		@font-face {
+			font-family: "BerlinTypeOffice";
+			src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Bold.ttf") format("truetype");
+			font-weight: 700;
+			font-style: normal;
+		}
+
+		:root {
+			--bg: #eff2f8;
+			--surface: #e3ebec;
+			--surface-2: #d7e4f3;
+			--border: #545d68;
+			--text: #16202a;
+			--muted: #66758a;
+			--accent: #005f73;
+			--accent-2: #0a9396;
+			--danger: #dc2626;
+			--danger-bg: #fef2f2;
+			--shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+			--shadow-soft: 0 4px 14px rgba(15, 23, 42, 0.06);
+			--radius: 16px;
+			--radius-sm: 12px;
+		}
+
+		body.dark {
+			--bg: #0f172a;
+			--surface: #111827;
+			--surface-2: #172033;
+			--border: #25324a;
+			--text: #e5edf8;
+			--muted: #95a4bd;
+			--accent: #22d3ee;
+			--accent-2: #0891b2;
+			--danger: #f87171;
+			--danger-bg: #2b1720;
+			--shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+			--shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.25);
+		}
+
+		* {
+			box-sizing: border-box;
+			font-family: "BerlinTypeOffice", "Berlin Type Office", Arial, sans-serif;
+		}
+
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, #ffffff 12%) 100%);
+			color: var(--text);
+			font-size: 14px;
+			padding: clamp(10px, 1.2vw, 18px);
+			min-height: 100vh;
+			transition: background 0.25s ease, color 0.25s ease;
+		}
+
+		.app-shell {
+			max-width: min(1700px, calc(100vw - 24px));
+			margin: 0 auto;
+			min-height: calc(100vh - clamp(20px, 2.4vw, 36px));
+			display: grid;
+			grid-template-rows: auto auto 1fr auto;
+		}
+
+		.topbar {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 12px;
+			margin-bottom: 18px;
+			flex-wrap: wrap;
+		}
+
+		.title-wrap h2 {
+			margin: 0;
+			font-size: 28px;
+			font-weight: 800;
+			letter-spacing: -0.02em;
+		}
+
+		.toolbar {
+			display: flex;
+			gap: 5px;
+			flex-wrap: wrap;
+			align-items: center;
+		}
+
+		button,
+		input,
+		select,
+		textarea {
+			font: inherit;
+			border-radius: 12px;
+			border: 1px solid var(--border);
+			background: var(--surface);
+			color: var(--text);
+			padding: 10px 12px;
+			transition: all 0.2s ease;
+		}
+
+		input::placeholder,
+		textarea::placeholder {
+			color: var(--muted);
+		}
+
+		input:focus,
+		select:focus,
+		textarea:focus,
+		button:focus {
+			outline: none;
+			border-color: var(--accent);
+			box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+		}
+
+		button {
+			cursor: pointer;
+			background: var(--surface);
+			box-shadow: var(--shadow-soft);
+			font-weight: 600;
+		}
+
+		button:hover {
+			transform: translateY(-1px);
+			border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+		}
+
+		button.primary {
+			background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+			color: #fff;
+			border-color: transparent;
+		}
+
+		button.ghost {
+			background: transparent;
+			box-shadow: none;
+		}
+
+		.card {
+			background: color-mix(in srgb, var(--surface) 92%, transparent);
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			box-shadow: var(--shadow);
+		}
+
+		.bulk-panel {
+			display: grid;
+			gap: 5px;
+			margin-bottom: 18px;
+			padding: 16px;
+		}
+
+		.bulk-actions {
+			display: flex;
+			gap: 5px;
+			flex-wrap: wrap;
+			align-items: center;
+		}
+
+		.bulk-actions select {
+			min-width: 260px;
+			flex: 1;
+		}
+
+		.recipient-panel {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 5px;
+			margin-bottom: 18px;
+			padding: 12px;
+		}
+
+		.recipient-toggle {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			padding: 12px;
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			background: var(--surface-2);
+		}
+
+		.recipient-main {
+			display: inline-flex;
+			align-items: center;
+			gap: 5px;
+			font-weight: 700;
+		}
+
+		.recipient-gender {
+			display: inline-flex;
+			gap: 12px;
+			flex-wrap: wrap;
+		}
+
+		.recipient-gender label {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		input[type="checkbox"],
+		input[type="radio"] {
+			width: 16px;
+			height: 16px;
+			min-width: 16px;
+			padding: 0;
+			margin: 0;
+			accent-color: var(--accent);
+			box-shadow: none;
+		}
+
+		.section-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 16px;
+			align-items: stretch;
+		}
+
+		.section {
+			background: var(--surface);
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			overflow: hidden;
+			box-shadow: var(--shadow-soft);
+			display: grid;
+			grid-template-rows: auto 1fr;
+		}
+
+		.section-title {
+			padding: 10px 16px;
+			background: #a7afbd;
+			border-bottom: 1px solid #0b0e93;
+			font-weight: 700;
+			letter-spacing: -0.01em;
+		}
+
+		.section-body {
+			padding: 12px;
+			display: grid;
+			grid-template-rows: auto 1fr;
+			gap: 5px;
+		}
+
+		.inline-add {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 8px;
+		}
+
+		.list-wrap {
+			display: grid;
+			gap: 6px;
+			max-height: none;
+			overflow: visible;
+			padding-right: 2px;
+		}
+
+		.list-row {
+			display: grid;
+			grid-template-columns: 20px 1fr auto;
+			gap: 8px;
+			align-items: center;
+			background: var(--surface-2);
+			border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+			border-radius: 10px;
+			padding: 6px 10px;
+		}
+
+		.row-actions {
+			display: inline-flex;
+			gap: 4px;
+		}
+
+		.move-btn {
+			width: 24px;
+			height: 24px;
+			padding: 0;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 14px;
+			line-height: 1;
+			border-radius: 8px;
+			box-shadow: none;
+		}
+
+		.item-text {
+			font-size: 18px;
+			line-height: 1.3;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.summary {
+			margin-top: 18px;
+			padding: 16px;
+			align-self: end;
+		}
+
+		.summary-head {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 5px;
+		}
+
+		.summary h3 {
+			margin: 0 0 8px;
+			font-size: 14px;
+			font-weight: 700;
+		}
+
+		.summary.collapsed {
+			padding: 12px 16px;
+		}
+
+		.summary.collapsed .result-output,
+		.summary.collapsed .summary-actions {
+			display: none;
+		}
+
+		.summary-toggle {
+			padding: 6px 10px;
+			min-width: 120px;
+			box-shadow: none;
+		}
+
+		.result-output {
+			width: 100%;
+			min-height: 160px;
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			background: var(--surface);
+			padding: 14px;
+			line-height: 1.65;
+			font-size: 14px;
+		}
+
+		.summary-actions {
+			margin-top: 12px;
+			display: flex;
+			gap: 5px;
+			flex-wrap: wrap;
+		}
+
+		.import-input {
+			display: none;
+		}
+
+		.empty-note {
+			color: var(--muted);
+			font-size: 12px;
+		}
+
+		.toast {
+			position: fixed;
+			right: 20px;
+			bottom: 20px;
+			background: rgba(15, 23, 42, 0.92);
+			color: #fff;
+			padding: 14px 18px;
+			border-radius: 14px;
+			box-shadow: var(--shadow);
+			z-index: 9999;
+			opacity: 0;
+			transform: translateY(10px);
+			transition: all 0.25s ease;
+			pointer-events: none;
+		}
+
+		.toast.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.copy-source {
+			position: fixed;
+			left: -99999px;
+			top: 0;
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		@media (max-width: 960px) {
+			.app-shell {
+				min-height: unset;
+				display: block;
+			}
+
+			.recipient-panel,
+			.section-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.bulk-actions {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.bulk-actions select,
+			.bulk-actions button {
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="app-shell">
+		<div class="topbar">
+			<div class="title-wrap">
+				<h2>Erforderliche Unterlagen</h2>
+			</div>
+
+			<div class="toolbar">
+				<button onclick="toggleTheme()">🌙 / ☀️ Theme</button>
+				<button onclick="exportListData()">Listenwerte exportieren</button>
+				<button onclick="document.getElementById('importFile').click()">Listenwerte importieren</button>
+				<button class="ghost" onclick="resetAllData()">Alles löschen</button>
+				<input class="import-input" id="importFile" type="file" accept=".json,application/json" onchange="importListData(event)">
+			</div>
+		</div>
+
+		<div class="bulk-panel card">
+			<textarea id="bulkInput" rows="4" placeholder="Mehrere Unterlagen einfügen - jede Zeile wird als eigener Eintrag gespeichert"></textarea>
+			<div class="bulk-actions">
+				<select id="bulkTargetSelector">
+					<option value="ast">Für Antragsteller hinzufügen</option>
+					<option value="lp">Für Lebenspartner hinzufügen</option>
+				</select>
+				<button class="primary" onclick="addBulkItems()">Einträge hinzufügen</button>
+			</div>
+		</div>
+
+		<div class="recipient-panel card">
+			<div class="recipient-toggle">
+				<label class="recipient-main">
+					<input id="includeApplicant" type="checkbox" checked onchange="setIncludeTargets()">
+					<span>Antragsteller</span>
+				</label>
+			</div>
+			<div class="recipient-toggle">
+				<label class="recipient-main">
+					<input id="includePartner" type="checkbox" checked onchange="setIncludeTargets()">
+					<span>Lebenspartner</span>
+				</label>
+				<div class="recipient-gender">
+					<label><input type="radio" name="partnerGender" value="mann" onchange="setPartnerGender(this.value)"> Mann</label>
+					<label><input type="radio" name="partnerGender" value="frau" onchange="setPartnerGender(this.value)"> Frau</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="section-grid">
+			<div class="section">
+				<div class="section-title">Unterlagen Antragsteller</div>
+				<div class="section-body">
+					<div class="inline-add">
+						<input type="text" id="newAstInput" placeholder="Unterlage für AST hinzufügen..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addSingleItem('ast');}">
+						<button type="button" class="primary" onclick="addSingleItem('ast')">Hinzufügen</button>
+					</div>
+					<div id="astList" class="list-wrap"></div>
+				</div>
+			</div>
+
+			<div class="section">
+				<div class="section-title">Unterlagen Lebenspartner</div>
+				<div class="section-body">
+					<div class="inline-add">
+						<input type="text" id="newLpInput" placeholder="Unterlage für LP hinzufügen..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addSingleItem('lp');}">
+						<button type="button" class="primary" onclick="addSingleItem('lp')">Hinzufügen</button>
+					</div>
+					<div id="lpList" class="list-wrap"></div>
+				</div>
+			</div>
+		</div>
+
+		<div id="summaryPanel" class="summary card">
+			<div class="summary-head">
+				<h3>Ausgewählte Unterlagen</h3>
+				<button id="summaryToggle" type="button" class="ghost summary-toggle" onclick="toggleSummaryPanel()" aria-expanded="true">Einklappen</button>
+			</div>
+			<div id="selectedText" class="result-output"></div>
+
+			<div class="summary-actions">
+				<button class="primary" onclick="copySummary()">Ergebnis kopieren</button>
+				<button class="ghost" onclick="clearSelectionsOnly()">Auswahl zurücksetzen</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="toast" class="toast"></div>
+	<div id="copySource" class="copy-source" contenteditable="true"></div>
+
+	<script>
+		const FONT_STACK = "'BerlinTypeOffice','Berlin Type Office',Arial,sans-serif";
+		const STORAGE_AST_ITEMS = "unterlagenAstItems";
+		const STORAGE_LP_ITEMS = "unterlagenLpItems";
+		const STORAGE_THEME = "unterlagenThemeMode";
+		const STORAGE_INCLUDE_TARGETS = "unterlagenIncludeTargets";
+		const STORAGE_PARTNER_GENDER = "unterlagenPartnerGender";
+		const STORAGE_SUMMARY_COLLAPSED = "unterlagenSummaryCollapsed";
+
+		const defaultAstItems = [
+			{ id: makeId(), text: "Reisepass (Kopie)", selected: true },
+			{ id: makeId(), text: "Meldebescheinigung", selected: true }
+		];
+		const defaultLpItems = [
+			{ id: makeId(), text: "Gehaltsabrechnungen der letzten 3 Monate", selected: true },
+			{ id: makeId(), text: "Arbeitsvertrag", selected: true }
+		];
+
+		let astItems = loadItemList(STORAGE_AST_ITEMS, defaultAstItems);
+		let lpItems = loadItemList(STORAGE_LP_ITEMS, defaultLpItems);
+		let includeTargets = loadIncludeTargets();
+		let partnerGender = localStorage.getItem(STORAGE_PARTNER_GENDER) === "mann" ? "mann" : "frau";
+		let summaryCollapsed = loadSummaryCollapsed();
+
+		const bulkInput = document.getElementById("bulkInput");
+		const bulkTargetSelector = document.getElementById("bulkTargetSelector");
+		const includeApplicant = document.getElementById("includeApplicant");
+		const includePartner = document.getElementById("includePartner");
+		const astList = document.getElementById("astList");
+		const lpList = document.getElementById("lpList");
+		const selectedText = document.getElementById("selectedText");
+		const summaryPanel = document.getElementById("summaryPanel");
+		const summaryToggle = document.getElementById("summaryToggle");
+		const toast = document.getElementById("toast");
+		const copySource = document.getElementById("copySource");
+
+		function makeId() {
+			return Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+		}
+
+		function initTheme() {
+			const saved = localStorage.getItem(STORAGE_THEME) || "light";
+			document.body.classList.toggle("dark", saved === "dark");
+		}
+
+		function toggleTheme() {
+			const dark = document.body.classList.toggle("dark");
+			localStorage.setItem(STORAGE_THEME, dark ? "dark" : "light");
+		}
+
+		function loadItemList(storageKey, fallback) {
+			try {
+				const raw = JSON.parse(localStorage.getItem(storageKey));
+				if (!Array.isArray(raw)) return structuredClone(fallback);
+				return raw
+					.map(item => {
+						if (!item || typeof item.text !== "string") return null;
+						return {
+							id: item.id || makeId(),
+							text: item.text,
+							selected: item.selected !== false
+						};
+					})
+					.filter(Boolean);
+			} catch {
+				return structuredClone(fallback);
+			}
+		}
+
+		function saveLists() {
+			localStorage.setItem(STORAGE_AST_ITEMS, JSON.stringify(astItems));
+			localStorage.setItem(STORAGE_LP_ITEMS, JSON.stringify(lpItems));
+		}
+
+		function loadIncludeTargets() {
+			try {
+				const raw = JSON.parse(localStorage.getItem(STORAGE_INCLUDE_TARGETS));
+				return {
+					applicant: raw?.applicant !== false,
+					partner: raw?.partner !== false
+				};
+			} catch {
+				return { applicant: true, partner: true };
+			}
+		}
+
+		function saveIncludeTargets() {
+			localStorage.setItem(STORAGE_INCLUDE_TARGETS, JSON.stringify(includeTargets));
+		}
+
+		function loadSummaryCollapsed() {
+			const raw = localStorage.getItem(STORAGE_SUMMARY_COLLAPSED);
+			if (raw === null) return true;
+			return raw === "1";
+		}
+
+		function syncSummaryPanel() {
+			summaryPanel.classList.toggle("collapsed", summaryCollapsed);
+			summaryToggle.textContent = summaryCollapsed ? "Ausklappen" : "Einklappen";
+			summaryToggle.setAttribute("aria-expanded", summaryCollapsed ? "false" : "true");
+		}
+
+		function toggleSummaryPanel() {
+			summaryCollapsed = !summaryCollapsed;
+			localStorage.setItem(STORAGE_SUMMARY_COLLAPSED, summaryCollapsed ? "1" : "0");
+			syncSummaryPanel();
+		}
+
+		function setIncludeTargets() {
+			includeTargets = {
+				applicant: includeApplicant.checked,
+				partner: includePartner.checked
+			};
+			saveIncludeTargets();
+			updateSummary();
+		}
+
+		function syncIncludeTargetCheckboxes() {
+			includeApplicant.checked = includeTargets.applicant;
+			includePartner.checked = includeTargets.partner;
+		}
+
+		function setPartnerGender(value) {
+			partnerGender = value === "mann" ? "mann" : "frau";
+			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
+			updateSummary();
+		}
+
+		function syncPartnerGenderRadios() {
+			document.querySelectorAll("input[name='partnerGender']").forEach(radio => {
+				radio.checked = radio.value === partnerGender;
+			});
+		}
+
+		function renderList(target) {
+			const isAst = target === "ast";
+			const list = isAst ? astItems : lpItems;
+			const container = isAst ? astList : lpList;
+
+			container.innerHTML = "";
+			if (!list.length) {
+				container.innerHTML = '<div class="empty-note">Noch keine Unterlagen vorhanden.</div>';
+				return;
+			}
+
+			list.forEach(item => {
+				const row = document.createElement("div");
+				row.className = "list-row";
+				row.innerHTML = `
+					<input type="checkbox" ${item.selected ? "checked" : ""} onchange="toggleItemSelection('${target}','${escapeJs(item.id)}',this.checked)">
+					<div class="item-text">${escapeHtml(item.text)}</div>
+					<div class="row-actions">
+						<button type="button" class="ghost move-btn" onclick="moveItem('${target}','${escapeJs(item.id)}',-1)" title="Nach oben">↑</button>
+						<button type="button" class="ghost move-btn" onclick="moveItem('${target}','${escapeJs(item.id)}',1)" title="Nach unten">↓</button>
+					</div>
+				`;
+				container.appendChild(row);
+			});
+		}
+
+		function renderLists() {
+			renderList("ast");
+			renderList("lp");
+		}
+
+		function addSingleItem(target) {
+			const inputId = target === "ast" ? "newAstInput" : "newLpInput";
+			const input = document.getElementById(inputId);
+			if (!input) return;
+			const text = input.value.trim();
+			if (!text) return;
+
+			const newItem = { id: makeId(), text, selected: true };
+			if (target === "ast") astItems.push(newItem);
+			if (target === "lp") lpItems.push(newItem);
+
+			saveLists();
+			input.value = "";
+			renderLists();
+			updateSummary();
+			showToast("Eintrag hinzugefügt");
+		}
+
+		function addBulkItems() {
+			if (!bulkInput.value.trim()) {
+				alert("Bitte Text ausfüllen.");
+				return;
+			}
+
+			const target = bulkTargetSelector.value === "lp" ? "lp" : "ast";
+			const lines = bulkInput.value
+				.split(/\r?\n/)
+				.map(line => line.trim())
+				.filter(Boolean);
+
+			if (!lines.length) return;
+
+			lines.forEach(line => {
+				const item = { id: makeId(), text: line, selected: true };
+				if (target === "ast") astItems.push(item);
+				if (target === "lp") lpItems.push(item);
+			});
+
+			saveLists();
+			bulkInput.value = "";
+			renderLists();
+			updateSummary();
+			showToast(`${lines.length} Eintrag(e) hinzugefügt`);
+		}
+
+		function toggleItemSelection(target, itemId, checked) {
+			const list = target === "ast" ? astItems : lpItems;
+			const item = list.find(entry => entry.id === itemId);
+			if (!item) return;
+			item.selected = checked;
+			saveLists();
+			updateSummary();
+		}
+
+		function moveItem(target, itemId, direction) {
+			const list = target === "ast" ? astItems : lpItems;
+			const index = list.findIndex(entry => entry.id === itemId);
+			if (index === -1) return;
+
+			const nextIndex = index + (direction < 0 ? -1 : 1);
+			if (nextIndex < 0 || nextIndex >= list.length) return;
+
+			const [item] = list.splice(index, 1);
+			list.splice(nextIndex, 0, item);
+			saveLists();
+			renderLists();
+			updateSummary();
+		}
+
+		function getSectionsForExport() {
+			const sections = [];
+			const astSelected = astItems.filter(item => item.selected).map(item => item.text);
+			const lpSelected = lpItems.filter(item => item.selected).map(item => item.text);
+
+			if (includeTargets.applicant && astSelected.length) {
+				sections.push({ title: "Von Ihnen", items: astSelected });
+			}
+			if (includeTargets.partner && lpSelected.length) {
+				sections.push({
+					title: partnerGender === "frau" ? "Von Ihrer Ehefrau" : "Von Ihrem Ehemann",
+					items: lpSelected
+				});
+			}
+			return sections;
+		}
+
+		function buildSummaryHtml(forClipboard = false) {
+			const sections = getSectionsForExport();
+			if (!sections.length) {
+				return `<div style="font-family:${FONT_STACK};font-size:${forClipboard ? "12pt" : "14px"};">Keine Unterlagen ausgewählt.</div>`;
+			}
+
+			const base = `font-family:${FONT_STACK};font-size:${forClipboard ? "12pt" : "14px"};line-height:1.6;`;
+			let html = `<div style="${base}">`;
+
+			sections.forEach((section, index) => {
+				html += `<div style="margin:${index ? "18px" : "0"} 0 8px 0;padding-left:0;text-indent:0;margin-left:0;font-weight:700;color:#e10600;">${escapeHtml(section.title)}:</div>`;
+				section.items.forEach(item => {
+					html += `<div style="margin:0 0 4px 0;">☑ ${escapeHtml(item)}</div>`;
+				});
+			});
+
+			html += "</div>";
+			return html;
+		}
+
+		function buildSummaryText() {
+			const sections = getSectionsForExport();
+			if (!sections.length) return "Keine Unterlagen ausgewählt.";
+
+			const lines = [];
+			sections.forEach((section, index) => {
+				if (index) lines.push("");
+				lines.push(section.title.trim() + ":");
+				lines.push("");
+				section.items.forEach(item => lines.push("☑ " + item));
+			});
+			return lines.join("\n").trim();
+		}
+
+		function updateSummary() {
+			selectedText.innerHTML = buildSummaryHtml(false);
+		}
+
+		async function copySummary() {
+			const htmlContent = buildSummaryHtml(true);
+			const textContent = buildSummaryText();
+			copySource.innerHTML = htmlContent;
+
+			let copied = false;
+			try {
+				const selection = window.getSelection();
+				const range = document.createRange();
+				range.selectNodeContents(copySource);
+				selection.removeAllRanges();
+				selection.addRange(range);
+				copied = document.execCommand("copy");
+				selection.removeAllRanges();
+			} catch {
+				copied = false;
+			}
+
+			if (!copied && navigator.clipboard && window.ClipboardItem) {
+				try {
+					await navigator.clipboard.write([
+						new ClipboardItem({
+							"text/html": new Blob([htmlContent], { type: "text/html" }),
+							"text/plain": new Blob([textContent], { type: "text/plain" })
+						})
+					]);
+					copied = true;
+				} catch {
+					copied = false;
+				}
+			}
+
+			if (!copied) {
+				try {
+					await navigator.clipboard.writeText(textContent);
+					showToast("Nur Text kopiert");
+					return;
+				} catch {
+					alert("Kopieren fehlgeschlagen.");
+					return;
+				}
+			}
+
+			showToast("Ergebnis kopiert");
+		}
+
+		function exportListData() {
+			const payload = {
+				version: 3,
+				exported_at: new Date().toISOString(),
+				ast_items: astItems,
+				lp_items: lpItems
+			};
+			const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+			downloadBlob(blob, "unterlagen-listenwerte.json");
+			showToast("Listenwerte exportiert");
+		}
+
+		function importListData(event) {
+			const file = event.target.files?.[0];
+			if (!file) return;
+
+			const reader = new FileReader();
+			reader.onload = e => {
+				try {
+					const parsed = JSON.parse(e.target.result);
+					const nextAst = Array.isArray(parsed.ast_items) ? parsed.ast_items : [];
+					const nextLp = Array.isArray(parsed.lp_items) ? parsed.lp_items : [];
+
+					astItems = normalizeImportedList(nextAst);
+					lpItems = normalizeImportedList(nextLp);
+					saveLists();
+					renderLists();
+					updateSummary();
+					showToast("Import erfolgreich");
+				} catch {
+					alert("Import fehlgeschlagen. Bitte gültige JSON-Datei wählen.");
+				} finally {
+					event.target.value = "";
+				}
+			};
+			reader.readAsText(file);
+		}
+
+		function normalizeImportedList(list) {
+			return list
+				.map(item => {
+					if (!item || typeof item.text !== "string") return null;
+					return {
+						id: item.id || makeId(),
+						text: item.text,
+						selected: item.selected !== false
+					};
+				})
+				.filter(Boolean);
+		}
+
+		function clearSelectionsOnly() {
+			astItems = astItems.map(item => ({ ...item, selected: false }));
+			lpItems = lpItems.map(item => ({ ...item, selected: false }));
+			includeTargets = { applicant: true, partner: true };
+			partnerGender = "frau";
+			saveLists();
+			saveIncludeTargets();
+			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
+			syncIncludeTargetCheckboxes();
+			syncPartnerGenderRadios();
+			renderLists();
+			updateSummary();
+			showToast("Auswahl zurückgesetzt");
+		}
+
+		function resetAllData() {
+			if (!confirm("Wirklich alle Daten löschen?")) return;
+			astItems = [];
+			lpItems = [];
+			bulkInput.value = "";
+			includeTargets = { applicant: true, partner: true };
+			partnerGender = "frau";
+			saveLists();
+			saveIncludeTargets();
+			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
+			syncIncludeTargetCheckboxes();
+			syncPartnerGenderRadios();
+			renderLists();
+			updateSummary();
+			showToast("Alle Daten gelöscht");
+		}
+
+		function downloadBlob(blob, filename) {
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement("a");
+			link.href = url;
+			link.download = filename;
+			document.body.appendChild(link);
+			link.click();
+			link.remove();
+			URL.revokeObjectURL(url);
+		}
+
+		function showToast(message) {
+			toast.textContent = message;
+			toast.classList.add("show");
+			clearTimeout(showToast._timer);
+			showToast._timer = setTimeout(() => {
+				toast.classList.remove("show");
+			}, 1800);
+		}
+
+		function escapeHtml(text) {
+			const div = document.createElement("div");
+			div.textContent = String(text ?? "");
+			return div.innerHTML;
+		}
+
+		function escapeJs(text) {
+			return String(text ?? "")
+				.replace(/\\/g, "\\\\")
+				.replace(/'/g, "\\'");
+		}
+
+		initTheme();
+		renderLists();
+		syncIncludeTargetCheckboxes();
+		syncPartnerGenderRadios();
+		updateSummary();
+		syncSummaryPanel();
+	</script>
+</body>
+</html>
