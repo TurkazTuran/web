@@ -1,0 +1,164 @@
+{
+  "kategorien": [
+    {
+      "id": 1,
+      "titel": "Aufenthaltserlaubnis aus humanitären Gründen – Verlängerung"
+    },
+    {
+      "id": 2,
+      "titel": "Aufenthaltserlaubnis für das minderjährige Kind eines Ausländers"
+    },
+    {
+      "id": 3,
+      "titel": "Aufenthaltserlaubnis für das minderjährige Kind eines deutschen Staatsangehörigen"
+    },
+    {
+      "id": 4,
+      "titel": "Aufenthaltserlaubnis für den ausländischen Ehegatten eines Ausländers"
+    },
+    {
+      "id": 5,
+      "titel": "Aufenthaltserlaubnis für den ausländischen Ehegatten eines deutschen Staatsangehörigen"
+    },
+    {
+      "id": 6,
+      "titel": "Aufenthaltserlaubnis für den ausländischen Elternteil eines deutschen Kindes"
+    },
+    {
+      "id": 7,
+      "titel": "Working-Holiday- oder Youth-Mobility-Programm"
+    },
+    {
+      "id": 8,
+      "titel": "Aufenthaltserlaubnis für einen Freiwilligendienst"
+    },
+    {
+      "id": 9,
+      "titel": "Aufenthaltserlaubnis für ein in Deutschland geborenes Kind"
+    },
+    {
+      "id": 10,
+      "titel": "Aufenthaltserlaubnis zur Forschung"
+    },
+    {
+      "id": 11,
+      "titel": "Aufenthaltserlaubnis für betriebliche Aus- und Weiterbildung"
+    },
+    {
+      "id": 12,
+      "titel": "Aufenthaltserlaubnis für Fachkräfte mit akademischer Ausbildung"
+    },
+    {
+      "id": 13,
+      "titel": "Aufenthaltserlaubnis für Fachkräfte mit Berufsausbildung"
+    },
+    {
+      "id": 14,
+      "titel": "Aufenthaltserlaubnis für gut integrierte Jugendliche oder junge Volljährige"
+    },
+    {
+      "id": 15,
+      "titel": "Aufenthaltserlaubnis für nachhaltig integrierte Volljährige"
+    },
+    {
+      "id": 16,
+      "titel": "Aufenthaltserlaubnis zur Arbeitsplatzsuche nach Ausbildung, Studium oder Forschung"
+    },
+    {
+      "id": 17,
+      "titel": "Aufenthaltserlaubnis zur Beschäftigung als Au-pair"
+    },
+    {
+      "id": 18,
+      "titel": "Aufenthaltserlaubnis zur Beschäftigung bestimmter Staatsangehöriger"
+    },
+    {
+      "id": 19,
+      "titel": "Aufenthaltserlaubnis zur freiberuflichen Tätigkeit"
+    },
+    {
+      "id": 20,
+      "titel": "Verlängerung einer selbstständigen oder freiberuflichen Tätigkeit"
+    },
+    {
+      "id": 21,
+      "titel": "Aufenthaltserlaubnis zur selbstständigen Tätigkeit"
+    },
+    {
+      "id": 22,
+      "titel": "Wechsel des Arbeitgebers"
+    },
+    {
+      "id": 23,
+      "titel": "Blaue Karte EU"
+    },
+    {
+      "id": 24,
+      "titel": "Chancenkarte"
+    },
+    {
+      "id": 25,
+      "titel": "Erlaubnis zum Daueraufenthalt-EU"
+    },
+    {
+      "id": 26,
+      "titel": "Niederlassungserlaubnis – allgemein"
+    },
+    {
+      "id": 27,
+      "titel": "Niederlassungserlaubnis für Asylberechtigte und anerkannte Flüchtlinge"
+    },
+    {
+      "id": 28,
+      "titel": "Niederlassungserlaubnis für Fachkräfte"
+    },
+    {
+      "id": 29,
+      "titel": "Niederlassungserlaubnis für Inhaber einer Blauen Karte EU"
+    },
+    {
+      "id": 30,
+      "titel": "Niederlassungserlaubnis für Familienangehörige von Deutschen"
+    },
+    {
+      "id": 31,
+      "titel": "Niederlassungserlaubnis für Kinder ab 16 Jahren"
+    },
+    {
+      "id": 32,
+      "titel": "Niederlassungserlaubnis für subsidiär Schutzberechtigte"
+    },
+    {
+      "id": 33,
+      "titel": "Verpflichtungserklärung"
+    },
+    {
+      "id": 34,
+      "titel": "Aufenthaltsdokument-GB auf einen neuen Pass übertragen"
+    },
+    {
+      "id": 35,
+      "titel": "Aufenthaltserlaubnis auf einen neuen Pass übertragen"
+    },
+    {
+      "id": 36,
+      "titel": "Aufenthaltserlaubnis für langfristig Aufenthaltsberechtigte aus anderen EU-Staaten"
+    },
+    {
+      "id": 37,
+      "titel": "Aufenthaltserlaubnis-Schweiz"
+    },
+    {
+      "id": 38,
+      "titel": "Aufenthaltserlaubnis-Schweiz auf neuen Pass oder Ausweis übertragen"
+    },
+    {
+      "id": 39,
+      "titel": "Aufenthaltskarte für Familienangehörige von EU- und EWR-Bürgern"
+    },
+    {
+      "id": 40,
+      "titel": "Daueraufenthaltskarte für Familienangehörige von EU- und EWR-Bürgern"
+    }
+  ]
+}
