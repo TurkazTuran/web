@@ -159,11 +159,97 @@
 			box-shadow: var(--shadow);
 		}
 
+		.view {
+			display: none;
+		}
+
+		.view.active {
+			display: block;
+		}
+
+		.tab-btn.active {
+			background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+			color: #fff;
+			border-color: transparent;
+		}
+
 		.bulk-panel {
 			display: grid;
 			gap: 5px;
 			margin-bottom: 18px;
 			padding: 16px;
+		}
+
+		.category-panel {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 16px;
+			align-items: start;
+			margin-bottom: 18px;
+			padding: 16px;
+		}
+
+		[hidden] {
+			display: none !important;
+		}
+
+		.category-panel label {
+			display: grid;
+			gap: 6px;
+			font-weight: 700;
+		}
+
+		.category-field-title {
+			font-weight: 700;
+		}
+
+		.category-checkbox-list {
+			display: grid;
+			gap: 4px;
+			max-height: 260px;
+			overflow-y: auto;
+			padding: 8px;
+			border: 1px solid var(--border);
+			border-radius: var(--radius-sm);
+			background: var(--surface);
+		}
+
+		.category-checkbox-option {
+			display: grid;
+			grid-template-columns: 18px minmax(0, 1fr);
+			align-items: start;
+			gap: 8px;
+			padding: 7px 8px;
+			border-radius: 8px;
+			cursor: pointer;
+			font-weight: 400;
+			line-height: 1.35;
+		}
+
+		.category-checkbox-option:hover {
+			background: var(--surface-2);
+		}
+
+		.category-checkbox-option input {
+			margin-top: 2px;
+		}
+
+		.category-tools {
+			display: grid;
+			gap: 8px;
+			align-content: start;
+		}
+
+		.category-add {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 8px;
+		}
+
+		.category-tools textarea {
+			width: 100%;
+			min-height: 120px;
+			resize: vertical;
 		}
 
 		.bulk-actions {
@@ -180,23 +266,30 @@
 
 		.recipient-panel {
 			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 5px;
-			margin-bottom: 18px;
-			padding: 12px;
+			grid-template-columns: 1fr;
+			gap: 4px;
+			align-content: start;
+			margin: 0;
+			padding: 8px;
+			border: 1px solid var(--border);
+			border-radius: var(--radius-sm);
+			background: var(--surface);
 		}
 
 		.recipient-toggle {
 			display: flex;
-			flex-direction: column;
-			gap: 8px;
-			padding: 12px;
-			border: 1px solid var(--border);
-			border-radius: 12px;
+			justify-content: space-between;
+			align-items: center;
+			gap: 12px;
+			padding: 7px 8px;
+			border-radius: 8px;
+		}
+
+		.recipient-toggle:hover {
 			background: var(--surface-2);
 		}
 
-		.recipient-main {
+		.recipient-panel .recipient-main {
 			display: inline-flex;
 			align-items: center;
 			gap: 5px;
@@ -228,7 +321,7 @@
 
 		.section-grid {
 			display: grid;
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 			gap: 16px;
 			align-items: stretch;
 		}
@@ -283,6 +376,16 @@
 			padding: 6px 10px;
 		}
 
+		.selection-category-group {
+			display: grid;
+			gap: 6px;
+			margin-bottom: 10px;
+		}
+
+		.selection-empty {
+			padding: 8px 10px;
+		}
+
 		.row-actions {
 			display: inline-flex;
 			gap: 4px;
@@ -326,21 +429,6 @@
 			margin: 0 0 8px;
 			font-size: 14px;
 			font-weight: 700;
-		}
-
-		.summary.collapsed {
-			padding: 12px 16px;
-		}
-
-		.summary.collapsed .result-output,
-		.summary.collapsed .summary-actions {
-			display: none;
-		}
-
-		.summary-toggle {
-			padding: 6px 10px;
-			min-width: 120px;
-			box-shadow: none;
 		}
 
 		.result-output {
@@ -405,6 +493,7 @@
 				display: block;
 			}
 
+			.category-panel,
 			.recipient-panel,
 			.section-grid {
 				grid-template-columns: 1fr;
@@ -430,72 +519,108 @@
 			</div>
 
 			<div class="toolbar">
+				<button class="tab-btn active" onclick="showView('inputView', this)">Werte eingeben</button>
+				<button class="tab-btn" onclick="showView('selectView', this)">Auswahlliste</button>
 				<button onclick="toggleTheme()">🌙 / ☀️ Theme</button>
-				<button onclick="exportListData()">Listenwerte exportieren</button>
-				<button onclick="document.getElementById('importFile').click()">Listenwerte importieren</button>
+				<button onclick="exportListData()">Liste exportieren</button>
+				<button onclick="document.getElementById('importFile').click()">Liste importieren</button>
 				<button class="ghost" onclick="resetAllData()">Alles löschen</button>
 				<input class="import-input" id="importFile" type="file" accept=".json,application/json" onchange="importListData(event)">
 			</div>
 		</div>
 
-		<div class="bulk-panel card">
-			<textarea id="bulkInput" rows="4" placeholder="Mehrere Unterlagen einfügen - jede Zeile wird als eigener Eintrag gespeichert"></textarea>
-			<div class="bulk-actions">
-				<select id="bulkTargetSelector">
-					<option value="ast">Für Antragsteller hinzufügen</option>
-					<option value="lp">Für Lebenspartner hinzufügen</option>
-				</select>
-				<button class="primary" onclick="addBulkItems()">Einträge hinzufügen</button>
-			</div>
-		</div>
-
-		<div class="recipient-panel card">
-			<div class="recipient-toggle">
-				<label class="recipient-main">
-					<input id="includeApplicant" type="checkbox" checked onchange="setIncludeTargets()">
-					<span>Antragsteller</span>
-				</label>
-			</div>
-			<div class="recipient-toggle">
-				<label class="recipient-main">
-					<input id="includePartner" type="checkbox" checked onchange="setIncludeTargets()">
-					<span>Lebenspartner</span>
-				</label>
-				<div class="recipient-gender">
-					<label><input type="radio" name="partnerGender" value="mann" onchange="setPartnerGender(this.value)"> Mann</label>
-					<label><input type="radio" name="partnerGender" value="frau" onchange="setPartnerGender(this.value)"> Frau</label>
-				</div>
-			</div>
-		</div>
-
-		<div class="section-grid">
-			<div class="section">
-				<div class="section-title">Unterlagen Antragsteller</div>
-				<div class="section-body">
-					<div class="inline-add">
-						<input type="text" id="newAstInput" placeholder="Unterlage für AST hinzufügen..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addSingleItem('ast');}">
-						<button type="button" class="primary" onclick="addSingleItem('ast')">Hinzufügen</button>
+		<div id="inputView" class="view active">
+			<div class="category-panel card">
+				<div class="category-tools">
+					<label for="categorySelect">
+						<span>Bearbeitungskategorie</span>
+						<select id="categorySelect" onchange="onCategoryChange(this.value)"></select>
+						<span id="categoryHint" class="empty-note">Erstelle zuerst eine Kategorie.</span>
+					</label>
+					<div class="category-add">
+						<input type="text" id="newCategoryInput" placeholder="Neue Kategorie erstellen..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addCategory();}">
+						<button type="button" class="primary" onclick="addCategory()">Kategorie hinzufügen</button>
 					</div>
-					<div id="astList" class="list-wrap"></div>
+				</div>
+				<div class="category-tools">
+					<textarea id="bulkInput" rows="4" placeholder="Mehrere Unterlagen einfügen - jede Zeile wird als eigener Eintrag gespeichert"></textarea>
+					<div class="bulk-actions">
+						<select id="bulkTargetSelector">
+							<option value="ast">Für Antragsteller</option>
+							<option value="lp">Für Lebenspartner</option>
+							<option value="ki">Für Kind</option>
+						</select>
+						<button class="primary" onclick="addBulkItems()">Einträge hinzufügen</button>
+					</div>
 				</div>
 			</div>
 
-			<div class="section">
-				<div class="section-title">Unterlagen Lebenspartner</div>
-				<div class="section-body">
-					<div class="inline-add">
-						<input type="text" id="newLpInput" placeholder="Unterlage für LP hinzufügen..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addSingleItem('lp');}">
-						<button type="button" class="primary" onclick="addSingleItem('lp')">Hinzufügen</button>
-					</div>
-					<div id="lpList" class="list-wrap"></div>
+			<div class="section-grid">
+				<div class="section">
+					<div class="section-title">Unterlagen Antragsteller</div>
+					<div id="astList" class="section-body list-wrap"></div>
+				</div>
+				<div class="section">
+					<div class="section-title">Unterlagen Lebenspartner</div>
+					<div id="lpList" class="section-body list-wrap"></div>
+				</div>
+				<div class="section">
+					<div class="section-title">Unterlagen Kind</div>
+					<div id="kiList" class="section-body list-wrap"></div>
 				</div>
 			</div>
 		</div>
+
+		<div id="selectView" class="view">
+			<div class="category-panel card">
+				<div class="category-tools">
+					<div id="selectionCategoryList" class="category-checkbox-list" role="group" aria-labelledby="selectionCategoryTitle"></div>
+					<span id="selectionCategoryHint" class="empty-note">Kategorien direkt an- oder abwählen.</span>
+				</div>
+				<div class="recipient-panel">
+					<div class="recipient-toggle">
+						<label class="recipient-main">
+							<input id="includeApplicant" type="checkbox" checked onchange="setIncludeTargets()">
+							<span>Antragsteller</span>
+						</label>
+					</div>
+					<div class="recipient-toggle">
+						<label class="recipient-main">
+							<input id="includePartner" type="checkbox" checked onchange="setIncludeTargets()">
+							<span>Lebenspartner</span>
+						</label>
+						<div class="recipient-gender">
+							<label><input type="radio" name="partnerGender" value="mann" onchange="setPartnerGender(this.value)"> Mann</label>
+							<label><input type="radio" name="partnerGender" value="frau" onchange="setPartnerGender(this.value)"> Frau</label>
+						</div>
+					</div>
+					<div class="recipient-toggle">
+						<label class="recipient-main">
+							<input id="includeChild" type="checkbox" checked onchange="setIncludeTargets()">
+							<span>Kind</span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="section-grid">
+				<div class="section">
+					<div class="section-title">Unterlagen Antragsteller</div>
+					<div id="selectionAstList" class="section-body list-wrap"></div>
+				</div>
+				<div class="section">
+					<div class="section-title">Unterlagen Lebenspartner</div>
+					<div id="selectionLpList" class="section-body list-wrap"></div>
+				</div>
+				<div class="section">
+					<div class="section-title">Unterlagen Kind</div>
+					<div id="selectionKiList" class="section-body list-wrap"></div>
+				</div>
+			</div>
 
 		<div id="summaryPanel" class="summary card">
 			<div class="summary-head">
 				<h3>Ausgewählte Unterlagen</h3>
-				<button id="summaryToggle" type="button" class="ghost summary-toggle" onclick="toggleSummaryPanel()" aria-expanded="true">Einklappen</button>
 			</div>
 			<div id="selectedText" class="result-output"></div>
 
@@ -504,6 +629,7 @@
 				<button class="ghost" onclick="clearSelectionsOnly()">Auswahl zurücksetzen</button>
 			</div>
 		</div>
+		</div>
 	</div>
 
 	<div id="toast" class="toast"></div>
@@ -511,37 +637,37 @@
 
 	<script>
 		const FONT_STACK = "'BerlinTypeOffice','Berlin Type Office',Arial,sans-serif";
-		const STORAGE_AST_ITEMS = "unterlagenAstItems";
-		const STORAGE_LP_ITEMS = "unterlagenLpItems";
+		const STORAGE_APP_DATA = "unterlagenCombinedData";
+		const STORAGE_SELECTED_CATEGORY_IDS = "unterlagenSelectedCategoryIds";
 		const STORAGE_THEME = "unterlagenThemeMode";
 		const STORAGE_INCLUDE_TARGETS = "unterlagenIncludeTargets";
 		const STORAGE_PARTNER_GENDER = "unterlagenPartnerGender";
-		const STORAGE_SUMMARY_COLLAPSED = "unterlagenSummaryCollapsed";
 
-		const defaultAstItems = [
-			{ id: makeId(), text: "Reisepass (Kopie)", selected: true },
-			{ id: makeId(), text: "Meldebescheinigung", selected: true }
-		];
-		const defaultLpItems = [
-			{ id: makeId(), text: "Gehaltsabrechnungen der letzten 3 Monate", selected: true },
-			{ id: makeId(), text: "Arbeitsvertrag", selected: true }
-		];
-
-		let astItems = loadItemList(STORAGE_AST_ITEMS, defaultAstItems);
-		let lpItems = loadItemList(STORAGE_LP_ITEMS, defaultLpItems);
+		let appData = loadAppData();
+		let astItems = [];
+		let lpItems = [];
+		let kiItems = [];
+		let selectedCategoryIds = loadSelectedCategoryIds();
 		let includeTargets = loadIncludeTargets();
 		let partnerGender = localStorage.getItem(STORAGE_PARTNER_GENDER) === "mann" ? "mann" : "frau";
-		let summaryCollapsed = loadSummaryCollapsed();
 
 		const bulkInput = document.getElementById("bulkInput");
 		const bulkTargetSelector = document.getElementById("bulkTargetSelector");
+		const categorySelect = document.getElementById("categorySelect");
+		const selectionCategoryList = document.getElementById("selectionCategoryList");
+		const categoryHint = document.getElementById("categoryHint");
+		const selectionCategoryHint = document.getElementById("selectionCategoryHint");
+		const newCategoryInput = document.getElementById("newCategoryInput");
 		const includeApplicant = document.getElementById("includeApplicant");
 		const includePartner = document.getElementById("includePartner");
+		const includeChild = document.getElementById("includeChild");
 		const astList = document.getElementById("astList");
 		const lpList = document.getElementById("lpList");
+		const kiList = document.getElementById("kiList");
+		const selectionAstList = document.getElementById("selectionAstList");
+		const selectionLpList = document.getElementById("selectionLpList");
+		const selectionKiList = document.getElementById("selectionKiList");
 		const selectedText = document.getElementById("selectedText");
-		const summaryPanel = document.getElementById("summaryPanel");
-		const summaryToggle = document.getElementById("summaryToggle");
 		const toast = document.getElementById("toast");
 		const copySource = document.getElementById("copySource");
 
@@ -559,28 +685,251 @@
 			localStorage.setItem(STORAGE_THEME, dark ? "dark" : "light");
 		}
 
-		function loadItemList(storageKey, fallback) {
+		function normalizeImportedList(list) {
+			if (!Array.isArray(list)) return [];
+			return list
+				.map(item => {
+					if (!item || typeof item.text !== "string") return null;
+					return {
+						id: item.id || makeId(),
+						text: item.text,
+						selected: item.selected === true
+					};
+				})
+				.filter(Boolean);
+		}
+
+		function normalizeCategories(list) {
+			if (!Array.isArray(list)) return [];
+			const seen = new Set();
+			const normalized = list
+				.map(item => {
+					const id = Number(item?.id);
+					const titel = String(item?.titel || "").trim();
+					if (!Number.isInteger(id) || !titel) return null;
+					if (seen.has(id)) return null;
+					seen.add(id);
+					return { id, titel };
+				})
+				.filter(Boolean)
+				.sort((a, b) => a.id - b.id);
+
+			return normalized;
+		}
+
+		function normalizeCategoryId(rawId, categories) {
+			const asNumber = Number(rawId);
+			if (!Number.isInteger(asNumber)) return categories[0]?.id || null;
+			return categories.some(category => category.id === asNumber) ? asNumber : (categories[0]?.id || null);
+		}
+
+		function normalizeAppData(rawData) {
+			const categories = normalizeCategories(rawData?.kategorien);
+			const normalized = {
+				version: Number(rawData?.version) || 6,
+				exported_at: rawData?.exported_at || new Date().toISOString(),
+				active_category_id: categories.length ? normalizeCategoryId(rawData?.active_category_id, categories) : null,
+				kategorien: []
+			};
+
+			categories.forEach(category => {
+				const source = Array.isArray(rawData?.kategorien)
+					? rawData.kategorien.find(entry => Number(entry?.id) === category.id)
+					: null;
+				normalized.kategorien.push({
+					id: category.id,
+					titel: category.titel,
+					ast_items: normalizeImportedList(source?.ast_items),
+					lp_items: normalizeImportedList(source?.lp_items),
+					ki_items: normalizeImportedList(source?.ki_items)
+				});
+			});
+
+			return normalized;
+		}
+
+		function createEmptyAppData() {
+			return normalizeAppData({ version: 6, exported_at: new Date().toISOString(), active_category_id: null, kategorien: [] });
+		}
+
+		function loadAppData() {
 			try {
-				const raw = JSON.parse(localStorage.getItem(storageKey));
-				if (!Array.isArray(raw)) return structuredClone(fallback);
-				return raw
-					.map(item => {
-						if (!item || typeof item.text !== "string") return null;
-						return {
-							id: item.id || makeId(),
-							text: item.text,
-							selected: item.selected !== false
-						};
-					})
-					.filter(Boolean);
+				const raw = JSON.parse(localStorage.getItem(STORAGE_APP_DATA));
+				if (!raw) return createEmptyAppData();
+				return normalizeAppData(raw);
 			} catch {
-				return structuredClone(fallback);
+				return createEmptyAppData();
 			}
 		}
 
-		function saveLists() {
-			localStorage.setItem(STORAGE_AST_ITEMS, JSON.stringify(astItems));
-			localStorage.setItem(STORAGE_LP_ITEMS, JSON.stringify(lpItems));
+		function saveAppData() {
+			appData.exported_at = new Date().toISOString();
+			localStorage.setItem(STORAGE_APP_DATA, JSON.stringify(appData));
+		}
+
+		function loadSelectedCategoryIds() {
+			try {
+				const stored = JSON.parse(localStorage.getItem(STORAGE_SELECTED_CATEGORY_IDS));
+				if (Array.isArray(stored)) {
+					return stored.map(Number).filter(id => appData.kategorien.some(category => category.id === id));
+				}
+			} catch {
+				return [];
+			}
+			return appData.active_category_id ? [appData.active_category_id] : [];
+		}
+
+		function saveSelectedCategoryIds() {
+			localStorage.setItem(STORAGE_SELECTED_CATEGORY_IDS, JSON.stringify(selectedCategoryIds));
+		}
+
+		function showView(viewId, button) {
+			document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
+			document.querySelectorAll(".tab-btn").forEach(tab => tab.classList.remove("active"));
+			document.getElementById(viewId).classList.add("active");
+			button.classList.add("active");
+			if (viewId === "inputView") renderLists();
+			if (viewId === "selectView") {
+				renderSelectionCategoryOptions();
+				renderSelectionLists();
+				updateSummary();
+			}
+		}
+
+		function getActiveCategory() {
+			return appData.kategorien.find(category => category.id === appData.active_category_id) || appData.kategorien[0];
+		}
+
+		function renderCategoryOptions() {
+			if (!appData.kategorien.length) {
+				categorySelect.innerHTML = "";
+				categoryHint.textContent = "Noch keine Kategorie. Bitte manuell hinzufügen.";
+				renderSelectionCategoryOptions();
+				return;
+			}
+
+			categorySelect.innerHTML = appData.kategorien.map(category => {
+				const selected = category.id === appData.active_category_id ? " selected" : "";
+				return `<option value="${category.id}"${selected}>${category.id}. ${escapeHtml(category.titel)}</option>`;
+			}).join("");
+
+			const active = getActiveCategory();
+			categoryHint.textContent = active ? `Aktive Kategorie: ${active.id}. ${active.titel}` : "Keine Kategorie verfügbar.";
+			renderSelectionCategoryOptions();
+		}
+
+		function renderSelectionCategoryOptions() {
+			selectionCategoryList.innerHTML = appData.kategorien.map(category => {
+				const checked = selectedCategoryIds.includes(category.id) ? " checked" : "";
+				return `
+					<label class="category-checkbox-option">
+						<input type="checkbox" value="${category.id}"${checked} onchange="onSelectionCategoryToggle(${category.id}, this.checked)">
+						<span>${category.id}. ${escapeHtml(category.titel)}</span>
+					</label>
+				`;
+			}).join("");
+			selectionCategoryHint.textContent = appData.kategorien.length
+				? `${selectedCategoryIds.length} von ${appData.kategorien.length} Kategorie(n) ausgewählt.`
+				: "Erstelle zuerst Kategorien in „Werte eingeben“.";
+		}
+
+		function syncWorkingListsFromCategory() {
+			const active = getActiveCategory();
+			if (!active) {
+				astItems = [];
+				lpItems = [];
+				kiItems = [];
+				return;
+			}
+			astItems = normalizeImportedList(active.ast_items);
+			lpItems = normalizeImportedList(active.lp_items);
+			kiItems = normalizeImportedList(active.ki_items);
+		}
+
+		function persistWorkingListsToCategory() {
+			const active = getActiveCategory();
+			if (!active) return;
+			active.ast_items = normalizeImportedList(astItems);
+			active.lp_items = normalizeImportedList(lpItems);
+			active.ki_items = normalizeImportedList(kiItems);
+			saveAppData();
+		}
+
+		function onCategoryChange(nextId) {
+			persistWorkingListsToCategory();
+			appData.active_category_id = normalizeCategoryId(nextId, appData.kategorien);
+			syncWorkingListsFromCategory();
+			renderCategoryOptions();
+			renderLists();
+			showToast("Bearbeitungskategorie gewechselt");
+		}
+
+		function onSelectionCategoryToggle(categoryId, checked) {
+			if (checked && !selectedCategoryIds.includes(categoryId)) {
+				selectedCategoryIds.push(categoryId);
+			} else if (!checked) {
+				selectedCategoryIds = selectedCategoryIds.filter(id => id !== categoryId);
+			}
+			saveSelectedCategoryIds();
+			renderSelectionCategoryOptions();
+			renderSelectionLists();
+			updateSummary();
+		}
+
+		function getNextCategoryId() {
+			if (!appData.kategorien.length) return 1;
+			return Math.max(...appData.kategorien.map(category => category.id)) + 1;
+		}
+
+		function addCategory() {
+			const titel = newCategoryInput.value.trim();
+			if (!titel) {
+				alert("Bitte einen Kategorienamen eingeben.");
+				return;
+			}
+
+			persistWorkingListsToCategory();
+			const newCategory = {
+				id: getNextCategoryId(),
+				titel,
+				ast_items: [],
+				lp_items: [],
+				ki_items: []
+			};
+			appData.kategorien.push(newCategory);
+			appData.active_category_id = newCategory.id;
+			selectedCategoryIds = [newCategory.id];
+			saveSelectedCategoryIds();
+			saveAppData();
+			syncWorkingListsFromCategory();
+			renderCategoryOptions();
+			renderLists();
+			updateSummary();
+			newCategoryInput.value = "";
+			showToast("Kategorie hinzugefügt");
+		}
+
+		function removeActiveCategory() {
+			const active = getActiveCategory();
+			if (!active) return;
+			if (!confirm(`Kategorie "${active.titel}" wirklich löschen?`)) return;
+
+			const index = appData.kategorien.findIndex(category => category.id === active.id);
+			if (index === -1) return;
+			appData.kategorien.splice(index, 1);
+
+			if (appData.kategorien.length) {
+				appData.active_category_id = appData.kategorien[Math.max(0, index - 1)].id;
+			} else {
+				appData.active_category_id = null;
+			}
+
+			saveAppData();
+			syncWorkingListsFromCategory();
+			renderCategoryOptions();
+			renderLists();
+			updateSummary();
+			showToast("Kategorie gelöscht");
 		}
 
 		function loadIncludeTargets() {
@@ -588,10 +937,11 @@
 				const raw = JSON.parse(localStorage.getItem(STORAGE_INCLUDE_TARGETS));
 				return {
 					applicant: raw?.applicant !== false,
-					partner: raw?.partner !== false
+					partner: raw?.partner !== false,
+					child: raw?.child !== false
 				};
 			} catch {
-				return { applicant: true, partner: true };
+				return { applicant: true, partner: true, child: true };
 			}
 		}
 
@@ -599,28 +949,11 @@
 			localStorage.setItem(STORAGE_INCLUDE_TARGETS, JSON.stringify(includeTargets));
 		}
 
-		function loadSummaryCollapsed() {
-			const raw = localStorage.getItem(STORAGE_SUMMARY_COLLAPSED);
-			if (raw === null) return true;
-			return raw === "1";
-		}
-
-		function syncSummaryPanel() {
-			summaryPanel.classList.toggle("collapsed", summaryCollapsed);
-			summaryToggle.textContent = summaryCollapsed ? "Ausklappen" : "Einklappen";
-			summaryToggle.setAttribute("aria-expanded", summaryCollapsed ? "false" : "true");
-		}
-
-		function toggleSummaryPanel() {
-			summaryCollapsed = !summaryCollapsed;
-			localStorage.setItem(STORAGE_SUMMARY_COLLAPSED, summaryCollapsed ? "1" : "0");
-			syncSummaryPanel();
-		}
-
 		function setIncludeTargets() {
 			includeTargets = {
 				applicant: includeApplicant.checked,
-				partner: includePartner.checked
+				partner: includePartner.checked,
+				child: includeChild.checked
 			};
 			saveIncludeTargets();
 			updateSummary();
@@ -629,6 +962,7 @@
 		function syncIncludeTargetCheckboxes() {
 			includeApplicant.checked = includeTargets.applicant;
 			includePartner.checked = includeTargets.partner;
+			includeChild.checked = includeTargets.child;
 		}
 
 		function setPartnerGender(value) {
@@ -644,9 +978,8 @@
 		}
 
 		function renderList(target) {
-			const isAst = target === "ast";
-			const list = isAst ? astItems : lpItems;
-			const container = isAst ? astList : lpList;
+			const list = target === "ast" ? astItems : target === "lp" ? lpItems : kiItems;
+			const container = target === "ast" ? astList : target === "lp" ? lpList : kiList;
 
 			container.innerHTML = "";
 			if (!list.length) {
@@ -672,10 +1005,88 @@
 		function renderLists() {
 			renderList("ast");
 			renderList("lp");
+			renderList("ki");
+			renderSelectionLists();
+		}
+
+		function renderSelectionList(target, container) {
+			const key = target === "ast" ? "ast_items" : target === "lp" ? "lp_items" : "ki_items";
+			container.innerHTML = "";
+
+			if (!selectedCategoryIds.length) {
+				container.innerHTML = '<div class="empty-note">Wähle oben mindestens eine Kategorie aus.</div>';
+				return;
+			}
+
+			let itemCount = 0;
+			selectedCategoryIds.forEach(categoryId => {
+				const category = appData.kategorien.find(entry => entry.id === categoryId);
+				if (!category) return;
+
+				const group = document.createElement("div");
+				group.className = "selection-category-group";
+				const heading = document.createElement("div");
+				heading.className = "section-title";
+				heading.textContent = `${category.id}. ${category.titel}`;
+				group.appendChild(heading);
+
+				const items = normalizeImportedList(category[key]);
+				if (!items.length) {
+					const empty = document.createElement("div");
+					empty.className = "empty-note selection-empty";
+					empty.textContent = "Keine Unterlagen in dieser Kategorie.";
+					group.appendChild(empty);
+				} else {
+					items.forEach(item => {
+						const row = document.createElement("div");
+						row.className = "list-row";
+						row.innerHTML = `
+							<input type="checkbox" ${item.selected ? "checked" : ""} onchange="toggleCategoryItemSelection('${target}',${category.id},'${escapeJs(item.id)}',this.checked)">
+							<div class="item-text">${escapeHtml(item.text)}</div>
+						`;
+						group.appendChild(row);
+						itemCount += 1;
+					});
+				}
+				container.appendChild(group);
+			});
+
+			if (!itemCount && selectedCategoryIds.length) {
+				container.setAttribute("aria-label", "Keine Unterlagen vorhanden");
+			}
+		}
+
+		function renderSelectionLists() {
+			renderSelectionList("ast", selectionAstList);
+			renderSelectionList("lp", selectionLpList);
+			renderSelectionList("ki", selectionKiList);
+		}
+
+		function toggleCategoryItemSelection(target, categoryId, itemId, checked) {
+			const category = appData.kategorien.find(entry => entry.id === categoryId);
+			if (!category) return;
+			const key = target === "ast" ? "ast_items" : target === "lp" ? "lp_items" : "ki_items";
+			const item = category[key].find(entry => entry.id === itemId);
+			if (!item) return;
+			item.selected = checked;
+			saveAppData();
+			if (category.id === appData.active_category_id) {
+				if (target === "ast") astItems = normalizeImportedList(category.ast_items);
+				else if (target === "lp") lpItems = normalizeImportedList(category.lp_items);
+				else kiItems = normalizeImportedList(category.ki_items);
+				renderList(target);
+			}
+			renderSelectionLists();
+			updateSummary();
 		}
 
 		function addSingleItem(target) {
-			const inputId = target === "ast" ? "newAstInput" : "newLpInput";
+			if (!getActiveCategory()) {
+				alert("Bitte zuerst eine Kategorie erstellen.");
+				return;
+			}
+
+			const inputId = target === "ast" ? "newAstInput" : target === "lp" ? "newLpInput" : "newKiInput";
 			const input = document.getElementById(inputId);
 			if (!input) return;
 			const text = input.value.trim();
@@ -684,8 +1095,9 @@
 			const newItem = { id: makeId(), text, selected: true };
 			if (target === "ast") astItems.push(newItem);
 			if (target === "lp") lpItems.push(newItem);
+			if (target === "ki") kiItems.push(newItem);
 
-			saveLists();
+			persistWorkingListsToCategory();
 			input.value = "";
 			renderLists();
 			updateSummary();
@@ -693,43 +1105,43 @@
 		}
 
 		function addBulkItems() {
+			const active = getActiveCategory();
+			if (!active) {
+				alert("Bitte zuerst eine Kategorie erstellen.");
+				return;
+			}
 			if (!bulkInput.value.trim()) {
-				alert("Bitte Text ausfüllen.");
+				alert("Bitte Unterlagen eingeben.");
 				return;
 			}
 
-			const target = bulkTargetSelector.value === "lp" ? "lp" : "ast";
+			const target = bulkTargetSelector.value;
 			const lines = bulkInput.value
 				.split(/\r?\n/)
 				.map(line => line.trim())
 				.filter(Boolean);
 
 			if (!lines.length) return;
-
-			lines.forEach(line => {
-				const item = { id: makeId(), text: line, selected: true };
-				if (target === "ast") astItems.push(item);
-				if (target === "lp") lpItems.push(item);
-			});
-
-			saveLists();
+			const list = target === "ast" ? astItems : target === "lp" ? lpItems : kiItems;
+			lines.forEach(text => list.push({ id: makeId(), text, selected: true }));
+			persistWorkingListsToCategory();
 			bulkInput.value = "";
 			renderLists();
 			updateSummary();
-			showToast(`${lines.length} Eintrag(e) hinzugefügt`);
+			showToast(`${lines.length} Eintrag(e) in ${target.toUpperCase()} hinzugefügt`);
 		}
 
 		function toggleItemSelection(target, itemId, checked) {
-			const list = target === "ast" ? astItems : lpItems;
+			const list = target === "ast" ? astItems : target === "lp" ? lpItems : kiItems;
 			const item = list.find(entry => entry.id === itemId);
 			if (!item) return;
 			item.selected = checked;
-			saveLists();
+			persistWorkingListsToCategory();
 			updateSummary();
 		}
 
 		function moveItem(target, itemId, direction) {
-			const list = target === "ast" ? astItems : lpItems;
+			const list = target === "ast" ? astItems : target === "lp" ? lpItems : kiItems;
 			const index = list.findIndex(entry => entry.id === itemId);
 			if (index === -1) return;
 
@@ -738,15 +1150,17 @@
 
 			const [item] = list.splice(index, 1);
 			list.splice(nextIndex, 0, item);
-			saveLists();
+			persistWorkingListsToCategory();
 			renderLists();
 			updateSummary();
 		}
 
 		function getSectionsForExport() {
 			const sections = [];
-			const astSelected = astItems.filter(item => item.selected).map(item => item.text);
-			const lpSelected = lpItems.filter(item => item.selected).map(item => item.text);
+			const selectedCategories = appData.kategorien.filter(category => selectedCategoryIds.includes(category.id));
+			const astSelected = selectedCategories.flatMap(category => category.ast_items.filter(item => item.selected).map(item => item.text));
+			const lpSelected = selectedCategories.flatMap(category => category.lp_items.filter(item => item.selected).map(item => item.text));
+			const kiSelected = selectedCategories.flatMap(category => category.ki_items.filter(item => item.selected).map(item => item.text));
 
 			if (includeTargets.applicant && astSelected.length) {
 				sections.push({ title: "Von Ihnen", items: astSelected });
@@ -756,6 +1170,9 @@
 					title: partnerGender === "frau" ? "Von Ihrer Ehefrau" : "Von Ihrem Ehemann",
 					items: lpSelected
 				});
+			}
+			if (includeTargets.child && kiSelected.length) {
+				sections.push({ title: "Von Ihrem Kind", items: kiSelected });
 			}
 			return sections;
 		}
@@ -772,7 +1189,7 @@
 			sections.forEach((section, index) => {
 				html += `<div style="margin:${index ? "18px" : "0"} 0 8px 0;padding-left:0;text-indent:0;margin-left:0;font-weight:700;color:#e10600;">${escapeHtml(section.title)}:</div>`;
 				section.items.forEach(item => {
-					html += `<div style="margin:0 0 4px 0;">☑ ${escapeHtml(item)}</div>`;
+					html += `<div style="margin:0 0 4px 0;">\t• ${escapeHtml(item)}</div>`;
 				});
 			});
 
@@ -845,15 +1262,22 @@
 		}
 
 		function exportListData() {
+			persistWorkingListsToCategory();
 			const payload = {
-				version: 3,
+				version: 6,
 				exported_at: new Date().toISOString(),
-				ast_items: astItems,
-				lp_items: lpItems
+				active_category_id: appData.active_category_id,
+				kategorien: appData.kategorien.map(category => ({
+					id: category.id,
+					titel: category.titel,
+					ast_items: normalizeImportedList(category.ast_items),
+					lp_items: normalizeImportedList(category.lp_items),
+					ki_items: normalizeImportedList(category.ki_items)
+				}))
 			};
 			const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-			downloadBlob(blob, "unterlagen-listenwerte.json");
-			showToast("Listenwerte exportiert");
+			downloadBlob(blob, "unterlagen-liste.json");
+			showToast("Liste exportiert");
 		}
 
 		function importListData(event) {
@@ -864,15 +1288,15 @@
 			reader.onload = e => {
 				try {
 					const parsed = JSON.parse(e.target.result);
-					const nextAst = Array.isArray(parsed.ast_items) ? parsed.ast_items : [];
-					const nextLp = Array.isArray(parsed.lp_items) ? parsed.lp_items : [];
-
-					astItems = normalizeImportedList(nextAst);
-					lpItems = normalizeImportedList(nextLp);
-					saveLists();
+					appData = normalizeAppData(parsed);
+					selectedCategoryIds = appData.active_category_id ? [appData.active_category_id] : [];
+					saveSelectedCategoryIds();
+					saveAppData();
+					syncWorkingListsFromCategory();
+					renderCategoryOptions();
 					renderLists();
 					updateSummary();
-					showToast("Import erfolgreich");
+					showToast("Liste importiert");
 				} catch {
 					alert("Import fehlgeschlagen. Bitte gültige JSON-Datei wählen.");
 				} finally {
@@ -882,25 +1306,18 @@
 			reader.readAsText(file);
 		}
 
-		function normalizeImportedList(list) {
-			return list
-				.map(item => {
-					if (!item || typeof item.text !== "string") return null;
-					return {
-						id: item.id || makeId(),
-						text: item.text,
-						selected: item.selected !== false
-					};
-				})
-				.filter(Boolean);
-		}
-
 		function clearSelectionsOnly() {
-			astItems = astItems.map(item => ({ ...item, selected: false }));
-			lpItems = lpItems.map(item => ({ ...item, selected: false }));
-			includeTargets = { applicant: true, partner: true };
+			appData.kategorien
+				.filter(category => selectedCategoryIds.includes(category.id))
+				.forEach(category => {
+					category.ast_items = category.ast_items.map(item => ({ ...item, selected: false }));
+					category.lp_items = category.lp_items.map(item => ({ ...item, selected: false }));
+					category.ki_items = category.ki_items.map(item => ({ ...item, selected: false }));
+				});
+			syncWorkingListsFromCategory();
+			includeTargets = { applicant: true, partner: true, child: true };
 			partnerGender = "frau";
-			saveLists();
+			persistWorkingListsToCategory();
 			saveIncludeTargets();
 			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
 			syncIncludeTargetCheckboxes();
@@ -912,16 +1329,20 @@
 
 		function resetAllData() {
 			if (!confirm("Wirklich alle Daten löschen?")) return;
-			astItems = [];
-			lpItems = [];
+
+			appData = createEmptyAppData();
+			selectedCategoryIds = [];
 			bulkInput.value = "";
-			includeTargets = { applicant: true, partner: true };
+			includeTargets = { applicant: true, partner: true, child: true };
 			partnerGender = "frau";
-			saveLists();
+			saveAppData();
+			saveSelectedCategoryIds();
 			saveIncludeTargets();
 			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
 			syncIncludeTargetCheckboxes();
 			syncPartnerGenderRadios();
+			syncWorkingListsFromCategory();
+			renderCategoryOptions();
 			renderLists();
 			updateSummary();
 			showToast("Alle Daten gelöscht");
@@ -960,11 +1381,12 @@
 		}
 
 		initTheme();
+		renderCategoryOptions();
+		syncWorkingListsFromCategory();
 		renderLists();
 		syncIncludeTargetCheckboxes();
 		syncPartnerGenderRadios();
 		updateSummary();
-		syncSummaryPanel();
 	</script>
 </body>
 </html>
