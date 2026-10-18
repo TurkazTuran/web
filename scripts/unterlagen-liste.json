@@ -1,0 +1,72 @@
+{
+  "version": 6,
+  "exported_at": "2026-10-18T11:12:30.914Z",
+  "active_category_id": 1,
+  "kategorien": [
+    {
+      "id": 1,
+      "titel": "Familie",
+      "ast_items": [
+        {
+          "id": "me7okodn4skf",
+          "text": "Nationalpass",
+          "selected": true
+        },
+        {
+          "id": "d5mu8xq44skf",
+          "text": "Meldebescheinigung",
+          "selected": true
+        }
+      ],
+      "lp_items": [
+        {
+          "id": "n92n3akq5t9r",
+          "text": "Nationalpass",
+          "selected": true
+        },
+        {
+          "id": "gzn37tzp5t9r",
+          "text": "Meldebescheinigung",
+          "selected": true
+        }
+      ],
+      "ki_items": [
+        {
+          "id": "fo38031s610k",
+          "text": "Nationalpass",
+          "selected": true
+        },
+        {
+          "id": "sdoa3c0s610k",
+          "text": "Meldebescheinigung",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "titel": "Freiberufler",
+      "ast_items": [],
+      "lp_items": [
+        {
+          "id": "aq46syow5bed",
+          "text": "Steuerbescheid",
+          "selected": false
+        },
+        {
+          "id": "f717ywar5bed",
+          "text": "Gewinnermittlung",
+          "selected": false
+        }
+      ],
+      "ki_items": []
+    },
+    {
+      "id": 3,
+      "titel": "Selbstständiger",
+      "ast_items": [],
+      "lp_items": [],
+      "ki_items": []
+    }
+  ]
+}
