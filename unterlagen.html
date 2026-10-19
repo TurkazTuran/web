@@ -4,6 +4,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>Unterlagenliste</title>
+	<link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/64/10550/10550857.png">
 	<style>
 		@font-face {
 			font-family: "BerlinTypeOffice";
@@ -264,49 +265,37 @@
 			flex: 1;
 		}
 
-		.recipient-panel {
-			display: grid;
-			grid-template-columns: 1fr;
-			gap: 4px;
-			align-content: start;
-			margin: 0;
-			padding: 8px;
-			border: 1px solid var(--border);
-			border-radius: var(--radius-sm);
-			background: var(--surface);
-		}
-
 		.recipient-toggle {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			gap: 12px;
-			padding: 7px 8px;
-			border-radius: 8px;
-		}
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12px;
+	padding: 6px 10px;
+	background: var(--surface-2);
+	border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+	border-radius: 10px;
+}
 
-		.recipient-toggle:hover {
-			background: var(--surface-2);
-		}
+.recipient-panel .recipient-main {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-weight: 700;
+}
 
-		.recipient-panel .recipient-main {
-			display: inline-flex;
-			align-items: center;
-			gap: 5px;
-			font-weight: 700;
-		}
+.recipient-gender {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 12px;
+}
 
-		.recipient-gender {
-			display: inline-flex;
-			gap: 12px;
-			flex-wrap: wrap;
-		}
-
-		.recipient-gender label {
-			display: inline-flex;
-			align-items: center;
-			gap: 8px;
-		}
+.recipient-gender label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	white-space: nowrap;
+}
 
 		input[type="checkbox"],
 		input[type="radio"] {
@@ -578,29 +567,29 @@
 					<span id="selectionCategoryHint" class="empty-note">Kategorien direkt an- oder abwählen.</span>
 				</div>
 				<div class="recipient-panel">
-					<div class="recipient-toggle">
-						<label class="recipient-main">
-							<input id="includeApplicant" type="checkbox" checked onchange="setIncludeTargets()">
-							<span>Antragsteller</span>
-						</label>
-					</div>
-					<div class="recipient-toggle">
-						<label class="recipient-main">
-							<input id="includePartner" type="checkbox" checked onchange="setIncludeTargets()">
-							<span>Lebenspartner</span>
-						</label>
-						<div class="recipient-gender">
-							<label><input type="radio" name="partnerGender" value="mann" onchange="setPartnerGender(this.value)"> Mann</label>
-							<label><input type="radio" name="partnerGender" value="frau" onchange="setPartnerGender(this.value)"> Frau</label>
-						</div>
-					</div>
-					<div class="recipient-toggle">
-						<label class="recipient-main">
-							<input id="includeChild" type="checkbox" checked onchange="setIncludeTargets()">
-							<span>Kind</span>
-						</label>
-					</div>
-				</div>
+	<div class="recipient-toggle">
+		<label class="recipient-main">
+			<input id="includeApplicant" type="checkbox" checked onchange="setIncludeTargets()">
+			<span>Antragsteller</span>
+		</label>
+	</div>
+	<div class="recipient-toggle">
+		<label class="recipient-main">
+			<input id="includePartner" type="checkbox" checked onchange="setIncludeTargets()">
+			<span>Lebenspartner</span>
+		</label>
+		<div class="recipient-gender">
+			<label><input type="radio" name="partnerGender" value="mann" onchange="setPartnerGender(this.value)"> Mann</label>
+			<label><input type="radio" name="partnerGender" value="frau" onchange="setPartnerGender(this.value)"> Frau</label>
+		</div>
+	</div>
+	<div class="recipient-toggle">
+		<label class="recipient-main">
+			<input id="includeChild" type="checkbox" checked onchange="setIncludeTargets()">
+			<span>Kind</span>
+		</label>
+	</div>
+</div>
 			</div>
 
 			<div class="section-grid">
