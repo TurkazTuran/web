@@ -954,7 +954,7 @@
 				list.push({
 					id: makeId(),
 					text,
-					selected: true
+					selected: false
 				});
 			});
 
@@ -1112,7 +1112,7 @@
 
 		function buildSummaryHtml(forClipboard = false) {
 			const sections = getSectionsForExport();
-			const fontSize = forClipboard ? "11pt" : "11px";
+			const fontSize = forClipboard ? "11pt" : "14px";
 
 			if (!sections.length) {
 				return `<div style="font-family:${FONT_STACK};font-size:${fontSize};">Keine Unterlagen ausgewählt.</div>`;
