@@ -1,71 +1,129 @@
 {
   "version": 6,
-  "exported_at": "2026-10-18T11:12:30.914Z",
+  "exported_at": "2026-10-20T14:11:21.743Z",
   "active_category_id": 1,
   "kategorien": [
     {
       "id": 1,
-      "titel": "Familie",
+      "titel": "Lebensunterhalt",
       "ast_items": [
         {
-          "id": "me7okodn4skf",
-          "text": "Nationalpass",
-          "selected": true
-        },
-        {
-          "id": "d5mu8xq44skf",
-          "text": "Meldebescheinigung",
+          "id": "64z3uztz4mlc",
+          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
           "selected": true
         }
       ],
       "lp_items": [
         {
-          "id": "n92n3akq5t9r",
-          "text": "Nationalpass",
+          "id": "lubb89f14pgw",
+          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
           "selected": true
-        },
-        {
-          "id": "gzn37tzp5t9r",
-          "text": "Meldebescheinigung",
-          "selected": true
-        }
-      ],
-      "ki_items": [
-        {
-          "id": "fo38031s610k",
-          "text": "Nationalpass",
-          "selected": true
-        },
-        {
-          "id": "sdoa3c0s610k",
-          "text": "Meldebescheinigung",
-          "selected": true
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "titel": "Freiberufler",
-      "ast_items": [],
-      "lp_items": [
-        {
-          "id": "aq46syow5bed",
-          "text": "Steuerbescheid",
-          "selected": false
-        },
-        {
-          "id": "f717ywar5bed",
-          "text": "Gewinnermittlung",
-          "selected": false
         }
       ],
       "ki_items": []
     },
     {
+      "id": 2,
+      "titel": "Personaldokumente",
+      "ast_items": [
+        {
+          "id": "idtpy1q39rc8",
+          "text": "Nationalpass,",
+          "selected": true
+        },
+        {
+          "id": "0bzdjire9rc8",
+          "text": "Aufenthaltstitel,",
+          "selected": true
+        },
+        {
+          "id": "t9ob65449rc8",
+          "text": "Personalausweis oder Nationalpass,",
+          "selected": true
+        }
+      ],
+      "lp_items": [
+        {
+          "id": "1hc18ko79uz5",
+          "text": "Nationalpass,",
+          "selected": true
+        },
+        {
+          "id": "auok2qje9uz5",
+          "text": "Aufenthaltstitel,",
+          "selected": true
+        },
+        {
+          "id": "wau9w8xw9uz5",
+          "text": "Personalausweis oder Nationalpass,",
+          "selected": true
+        }
+      ],
+      "ki_items": [
+        {
+          "id": "ml74jra29ym1",
+          "text": "Nationalpass,",
+          "selected": true
+        },
+        {
+          "id": "apzq4s829ym1",
+          "text": "Aufenthaltstitel,",
+          "selected": true
+        },
+        {
+          "id": "16q37r5y9ym1",
+          "text": "Personalausweis oder Nationalpass,",
+          "selected": true
+        }
+      ]
+    },
+    {
       "id": 3,
-      "titel": "Selbstständiger",
-      "ast_items": [],
-      "lp_items": [],
+      "titel": "Integration",
+      "ast_items": [
+        {
+          "id": "ufv26xlv6xa9",
+          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Integrationskurs ,",
+          "selected": true
+        },
+        {
+          "id": "nq9scb7c6xa9",
+          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Orientierungskurs,",
+          "selected": true
+        },
+        {
+          "id": "jo7h80aq6xa9",
+          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Test „Leben in Deutschland“,",
+          "selected": true
+        },
+        {
+          "id": "rt2i1j316xa9",
+          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest.",
+          "selected": true
+        }
+      ],
+      "lp_items": [
+        {
+          "id": "36x6b0xw71lk",
+          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Integrationskurs ,",
+          "selected": true
+        },
+        {
+          "id": "8ctbvkc171lk",
+          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Orientierungskurs,",
+          "selected": true
+        },
+        {
+          "id": "hrjh58cy71lk",
+          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Test „Leben in Deutschland“,",
+          "selected": true
+        },
+        {
+          "id": "fi24qqwp71lk",
+          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest.",
+          "selected": true
+        }
+      ],
       "ki_items": []
     }
   ]
