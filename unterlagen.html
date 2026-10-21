@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Unterlagenliste</title>
 	<link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/64/10550/10550857.png">
+
 	<style>
 		@font-face {
 			font-family: "BerlinTypeOffice";
 			src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Regular.ttf") format("truetype");
 			font-weight: 400;
-			font-style: normal;
 		}
 
 		@font-face {
 			font-family: "BerlinTypeOffice";
 			src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Bold.ttf") format("truetype");
 			font-weight: 700;
-			font-style: normal;
 		}
 
 		:root {
@@ -30,11 +29,9 @@
 			--accent: #005f73;
 			--accent-2: #0a9396;
 			--danger: #dc2626;
-			--danger-bg: #fef2f2;
-			--shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-			--shadow-soft: 0 4px 14px rgba(15, 23, 42, 0.06);
+			--shadow: 0 10px 30px rgba(15, 23, 42, .08);
+			--shadow-soft: 0 4px 14px rgba(15, 23, 42, .06);
 			--radius: 16px;
-			--radius-sm: 12px;
 		}
 
 		body.dark {
@@ -47,9 +44,8 @@
 			--accent: #22d3ee;
 			--accent-2: #0891b2;
 			--danger: #f87171;
-			--danger-bg: #2b1720;
-			--shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-			--shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.25);
+			--shadow: 0 10px 30px rgba(0, 0, 0, .35);
+			--shadow-soft: 0 4px 14px rgba(0, 0, 0, .25);
 		}
 
 		* {
@@ -57,95 +53,71 @@
 			font-family: "BerlinTypeOffice", "Berlin Type Office", Arial, sans-serif;
 		}
 
-		html,
-		body {
+		html, body {
 			margin: 0;
 			padding: 0;
 		}
 
 		body {
-			background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, #ffffff 12%) 100%);
+			min-height: 100vh;
+			padding: clamp(10px, 1.2vw, 18px);
+			background: var(--bg);
 			color: var(--text);
 			font-size: 14px;
-			padding: clamp(10px, 1.2vw, 18px);
-			min-height: 100vh;
-			transition: background 0.25s ease, color 0.25s ease;
 		}
 
 		.app-shell {
 			max-width: min(1700px, calc(100vw - 24px));
 			margin: 0 auto;
-			min-height: calc(100vh - clamp(20px, 2.4vw, 36px));
-			display: grid;
-			grid-template-rows: auto auto 1fr auto;
+		}
+
+		.topbar,
+		.toolbar,
+		.bulk-actions,
+		.summary-actions,
+		.row-actions,
+		.recipient-gender {
+			display: flex;
+			gap: 6px;
+			flex-wrap: wrap;
+			align-items: center;
 		}
 
 		.topbar {
-			display: flex;
 			justify-content: space-between;
-			align-items: center;
-			gap: 12px;
 			margin-bottom: 18px;
-			flex-wrap: wrap;
 		}
 
-		.title-wrap h2 {
+		h2 {
 			margin: 0;
 			font-size: 28px;
-			font-weight: 800;
-			letter-spacing: -0.02em;
 		}
 
-		.toolbar {
-			display: flex;
-			gap: 5px;
-			flex-wrap: wrap;
-			align-items: center;
-		}
-
-		button,
-		input,
-		select,
-		textarea {
+		button, input, select, textarea {
 			font: inherit;
-			border-radius: 12px;
-			border: 1px solid var(--border);
-			background: var(--surface);
 			color: var(--text);
+			background: var(--surface);
+			border: 1px solid var(--border);
+			border-radius: 12px;
 			padding: 10px 12px;
-			transition: all 0.2s ease;
-		}
-
-		input::placeholder,
-		textarea::placeholder {
-			color: var(--muted);
-		}
-
-		input:focus,
-		select:focus,
-		textarea:focus,
-		button:focus {
-			outline: none;
-			border-color: var(--accent);
-			box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
 		}
 
 		button {
 			cursor: pointer;
-			background: var(--surface);
+			font-weight: 700;
 			box-shadow: var(--shadow-soft);
-			font-weight: 600;
 		}
 
 		button:hover {
 			transform: translateY(-1px);
-			border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+			border-color: var(--accent);
 		}
 
-		button.primary {
-			background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+		button.primary,
+		.tab-btn.active {
 			color: #fff;
 			border-color: transparent;
+			background: linear-gradient(180deg, var(--accent), var(--accent-2));
 		}
 
 		button.ghost {
@@ -153,8 +125,27 @@
 			box-shadow: none;
 		}
 
-		.card {
-			background: color-mix(in srgb, var(--surface) 92%, transparent);
+		button.delete-btn {
+			color: var(--danger);
+		}
+
+		input:focus, select:focus, textarea:focus, button:focus {
+			outline: none;
+			border-color: var(--accent);
+			box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+		}
+
+		input[type="checkbox"], input[type="radio"] {
+			width: 16px;
+			height: 16px;
+			padding: 0;
+			margin: 0;
+			accent-color: var(--accent);
+		}
+
+		.card,
+		.section {
+			background: var(--surface);
 			border: 1px solid var(--border);
 			border-radius: var(--radius);
 			box-shadow: var(--shadow);
@@ -168,40 +159,31 @@
 			display: block;
 		}
 
-		.tab-btn.active {
-			background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
-			color: #fff;
-			border-color: transparent;
-		}
-
-		.bulk-panel {
-			display: grid;
-			gap: 5px;
-			margin-bottom: 18px;
-			padding: 16px;
-		}
-
 		.category-panel {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
 			gap: 16px;
-			align-items: start;
-			margin-bottom: 18px;
 			padding: 16px;
+			margin-bottom: 18px;
 		}
 
-		[hidden] {
-			display: none !important;
+		.category-tools {
+			display: grid;
+			gap: 8px;
+			align-content: start;
 		}
 
-		.category-panel label {
+		label {
 			display: grid;
 			gap: 6px;
 			font-weight: 700;
 		}
 
-		.category-field-title {
-			font-weight: 700;
+		.category-add,
+		.inline-add {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 8px;
 		}
 
 		.category-checkbox-list {
@@ -211,158 +193,109 @@
 			overflow-y: auto;
 			padding: 8px;
 			border: 1px solid var(--border);
-			border-radius: var(--radius-sm);
-			background: var(--surface);
+			border-radius: 12px;
 		}
 
 		.category-checkbox-option {
 			display: grid;
-			grid-template-columns: 18px minmax(0, 1fr);
-			align-items: start;
+			grid-template-columns: 18px 1fr;
 			gap: 8px;
 			padding: 7px 8px;
-			border-radius: 8px;
-			cursor: pointer;
 			font-weight: 400;
-			line-height: 1.35;
+			cursor: pointer;
+			border-radius: 8px;
 		}
 
 		.category-checkbox-option:hover {
 			background: var(--surface-2);
 		}
 
-		.category-checkbox-option input {
-			margin-top: 2px;
-		}
-
-		.category-tools {
+		.recipient-panel {
 			display: grid;
 			gap: 8px;
 			align-content: start;
 		}
 
-		.category-add {
-			display: grid;
-			grid-template-columns: 1fr auto;
-			gap: 8px;
-		}
-
-		.category-tools textarea {
-			width: 100%;
-			min-height: 120px;
-			resize: vertical;
-		}
-
-		.bulk-actions {
-			display: flex;
-			gap: 5px;
-			flex-wrap: wrap;
-			align-items: center;
-		}
-
-		.bulk-actions select {
-			min-width: 260px;
-			flex: 1;
-		}
-
 		.recipient-toggle {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 12px;
-	padding: 6px 10px;
-	background: var(--surface-2);
-	border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
-	border-radius: 10px;
-}
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 12px;
+			padding: 8px 10px;
+			background: var(--surface-2);
+			border: 1px solid var(--border);
+			border-radius: 10px;
+		}
 
-.recipient-panel .recipient-main {
-	display: inline-flex;
-	align-items: center;
-	gap: 5px;
-	font-weight: 700;
-}
-
-.recipient-gender {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: flex-end;
-	gap: 12px;
-}
-
-.recipient-gender label {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	white-space: nowrap;
-}
-
-		input[type="checkbox"],
-		input[type="radio"] {
-			width: 16px;
-			height: 16px;
-			min-width: 16px;
-			padding: 0;
-			margin: 0;
-			accent-color: var(--accent);
-			box-shadow: none;
+		.recipient-main,
+		.recipient-gender label {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
 		}
 
 		.section-grid {
 			display: grid;
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 			gap: 16px;
-			align-items: stretch;
 		}
 
 		.section {
-			background: var(--surface);
-			border: 1px solid var(--border);
-			border-radius: var(--radius);
 			overflow: hidden;
-			box-shadow: var(--shadow-soft);
-			display: grid;
-			grid-template-rows: auto 1fr;
 		}
 
 		.section-title {
 			padding: 10px 16px;
 			background: #a7afbd;
+			color: #101828;
 			border-bottom: 1px solid #0b0e93;
 			font-weight: 700;
-			letter-spacing: -0.01em;
 		}
 
 		.section-body {
 			padding: 12px;
-			display: grid;
-			grid-template-rows: auto 1fr;
-			gap: 5px;
-		}
-
-		.inline-add {
-			display: grid;
-			grid-template-columns: 1fr auto;
-			gap: 8px;
 		}
 
 		.list-wrap {
 			display: grid;
 			gap: 6px;
-			max-height: none;
-			overflow: visible;
-			padding-right: 2px;
 		}
 
 		.list-row {
 			display: grid;
-			grid-template-columns: 20px 1fr auto;
+			grid-template-columns: 20px minmax(0, 1fr) auto;
 			gap: 8px;
 			align-items: center;
+			padding: 6px 10px;
 			background: var(--surface-2);
 			border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
 			border-radius: 10px;
-			padding: 6px 10px;
+		}
+
+		.item-text {
+			min-width: 0;
+			font-size: 16px;
+			line-height: 1.35;
+			word-break: break-word;
+		}
+
+		.item-text a,
+		.result-output a {
+			color: var(--accent);
+			font-weight: 700;
+			text-decoration: underline;
+			text-underline-offset: 2px;
+		}
+
+		.move-btn {
+			width: 27px;
+			height: 27px;
+			padding: 0;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 8px;
+			box-shadow: none;
 		}
 
 		.selection-category-group {
@@ -371,75 +304,22 @@
 			margin-bottom: 10px;
 		}
 
-		.selection-empty {
-			padding: 8px 10px;
-		}
-
-		.row-actions {
-			display: inline-flex;
-			gap: 4px;
-		}
-
-		.move-btn {
-			width: 24px;
-			height: 24px;
-			padding: 0;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 14px;
-			line-height: 1;
-			border-radius: 8px;
-			box-shadow: none;
-		}
-
-		.item-text {
-			font-size: 18px;
-			line-height: 1.3;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-
 		.summary {
 			margin-top: 18px;
 			padding: 16px;
-			align-self: end;
-		}
-
-		.summary-head {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			gap: 5px;
 		}
 
 		.summary h3 {
 			margin: 0 0 8px;
-			font-size: 14px;
-			font-weight: 700;
 		}
 
 		.result-output {
-			width: 100%;
 			min-height: 160px;
+			padding: 14px;
 			border: 1px solid var(--border);
 			border-radius: 12px;
 			background: var(--surface);
-			padding: 14px;
 			line-height: 1.65;
-			font-size: 14px;
-		}
-
-		.summary-actions {
-			margin-top: 12px;
-			display: flex;
-			gap: 5px;
-			flex-wrap: wrap;
-		}
-
-		.import-input {
-			display: none;
 		}
 
 		.empty-note {
@@ -447,19 +327,24 @@
 			font-size: 12px;
 		}
 
+		.import-input,
+		.copy-source {
+			display: none;
+		}
+
 		.toast {
 			position: fixed;
 			right: 20px;
 			bottom: 20px;
-			background: rgba(15, 23, 42, 0.92);
-			color: #fff;
+			z-index: 9999;
 			padding: 14px 18px;
 			border-radius: 14px;
+			color: #fff;
+			background: rgba(15, 23, 42, .92);
 			box-shadow: var(--shadow);
-			z-index: 9999;
 			opacity: 0;
 			transform: translateY(10px);
-			transition: all 0.25s ease;
+			transition: .25s;
 			pointer-events: none;
 		}
 
@@ -468,44 +353,23 @@
 			transform: translateY(0);
 		}
 
-		.copy-source {
-			position: fixed;
-			left: -99999px;
-			top: 0;
-			opacity: 0;
-			pointer-events: none;
-		}
-
 		@media (max-width: 960px) {
-			.app-shell {
-				min-height: unset;
-				display: block;
-			}
-
 			.category-panel,
-			.recipient-panel,
 			.section-grid {
 				grid-template-columns: 1fr;
 			}
 
-			.bulk-actions {
-				flex-direction: column;
-				align-items: stretch;
-			}
-
-			.bulk-actions select,
-			.bulk-actions button {
-				width: 100%;
+			.topbar {
+				align-items: flex-start;
 			}
 		}
 	</style>
 </head>
+
 <body>
 	<div class="app-shell">
 		<div class="topbar">
-			<div class="title-wrap">
-				<h2>Erforderliche Unterlagen</h2>
-			</div>
+			<h2>Erforderliche Unterlagen</h2>
 
 			<div class="toolbar">
 				<button class="tab-btn active" onclick="showView('inputView', this)">Werte eingeben</button>
@@ -513,8 +377,8 @@
 				<button onclick="toggleTheme()">🌙 / ☀️ Theme</button>
 				<button onclick="exportListData()">Liste exportieren</button>
 				<button onclick="document.getElementById('importFile').click()">Liste importieren</button>
-				<button class="ghost" onclick="resetAllData()">Alles löschen</button>
-				<input class="import-input" id="importFile" type="file" accept=".json,application/json" onchange="importListData(event)">
+				<button class="ghost delete-btn" onclick="resetAllData()">Alles löschen</button>
+				<input id="importFile" class="import-input" type="file" accept=".json,application/json" onchange="importListData(event)">
 			</div>
 		</div>
 
@@ -524,22 +388,30 @@
 					<label for="categorySelect">
 						<span>Bearbeitungskategorie</span>
 						<select id="categorySelect" onchange="onCategoryChange(this.value)"></select>
-						<span id="categoryHint" class="empty-note">Erstelle zuerst eine Kategorie.</span>
+						<span id="categoryHint" class="empty-note"></span>
 					</label>
+
 					<div class="category-add">
-						<input type="text" id="newCategoryInput" placeholder="Neue Kategorie erstellen..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addCategory();}">
-						<button type="button" class="primary" onclick="addCategory()">Kategorie hinzufügen</button>
+						<input id="newCategoryInput" type="text" placeholder="Neue Kategorie erstellen..." onkeydown="if(event.key==='Enter'){event.preventDefault();addCategory();}">
+						<button class="primary" type="button" onclick="addCategory()">Kategorie hinzufügen</button>
+					</div>
+
+					<div class="bulk-actions">
+						<button type="button" onclick="editActiveCategory()">Kategorie umbenennen</button>
+						<button class="delete-btn" type="button" onclick="removeActiveCategory()">Kategorie löschen</button>
 					</div>
 				</div>
+
 				<div class="category-tools">
-					<textarea id="bulkInput" rows="4" placeholder="Mehrere Unterlagen einfügen - jede Zeile wird als eigener Eintrag gespeichert"></textarea>
+					<textarea id="bulkInput" rows="6" placeholder="Mehrere Unterlagen einfügen – jede Zeile wird als eigener Eintrag gespeichert"></textarea>
+
 					<div class="bulk-actions">
 						<select id="bulkTargetSelector">
 							<option value="ast">Für Antragsteller</option>
 							<option value="lp">Für Lebenspartner</option>
 							<option value="ki">Für Kind</option>
 						</select>
-						<button class="primary" onclick="addBulkItems()">Einträge hinzufügen</button>
+						<button class="primary" type="button" onclick="addBulkItems()">Einträge hinzufügen</button>
 					</div>
 				</div>
 			</div>
@@ -549,10 +421,12 @@
 					<div class="section-title">Unterlagen Antragsteller</div>
 					<div id="astList" class="section-body list-wrap"></div>
 				</div>
+
 				<div class="section">
 					<div class="section-title">Unterlagen Lebenspartner</div>
 					<div id="lpList" class="section-body list-wrap"></div>
 				</div>
+
 				<div class="section">
 					<div class="section-title">Unterlagen Kind</div>
 					<div id="kiList" class="section-body list-wrap"></div>
@@ -563,33 +437,37 @@
 		<div id="selectView" class="view">
 			<div class="category-panel card">
 				<div class="category-tools">
-					<div id="selectionCategoryList" class="category-checkbox-list" role="group" aria-labelledby="selectionCategoryTitle"></div>
-					<span id="selectionCategoryHint" class="empty-note">Kategorien direkt an- oder abwählen.</span>
+					<div id="selectionCategoryList" class="category-checkbox-list"></div>
+					<span id="selectionCategoryHint" class="empty-note"></span>
 				</div>
+
 				<div class="recipient-panel">
-	<div class="recipient-toggle">
-		<label class="recipient-main">
-			<input id="includeApplicant" type="checkbox" checked onchange="setIncludeTargets()">
-			<span>Antragsteller</span>
-		</label>
-	</div>
-	<div class="recipient-toggle">
-		<label class="recipient-main">
-			<input id="includePartner" type="checkbox" checked onchange="setIncludeTargets()">
-			<span>Lebenspartner</span>
-		</label>
-		<div class="recipient-gender">
-			<label><input type="radio" name="partnerGender" value="mann" onchange="setPartnerGender(this.value)"> Mann</label>
-			<label><input type="radio" name="partnerGender" value="frau" onchange="setPartnerGender(this.value)"> Frau</label>
-		</div>
-	</div>
-	<div class="recipient-toggle">
-		<label class="recipient-main">
-			<input id="includeChild" type="checkbox" checked onchange="setIncludeTargets()">
-			<span>Kind</span>
-		</label>
-	</div>
-</div>
+					<div class="recipient-toggle">
+						<label class="recipient-main">
+							<input id="includeApplicant" type="checkbox" checked onchange="setIncludeTargets()">
+							<span>Antragsteller</span>
+						</label>
+					</div>
+
+					<div class="recipient-toggle">
+						<label class="recipient-main">
+							<input id="includePartner" type="checkbox" checked onchange="setIncludeTargets()">
+							<span>Lebenspartner</span>
+						</label>
+
+						<div class="recipient-gender">
+							<label><input type="radio" name="partnerGender" value="mann" onchange="setPartnerGender(this.value)"> Mann</label>
+							<label><input type="radio" name="partnerGender" value="frau" onchange="setPartnerGender(this.value)"> Frau</label>
+						</div>
+					</div>
+
+					<div class="recipient-toggle">
+						<label class="recipient-main">
+							<input id="includeChild" type="checkbox" checked onchange="setIncludeTargets()">
+							<span>Kind</span>
+						</label>
+					</div>
+				</div>
 			</div>
 
 			<div class="section-grid">
@@ -597,27 +475,27 @@
 					<div class="section-title">Unterlagen Antragsteller</div>
 					<div id="selectionAstList" class="section-body list-wrap"></div>
 				</div>
+
 				<div class="section">
 					<div class="section-title">Unterlagen Lebenspartner</div>
 					<div id="selectionLpList" class="section-body list-wrap"></div>
 				</div>
+
 				<div class="section">
 					<div class="section-title">Unterlagen Kind</div>
 					<div id="selectionKiList" class="section-body list-wrap"></div>
 				</div>
 			</div>
 
-		<div id="summaryPanel" class="summary card">
-			<div class="summary-head">
+			<div class="summary card">
 				<h3>Ausgewählte Unterlagen</h3>
-			</div>
-			<div id="selectedText" class="result-output"></div>
+				<div id="selectedText" class="result-output"></div>
 
-			<div class="summary-actions">
-				<button class="primary" onclick="copySummary()">Ergebnis kopieren</button>
-				<button class="ghost" onclick="clearSelectionsOnly()">Auswahl zurücksetzen</button>
+				<div class="summary-actions">
+					<button class="primary" onclick="copySummary()">Ergebnis kopieren</button>
+					<button class="ghost" onclick="clearSelectionsOnly()">Auswahl zurücksetzen</button>
+				</div>
 			</div>
-		</div>
 		</div>
 	</div>
 
@@ -625,28 +503,25 @@
 	<div id="copySource" class="copy-source" contenteditable="true"></div>
 
 	<script>
-		const FONT_STACK = "'BerlinTypeOffice','Berlin Type Office',Arial,sans-serif";
 		const STORAGE_APP_DATA = "unterlagenCombinedData";
 		const STORAGE_SELECTED_CATEGORY_IDS = "unterlagenSelectedCategoryIds";
 		const STORAGE_THEME = "unterlagenThemeMode";
 		const STORAGE_INCLUDE_TARGETS = "unterlagenIncludeTargets";
 		const STORAGE_PARTNER_GENDER = "unterlagenPartnerGender";
+		const FONT_STACK = "'BerlinTypeOffice','Berlin Type Office',Arial,sans-serif";
 
 		let appData = loadAppData();
-		let astItems = [];
-		let lpItems = [];
-		let kiItems = [];
 		let selectedCategoryIds = loadSelectedCategoryIds();
 		let includeTargets = loadIncludeTargets();
 		let partnerGender = localStorage.getItem(STORAGE_PARTNER_GENDER) === "mann" ? "mann" : "frau";
 
+		const categorySelect = document.getElementById("categorySelect");
+		const categoryHint = document.getElementById("categoryHint");
+		const newCategoryInput = document.getElementById("newCategoryInput");
 		const bulkInput = document.getElementById("bulkInput");
 		const bulkTargetSelector = document.getElementById("bulkTargetSelector");
-		const categorySelect = document.getElementById("categorySelect");
 		const selectionCategoryList = document.getElementById("selectionCategoryList");
-		const categoryHint = document.getElementById("categoryHint");
 		const selectionCategoryHint = document.getElementById("selectionCategoryHint");
-		const newCategoryInput = document.getElementById("newCategoryInput");
 		const includeApplicant = document.getElementById("includeApplicant");
 		const includePartner = document.getElementById("includePartner");
 		const includeChild = document.getElementById("includeChild");
@@ -664,88 +539,86 @@
 			return Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
 		}
 
-		function initTheme() {
-			const saved = localStorage.getItem(STORAGE_THEME) || "light";
-			document.body.classList.toggle("dark", saved === "dark");
+		function escapeHtml(text) {
+			const div = document.createElement("div");
+			div.textContent = String(text ?? "");
+			return div.innerHTML;
 		}
 
-		function toggleTheme() {
-			const dark = document.body.classList.toggle("dark");
-			localStorage.setItem(STORAGE_THEME, dark ? "dark" : "light");
+		function escapeJs(text) {
+			return String(text ?? "")
+				.replace(/\\/g, "\\\\")
+				.replace(/'/g, "\\'");
+		}
+
+		function linkifyText(text) {
+			const escaped = escapeHtml(text);
+			return escaped.replace(
+				/(https?:\/\/[^\s<)"']+)/g,
+				url => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
+			);
 		}
 
 		function normalizeImportedList(list) {
 			if (!Array.isArray(list)) return [];
-			return list
-				.map(item => {
-					if (!item || typeof item.text !== "string") return null;
-					return {
-						id: item.id || makeId(),
-						text: item.text,
-						selected: item.selected === true
-					};
-				})
-				.filter(Boolean);
-		}
 
-		function normalizeCategories(list) {
-			if (!Array.isArray(list)) return [];
-			const seen = new Set();
-			const normalized = list
-				.map(item => {
-					const id = Number(item?.id);
-					const titel = String(item?.titel || "").trim();
-					if (!Number.isInteger(id) || !titel) return null;
-					if (seen.has(id)) return null;
-					seen.add(id);
-					return { id, titel };
-				})
-				.filter(Boolean)
-				.sort((a, b) => a.id - b.id);
+			return list.map(item => {
+				if (!item || typeof item.text !== "string") return null;
 
-			return normalized;
-		}
-
-		function normalizeCategoryId(rawId, categories) {
-			const asNumber = Number(rawId);
-			if (!Number.isInteger(asNumber)) return categories[0]?.id || null;
-			return categories.some(category => category.id === asNumber) ? asNumber : (categories[0]?.id || null);
+				return {
+					id: item.id || makeId(),
+					text: item.text,
+					selected: item.selected === true
+				};
+			}).filter(Boolean);
 		}
 
 		function normalizeAppData(rawData) {
-			const categories = normalizeCategories(rawData?.kategorien);
-			const normalized = {
-				version: Number(rawData?.version) || 6,
+			const sourceCategories = Array.isArray(rawData?.kategorien) ? rawData.kategorien : [];
+			const ids = new Set();
+
+			const kategorien = sourceCategories.map(category => {
+				const id = Number(category?.id);
+				const titel = String(category?.titel || "").trim();
+
+				if (!Number.isInteger(id) || !titel || ids.has(id)) return null;
+				ids.add(id);
+
+				return {
+					id,
+					titel,
+					ast_items: normalizeImportedList(category.ast_items),
+					lp_items: normalizeImportedList(category.lp_items),
+					ki_items: normalizeImportedList(category.ki_items)
+				};
+			}).filter(Boolean).sort((a, b) => a.id - b.id);
+
+			const requestedId = Number(rawData?.active_category_id);
+			const activeId = kategorien.some(category => category.id === requestedId)
+				? requestedId
+				: (kategorien[0]?.id || null);
+
+			return {
+				version: 6,
 				exported_at: rawData?.exported_at || new Date().toISOString(),
-				active_category_id: categories.length ? normalizeCategoryId(rawData?.active_category_id, categories) : null,
-				kategorien: []
+				active_category_id: activeId,
+				kategorien
 			};
-
-			categories.forEach(category => {
-				const source = Array.isArray(rawData?.kategorien)
-					? rawData.kategorien.find(entry => Number(entry?.id) === category.id)
-					: null;
-				normalized.kategorien.push({
-					id: category.id,
-					titel: category.titel,
-					ast_items: normalizeImportedList(source?.ast_items),
-					lp_items: normalizeImportedList(source?.lp_items),
-					ki_items: normalizeImportedList(source?.ki_items)
-				});
-			});
-
-			return normalized;
 		}
 
 		function createEmptyAppData() {
-			return normalizeAppData({ version: 6, exported_at: new Date().toISOString(), active_category_id: null, kategorien: [] });
+			return {
+				version: 6,
+				exported_at: new Date().toISOString(),
+				active_category_id: null,
+				kategorien: []
+			};
 		}
 
 		function loadAppData() {
 			try {
 				const raw = JSON.parse(localStorage.getItem(STORAGE_APP_DATA));
-				if (!raw) return createEmptyAppData();
-				return normalizeAppData(raw);
+				return raw ? normalizeAppData(raw) : createEmptyAppData();
 			} catch {
 				return createEmptyAppData();
 			}
@@ -759,166 +632,21 @@
 		function loadSelectedCategoryIds() {
 			try {
 				const stored = JSON.parse(localStorage.getItem(STORAGE_SELECTED_CATEGORY_IDS));
+
 				if (Array.isArray(stored)) {
-					return stored.map(Number).filter(id => appData.kategorien.some(category => category.id === id));
+					return stored
+						.map(Number)
+						.filter(id => appData.kategorien.some(category => category.id === id));
 				}
 			} catch {
-				return [];
+				/* Standardwert verwenden */
 			}
+
 			return appData.active_category_id ? [appData.active_category_id] : [];
 		}
 
 		function saveSelectedCategoryIds() {
 			localStorage.setItem(STORAGE_SELECTED_CATEGORY_IDS, JSON.stringify(selectedCategoryIds));
-		}
-
-		function showView(viewId, button) {
-			document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
-			document.querySelectorAll(".tab-btn").forEach(tab => tab.classList.remove("active"));
-			document.getElementById(viewId).classList.add("active");
-			button.classList.add("active");
-			if (viewId === "inputView") renderLists();
-			if (viewId === "selectView") {
-				renderSelectionCategoryOptions();
-				renderSelectionLists();
-				updateSummary();
-			}
-		}
-
-		function getActiveCategory() {
-			return appData.kategorien.find(category => category.id === appData.active_category_id) || appData.kategorien[0];
-		}
-
-		function renderCategoryOptions() {
-			if (!appData.kategorien.length) {
-				categorySelect.innerHTML = "";
-				categoryHint.textContent = "Noch keine Kategorie. Bitte manuell hinzufügen.";
-				renderSelectionCategoryOptions();
-				return;
-			}
-
-			categorySelect.innerHTML = appData.kategorien.map(category => {
-				const selected = category.id === appData.active_category_id ? " selected" : "";
-				return `<option value="${category.id}"${selected}>${category.id}. ${escapeHtml(category.titel)}</option>`;
-			}).join("");
-
-			const active = getActiveCategory();
-			categoryHint.textContent = active ? `Aktive Kategorie: ${active.id}. ${active.titel}` : "Keine Kategorie verfügbar.";
-			renderSelectionCategoryOptions();
-		}
-
-		function renderSelectionCategoryOptions() {
-			selectionCategoryList.innerHTML = appData.kategorien.map(category => {
-				const checked = selectedCategoryIds.includes(category.id) ? " checked" : "";
-				return `
-					<label class="category-checkbox-option">
-						<input type="checkbox" value="${category.id}"${checked} onchange="onSelectionCategoryToggle(${category.id}, this.checked)">
-						<span>${category.id}. ${escapeHtml(category.titel)}</span>
-					</label>
-				`;
-			}).join("");
-			selectionCategoryHint.textContent = appData.kategorien.length
-				? `${selectedCategoryIds.length} von ${appData.kategorien.length} Kategorie(n) ausgewählt.`
-				: "Erstelle zuerst Kategorien in „Werte eingeben“.";
-		}
-
-		function syncWorkingListsFromCategory() {
-			const active = getActiveCategory();
-			if (!active) {
-				astItems = [];
-				lpItems = [];
-				kiItems = [];
-				return;
-			}
-			astItems = normalizeImportedList(active.ast_items);
-			lpItems = normalizeImportedList(active.lp_items);
-			kiItems = normalizeImportedList(active.ki_items);
-		}
-
-		function persistWorkingListsToCategory() {
-			const active = getActiveCategory();
-			if (!active) return;
-			active.ast_items = normalizeImportedList(astItems);
-			active.lp_items = normalizeImportedList(lpItems);
-			active.ki_items = normalizeImportedList(kiItems);
-			saveAppData();
-		}
-
-		function onCategoryChange(nextId) {
-			persistWorkingListsToCategory();
-			appData.active_category_id = normalizeCategoryId(nextId, appData.kategorien);
-			syncWorkingListsFromCategory();
-			renderCategoryOptions();
-			renderLists();
-			showToast("Bearbeitungskategorie gewechselt");
-		}
-
-		function onSelectionCategoryToggle(categoryId, checked) {
-			if (checked && !selectedCategoryIds.includes(categoryId)) {
-				selectedCategoryIds.push(categoryId);
-			} else if (!checked) {
-				selectedCategoryIds = selectedCategoryIds.filter(id => id !== categoryId);
-			}
-			saveSelectedCategoryIds();
-			renderSelectionCategoryOptions();
-			renderSelectionLists();
-			updateSummary();
-		}
-
-		function getNextCategoryId() {
-			if (!appData.kategorien.length) return 1;
-			return Math.max(...appData.kategorien.map(category => category.id)) + 1;
-		}
-
-		function addCategory() {
-			const titel = newCategoryInput.value.trim();
-			if (!titel) {
-				alert("Bitte einen Kategorienamen eingeben.");
-				return;
-			}
-
-			persistWorkingListsToCategory();
-			const newCategory = {
-				id: getNextCategoryId(),
-				titel,
-				ast_items: [],
-				lp_items: [],
-				ki_items: []
-			};
-			appData.kategorien.push(newCategory);
-			appData.active_category_id = newCategory.id;
-			selectedCategoryIds = [newCategory.id];
-			saveSelectedCategoryIds();
-			saveAppData();
-			syncWorkingListsFromCategory();
-			renderCategoryOptions();
-			renderLists();
-			updateSummary();
-			newCategoryInput.value = "";
-			showToast("Kategorie hinzugefügt");
-		}
-
-		function removeActiveCategory() {
-			const active = getActiveCategory();
-			if (!active) return;
-			if (!confirm(`Kategorie "${active.titel}" wirklich löschen?`)) return;
-
-			const index = appData.kategorien.findIndex(category => category.id === active.id);
-			if (index === -1) return;
-			appData.kategorien.splice(index, 1);
-
-			if (appData.kategorien.length) {
-				appData.active_category_id = appData.kategorien[Math.max(0, index - 1)].id;
-			} else {
-				appData.active_category_id = null;
-			}
-
-			saveAppData();
-			syncWorkingListsFromCategory();
-			renderCategoryOptions();
-			renderLists();
-			updateSummary();
-			showToast("Kategorie gelöscht");
 		}
 
 		function loadIncludeTargets() {
@@ -938,12 +666,395 @@
 			localStorage.setItem(STORAGE_INCLUDE_TARGETS, JSON.stringify(includeTargets));
 		}
 
+		function getActiveCategory() {
+			return appData.kategorien.find(category => category.id === appData.active_category_id) || null;
+		}
+
+		function getList(category, target) {
+			if (!category) return [];
+			if (target === "ast") return category.ast_items;
+			if (target === "lp") return category.lp_items;
+			return category.ki_items;
+		}
+
+		function getTargetTitle(target) {
+			if (target === "ast") return "Antragsteller";
+			if (target === "lp") return "Lebenspartner";
+			return "Kind";
+		}
+
+		function getNextCategoryId() {
+			return appData.kategorien.length
+				? Math.max(...appData.kategorien.map(category => category.id)) + 1
+				: 1;
+		}
+
+		function showView(viewId, button) {
+			document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
+			document.querySelectorAll(".tab-btn").forEach(tab => tab.classList.remove("active"));
+
+			document.getElementById(viewId).classList.add("active");
+			button.classList.add("active");
+
+			renderAll();
+		}
+
+		function initTheme() {
+			document.body.classList.toggle("dark", localStorage.getItem(STORAGE_THEME) === "dark");
+		}
+
+		function toggleTheme() {
+			const isDark = document.body.classList.toggle("dark");
+			localStorage.setItem(STORAGE_THEME, isDark ? "dark" : "light");
+		}
+
+		function renderCategoryOptions() {
+			if (!appData.kategorien.length) {
+				categorySelect.innerHTML = "";
+				categorySelect.disabled = true;
+				categoryHint.textContent = "Noch keine Kategorie. Bitte eine Kategorie hinzufügen.";
+				return;
+			}
+
+			categorySelect.disabled = false;
+			categorySelect.innerHTML = appData.kategorien.map(category => `
+				<option value="${category.id}" ${category.id === appData.active_category_id ? "selected" : ""}>
+					${category.id}. ${escapeHtml(category.titel)}
+				</option>
+			`).join("");
+
+			const active = getActiveCategory();
+			categoryHint.textContent = active
+				? `Aktive Kategorie: ${active.id}. ${active.titel}`
+				: "";
+		}
+
+		function renderSelectionCategoryOptions() {
+			if (!appData.kategorien.length) {
+				selectionCategoryList.innerHTML = "";
+				selectionCategoryHint.textContent = "Erstelle zuerst Kategorien in „Werte eingeben“.";
+				return;
+			}
+
+			selectionCategoryList.innerHTML = appData.kategorien.map(category => `
+				<label class="category-checkbox-option">
+					<input
+						type="checkbox"
+						${selectedCategoryIds.includes(category.id) ? "checked" : ""}
+						onchange="onSelectionCategoryToggle(${category.id}, this.checked)">
+					<span>${category.id}. ${escapeHtml(category.titel)}</span>
+				</label>
+			`).join("");
+
+			selectionCategoryHint.textContent =
+				`${selectedCategoryIds.length} von ${appData.kategorien.length} Kategorie(n) ausgewählt.`;
+		}
+
+		function renderEditableList(target, container) {
+			const category = getActiveCategory();
+			const list = getList(category, target);
+
+			if (!category) {
+				container.innerHTML = '<div class="empty-note">Bitte zuerst eine Kategorie erstellen.</div>';
+				return;
+			}
+
+			if (!list.length) {
+				container.innerHTML = '<div class="empty-note">Noch keine Unterlagen vorhanden.</div>';
+				return;
+			}
+
+			container.innerHTML = list.map(item => `
+				<div class="list-row">
+					<input
+						type="checkbox"
+						${item.selected ? "checked" : ""}
+						onchange="toggleItemSelection('${target}', '${escapeJs(item.id)}', this.checked)">
+
+					<div class="item-text">${linkifyText(item.text)}</div>
+
+					<div class="row-actions">
+						<button class="ghost move-btn" title="Eintrag bearbeiten"
+							onclick="editItem('${target}', '${escapeJs(item.id)}')">✎</button>
+						<button class="ghost move-btn delete-btn" title="Eintrag löschen"
+							onclick="deleteItem('${target}', '${escapeJs(item.id)}')">×</button>
+						<button class="ghost move-btn" title="Nach oben"
+							onclick="moveItem('${target}', '${escapeJs(item.id)}', -1)">↑</button>
+						<button class="ghost move-btn" title="Nach unten"
+							onclick="moveItem('${target}', '${escapeJs(item.id)}', 1)">↓</button>
+					</div>
+				</div>
+			`).join("");
+		}
+
+		function renderSelectionList(target, container) {
+			if (!selectedCategoryIds.length) {
+				container.innerHTML = '<div class="empty-note">Wähle oben mindestens eine Kategorie aus.</div>';
+				return;
+			}
+
+			let content = "";
+
+			selectedCategoryIds.forEach(categoryId => {
+				const category = appData.kategorien.find(entry => entry.id === categoryId);
+				if (!category) return;
+
+				const list = getList(category, target);
+				content += `<div class="selection-category-group">`;
+				content += `<div class="section-title">${category.id}. ${escapeHtml(category.titel)}</div>`;
+
+				if (!list.length) {
+					content += '<div class="empty-note">Keine Unterlagen in dieser Kategorie.</div>';
+				} else {
+					content += list.map(item => `
+						<div class="list-row">
+							<input
+								type="checkbox"
+								${item.selected ? "checked" : ""}
+								onchange="toggleCategoryItemSelection('${target}', ${category.id}, '${escapeJs(item.id)}', this.checked)">
+							<div class="item-text">${linkifyText(item.text)}</div>
+							<div></div>
+						</div>
+					`).join("");
+				}
+
+				content += "</div>";
+			});
+
+			container.innerHTML = content;
+		}
+
+		function renderAll() {
+			renderCategoryOptions();
+			renderSelectionCategoryOptions();
+			renderEditableList("ast", astList);
+			renderEditableList("lp", lpList);
+			renderEditableList("ki", kiList);
+			renderSelectionList("ast", selectionAstList);
+			renderSelectionList("lp", selectionLpList);
+			renderSelectionList("ki", selectionKiList);
+			syncIncludeTargetCheckboxes();
+			syncPartnerGenderRadios();
+			updateSummary();
+		}
+
+		function onCategoryChange(nextId) {
+			const id = Number(nextId);
+			if (!appData.kategorien.some(category => category.id === id)) return;
+
+			appData.active_category_id = id;
+			saveAppData();
+			renderAll();
+			showToast("Bearbeitungskategorie gewechselt");
+		}
+
+		function addCategory() {
+			const titel = newCategoryInput.value.trim();
+
+			if (!titel) {
+				alert("Bitte einen Kategorienamen eingeben.");
+				return;
+			}
+
+			const category = {
+				id: getNextCategoryId(),
+				titel,
+				ast_items: [],
+				lp_items: [],
+				ki_items: []
+			};
+
+			appData.kategorien.push(category);
+			appData.active_category_id = category.id;
+			selectedCategoryIds = [category.id];
+
+			newCategoryInput.value = "";
+			saveAppData();
+			saveSelectedCategoryIds();
+			renderAll();
+			showToast("Kategorie hinzugefügt");
+		}
+
+		function editActiveCategory() {
+			const category = getActiveCategory();
+
+			if (!category) {
+				alert("Bitte zuerst eine Kategorie erstellen.");
+				return;
+			}
+
+			const title = prompt("Kategorienamen bearbeiten:", category.titel);
+			if (title === null) return;
+
+			const cleanedTitle = title.trim();
+
+			if (!cleanedTitle) {
+				alert("Der Kategoriename darf nicht leer sein.");
+				return;
+			}
+
+			category.titel = cleanedTitle;
+			saveAppData();
+			renderAll();
+			showToast("Kategorie umbenannt");
+		}
+
+		function removeActiveCategory() {
+			const category = getActiveCategory();
+
+			if (!category) {
+				alert("Es gibt keine Kategorie zum Löschen.");
+				return;
+			}
+
+			if (!confirm(`Kategorie „${category.titel}“ wirklich löschen?`)) return;
+
+			const index = appData.kategorien.findIndex(entry => entry.id === category.id);
+			appData.kategorien.splice(index, 1);
+
+			appData.active_category_id =
+				appData.kategorien[Math.max(0, index - 1)]?.id ||
+				appData.kategorien[0]?.id ||
+				null;
+
+			selectedCategoryIds = selectedCategoryIds.filter(id => id !== category.id);
+
+			if (!selectedCategoryIds.length && appData.active_category_id) {
+				selectedCategoryIds = [appData.active_category_id];
+			}
+
+			saveAppData();
+			saveSelectedCategoryIds();
+			renderAll();
+			showToast("Kategorie gelöscht");
+		}
+
+		function addBulkItems() {
+			const category = getActiveCategory();
+
+			if (!category) {
+				alert("Bitte zuerst eine Kategorie erstellen.");
+				return;
+			}
+
+			const lines = bulkInput.value
+				.split(/\r?\n/)
+				.map(line => line.trim())
+				.filter(Boolean);
+
+			if (!lines.length) {
+				alert("Bitte mindestens eine Unterlage eingeben.");
+				return;
+			}
+
+			const target = bulkTargetSelector.value;
+			const list = getList(category, target);
+
+			lines.forEach(text => {
+				list.push({
+					id: makeId(),
+					text,
+					selected: true
+				});
+			});
+
+			bulkInput.value = "";
+			saveAppData();
+			renderAll();
+			showToast(`${lines.length} Eintrag(e) hinzugefügt`);
+		}
+
+		function editItem(target, itemId) {
+			const category = getActiveCategory();
+			const item = getList(category, target).find(entry => entry.id === itemId);
+
+			if (!item) return;
+
+			const value = prompt("Unterlage bearbeiten:", item.text);
+			if (value === null) return;
+
+			const text = value.trim();
+
+			if (!text) {
+				alert("Der Eintrag darf nicht leer sein.");
+				return;
+			}
+
+			item.text = text;
+			saveAppData();
+			renderAll();
+			showToast("Eintrag bearbeitet");
+		}
+
+		function deleteItem(target, itemId) {
+			const category = getActiveCategory();
+			const list = getList(category, target);
+			const index = list.findIndex(entry => entry.id === itemId);
+
+			if (index === -1) return;
+			if (!confirm("Diesen Eintrag wirklich löschen?")) return;
+
+			list.splice(index, 1);
+			saveAppData();
+			renderAll();
+			showToast("Eintrag gelöscht");
+		}
+
+		function moveItem(target, itemId, direction) {
+			const category = getActiveCategory();
+			const list = getList(category, target);
+			const index = list.findIndex(entry => entry.id === itemId);
+			const nextIndex = index + direction;
+
+			if (index === -1 || nextIndex < 0 || nextIndex >= list.length) return;
+
+			const [item] = list.splice(index, 1);
+			list.splice(nextIndex, 0, item);
+
+			saveAppData();
+			renderAll();
+		}
+
+		function toggleItemSelection(target, itemId, checked) {
+			const item = getList(getActiveCategory(), target).find(entry => entry.id === itemId);
+			if (!item) return;
+
+			item.selected = checked;
+			saveAppData();
+			renderAll();
+		}
+
+		function toggleCategoryItemSelection(target, categoryId, itemId, checked) {
+			const category = appData.kategorien.find(entry => entry.id === categoryId);
+			const item = getList(category, target).find(entry => entry.id === itemId);
+
+			if (!item) return;
+
+			item.selected = checked;
+			saveAppData();
+			renderAll();
+		}
+
+		function onSelectionCategoryToggle(categoryId, checked) {
+			if (checked && !selectedCategoryIds.includes(categoryId)) {
+				selectedCategoryIds.push(categoryId);
+			}
+
+			if (!checked) {
+				selectedCategoryIds = selectedCategoryIds.filter(id => id !== categoryId);
+			}
+
+			saveSelectedCategoryIds();
+			renderAll();
+		}
+
 		function setIncludeTargets() {
 			includeTargets = {
 				applicant: includeApplicant.checked,
 				partner: includePartner.checked,
 				child: includeChild.checked
 			};
+
 			saveIncludeTargets();
 			updateSummary();
 		}
@@ -966,238 +1077,79 @@
 			});
 		}
 
-		function renderList(target) {
-			const list = target === "ast" ? astItems : target === "lp" ? lpItems : kiItems;
-			const container = target === "ast" ? astList : target === "lp" ? lpList : kiList;
-
-			container.innerHTML = "";
-			if (!list.length) {
-				container.innerHTML = '<div class="empty-note">Noch keine Unterlagen vorhanden.</div>';
-				return;
-			}
-
-			list.forEach(item => {
-				const row = document.createElement("div");
-				row.className = "list-row";
-				row.innerHTML = `
-					<input type="checkbox" ${item.selected ? "checked" : ""} onchange="toggleItemSelection('${target}','${escapeJs(item.id)}',this.checked)">
-					<div class="item-text">${escapeHtml(item.text)}</div>
-					<div class="row-actions">
-						<button type="button" class="ghost move-btn" onclick="moveItem('${target}','${escapeJs(item.id)}',-1)" title="Nach oben">↑</button>
-						<button type="button" class="ghost move-btn" onclick="moveItem('${target}','${escapeJs(item.id)}',1)" title="Nach unten">↓</button>
-					</div>
-				`;
-				container.appendChild(row);
-			});
-		}
-
-		function renderLists() {
-			renderList("ast");
-			renderList("lp");
-			renderList("ki");
-			renderSelectionLists();
-		}
-
-		function renderSelectionList(target, container) {
-			const key = target === "ast" ? "ast_items" : target === "lp" ? "lp_items" : "ki_items";
-			container.innerHTML = "";
-
-			if (!selectedCategoryIds.length) {
-				container.innerHTML = '<div class="empty-note">Wähle oben mindestens eine Kategorie aus.</div>';
-				return;
-			}
-
-			let itemCount = 0;
-			selectedCategoryIds.forEach(categoryId => {
-				const category = appData.kategorien.find(entry => entry.id === categoryId);
-				if (!category) return;
-
-				const group = document.createElement("div");
-				group.className = "selection-category-group";
-				const heading = document.createElement("div");
-				heading.className = "section-title";
-				heading.textContent = `${category.id}. ${category.titel}`;
-				group.appendChild(heading);
-
-				const items = normalizeImportedList(category[key]);
-				if (!items.length) {
-					const empty = document.createElement("div");
-					empty.className = "empty-note selection-empty";
-					empty.textContent = "Keine Unterlagen in dieser Kategorie.";
-					group.appendChild(empty);
-				} else {
-					items.forEach(item => {
-						const row = document.createElement("div");
-						row.className = "list-row";
-						row.innerHTML = `
-							<input type="checkbox" ${item.selected ? "checked" : ""} onchange="toggleCategoryItemSelection('${target}',${category.id},'${escapeJs(item.id)}',this.checked)">
-							<div class="item-text">${escapeHtml(item.text)}</div>
-						`;
-						group.appendChild(row);
-						itemCount += 1;
-					});
-				}
-				container.appendChild(group);
-			});
-
-			if (!itemCount && selectedCategoryIds.length) {
-				container.setAttribute("aria-label", "Keine Unterlagen vorhanden");
-			}
-		}
-
-		function renderSelectionLists() {
-			renderSelectionList("ast", selectionAstList);
-			renderSelectionList("lp", selectionLpList);
-			renderSelectionList("ki", selectionKiList);
-		}
-
-		function toggleCategoryItemSelection(target, categoryId, itemId, checked) {
-			const category = appData.kategorien.find(entry => entry.id === categoryId);
-			if (!category) return;
-			const key = target === "ast" ? "ast_items" : target === "lp" ? "lp_items" : "ki_items";
-			const item = category[key].find(entry => entry.id === itemId);
-			if (!item) return;
-			item.selected = checked;
-			saveAppData();
-			if (category.id === appData.active_category_id) {
-				if (target === "ast") astItems = normalizeImportedList(category.ast_items);
-				else if (target === "lp") lpItems = normalizeImportedList(category.lp_items);
-				else kiItems = normalizeImportedList(category.ki_items);
-				renderList(target);
-			}
-			renderSelectionLists();
-			updateSummary();
-		}
-
-		function addSingleItem(target) {
-			if (!getActiveCategory()) {
-				alert("Bitte zuerst eine Kategorie erstellen.");
-				return;
-			}
-
-			const inputId = target === "ast" ? "newAstInput" : target === "lp" ? "newLpInput" : "newKiInput";
-			const input = document.getElementById(inputId);
-			if (!input) return;
-			const text = input.value.trim();
-			if (!text) return;
-
-			const newItem = { id: makeId(), text, selected: true };
-			if (target === "ast") astItems.push(newItem);
-			if (target === "lp") lpItems.push(newItem);
-			if (target === "ki") kiItems.push(newItem);
-
-			persistWorkingListsToCategory();
-			input.value = "";
-			renderLists();
-			updateSummary();
-			showToast("Eintrag hinzugefügt");
-		}
-
-		function addBulkItems() {
-			const active = getActiveCategory();
-			if (!active) {
-				alert("Bitte zuerst eine Kategorie erstellen.");
-				return;
-			}
-			if (!bulkInput.value.trim()) {
-				alert("Bitte Unterlagen eingeben.");
-				return;
-			}
-
-			const target = bulkTargetSelector.value;
-			const lines = bulkInput.value
-				.split(/\r?\n/)
-				.map(line => line.trim())
-				.filter(Boolean);
-
-			if (!lines.length) return;
-			const list = target === "ast" ? astItems : target === "lp" ? lpItems : kiItems;
-			lines.forEach(text => list.push({ id: makeId(), text, selected: true }));
-			persistWorkingListsToCategory();
-			bulkInput.value = "";
-			renderLists();
-			updateSummary();
-			showToast(`${lines.length} Eintrag(e) in ${target.toUpperCase()} hinzugefügt`);
-		}
-
-		function toggleItemSelection(target, itemId, checked) {
-			const list = target === "ast" ? astItems : target === "lp" ? lpItems : kiItems;
-			const item = list.find(entry => entry.id === itemId);
-			if (!item) return;
-			item.selected = checked;
-			persistWorkingListsToCategory();
-			updateSummary();
-		}
-
-		function moveItem(target, itemId, direction) {
-			const list = target === "ast" ? astItems : target === "lp" ? lpItems : kiItems;
-			const index = list.findIndex(entry => entry.id === itemId);
-			if (index === -1) return;
-
-			const nextIndex = index + (direction < 0 ? -1 : 1);
-			if (nextIndex < 0 || nextIndex >= list.length) return;
-
-			const [item] = list.splice(index, 1);
-			list.splice(nextIndex, 0, item);
-			persistWorkingListsToCategory();
-			renderLists();
-			updateSummary();
-		}
-
 		function getSectionsForExport() {
-			const sections = [];
-			const selectedCategories = appData.kategorien.filter(category => selectedCategoryIds.includes(category.id));
-			const astSelected = selectedCategories.flatMap(category => category.ast_items.filter(item => item.selected).map(item => item.text));
-			const lpSelected = selectedCategories.flatMap(category => category.lp_items.filter(item => item.selected).map(item => item.text));
-			const kiSelected = selectedCategories.flatMap(category => category.ki_items.filter(item => item.selected).map(item => item.text));
+			const selectedCategories = appData.kategorien
+				.filter(category => selectedCategoryIds.includes(category.id));
 
-			if (includeTargets.applicant && astSelected.length) {
-				sections.push({ title: "Von Ihnen", items: astSelected });
+			const selectedItems = target => selectedCategories.flatMap(category =>
+				getList(category, target)
+					.filter(item => item.selected)
+					.map(item => item.text)
+			);
+
+			const sections = [];
+			const applicant = selectedItems("ast");
+			const partner = selectedItems("lp");
+			const child = selectedItems("ki");
+
+			if (includeTargets.applicant && applicant.length) {
+				sections.push({ title: "Von Ihnen", items: applicant });
 			}
-			if (includeTargets.partner && lpSelected.length) {
+
+			if (includeTargets.partner && partner.length) {
 				sections.push({
 					title: partnerGender === "frau" ? "Von Ihrer Ehefrau" : "Von Ihrem Ehemann",
-					items: lpSelected
+					items: partner
 				});
 			}
-			if (includeTargets.child && kiSelected.length) {
-				sections.push({ title: "Von Ihrem Kind", items: kiSelected });
+
+			if (includeTargets.child && child.length) {
+				sections.push({ title: "Von Ihrem Kind", items: child });
 			}
+
 			return sections;
 		}
 
 		function buildSummaryHtml(forClipboard = false) {
 			const sections = getSectionsForExport();
+			const fontSize = forClipboard ? "12pt" : "14px";
+
 			if (!sections.length) {
-				return `<div style="font-family:${FONT_STACK};font-size:${forClipboard ? "12pt" : "14px"};">Keine Unterlagen ausgewählt.</div>`;
+				return `<div style="font-family:${FONT_STACK};font-size:${fontSize};">Keine Unterlagen ausgewählt.</div>`;
 			}
 
-			const base = `font-family:${FONT_STACK};font-size:${forClipboard ? "12pt" : "14px"};line-height:1.6;`;
-			let html = `<div style="${base}">`;
+			let html = `<div style="font-family:${FONT_STACK};font-size:${fontSize};line-height:1.6;">`;
 
-			sections.forEach((section, index) => {
-				html += `<div style="margin:${index ? "18px" : "0"} 0 8px 0;padding-left:0;text-indent:0;margin-left:0;font-weight:700;color:#e10600;">${escapeHtml(section.title)}:</div>`;
-				section.items.forEach(item => {
-					html += `<div style="margin:0 0 4px 0;">\t• ${escapeHtml(item)}</div>`;
-				});
-			});
+sections.forEach((section, index) => {
+	if (index) html += `<br>`;
 
-			html += "</div>";
-			return html;
+	html += `<div style="font-weight:700;color:#e10600;">${escapeHtml(section.title)}:</div><br>`;
+
+	html += `<ul style="margin:0 0 0 40px;padding:0;font-family:${FONT_STACK};font-size:${fontSize};">`;
+	section.items.forEach(item => {
+		html += `<li style="margin:0 0 4px;">${linkifyText(item)}</li>`;
+	});
+	html += `</ul>`;
+});
+
+return html + "</div>";
 		}
 
 		function buildSummaryText() {
 			const sections = getSectionsForExport();
+
 			if (!sections.length) return "Keine Unterlagen ausgewählt.";
 
 			const lines = [];
+
 			sections.forEach((section, index) => {
 				if (index) lines.push("");
-				lines.push(section.title.trim() + ":");
+				lines.push(`${section.title}:`);
 				lines.push("");
-				section.items.forEach(item => lines.push("☑ " + item));
+				section.items.forEach(item => lines.push(`☑ ${item}`));
 			});
-			return lines.join("\n").trim();
+
+			return lines.join("\n");
 		}
 
 		function updateSummary() {
@@ -1207,64 +1159,83 @@
 		async function copySummary() {
 			const htmlContent = buildSummaryHtml(true);
 			const textContent = buildSummaryText();
-			copySource.innerHTML = htmlContent;
 
-			let copied = false;
 			try {
-				const selection = window.getSelection();
-				const range = document.createRange();
-				range.selectNodeContents(copySource);
-				selection.removeAllRanges();
-				selection.addRange(range);
-				copied = document.execCommand("copy");
-				selection.removeAllRanges();
-			} catch {
-				copied = false;
-			}
-
-			if (!copied && navigator.clipboard && window.ClipboardItem) {
-				try {
+				if (navigator.clipboard && window.ClipboardItem) {
 					await navigator.clipboard.write([
 						new ClipboardItem({
 							"text/html": new Blob([htmlContent], { type: "text/html" }),
 							"text/plain": new Blob([textContent], { type: "text/plain" })
 						})
 					]);
-					copied = true;
-				} catch {
-					copied = false;
+
+					showToast("Ergebnis kopiert");
+					return;
 				}
+			} catch {
+				/* Fallback unten verwenden */
 			}
 
-			if (!copied) {
+			try {
+				copySource.innerHTML = htmlContent;
+
+				const range = document.createRange();
+				range.selectNodeContents(copySource);
+
+				const selection = window.getSelection();
+				selection.removeAllRanges();
+				selection.addRange(range);
+
+				document.execCommand("copy");
+				selection.removeAllRanges();
+
+				showToast("Ergebnis kopiert");
+			} catch {
 				try {
 					await navigator.clipboard.writeText(textContent);
 					showToast("Nur Text kopiert");
-					return;
 				} catch {
 					alert("Kopieren fehlgeschlagen.");
-					return;
 				}
 			}
+		}
 
-			showToast("Ergebnis kopiert");
+		function clearSelectionsOnly() {
+			appData.kategorien
+				.filter(category => selectedCategoryIds.includes(category.id))
+				.forEach(category => {
+					["ast_items", "lp_items", "ki_items"].forEach(key => {
+						category[key] = category[key].map(item => ({
+							...item,
+							selected: false
+						}));
+					});
+				});
+
+			includeTargets = { applicant: true, partner: true, child: true };
+			partnerGender = "frau";
+
+			saveAppData();
+			saveIncludeTargets();
+			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
+
+			renderAll();
+			showToast("Auswahl zurückgesetzt");
 		}
 
 		function exportListData() {
-			persistWorkingListsToCategory();
 			const payload = {
 				version: 6,
 				exported_at: new Date().toISOString(),
 				active_category_id: appData.active_category_id,
-				kategorien: appData.kategorien.map(category => ({
-					id: category.id,
-					titel: category.titel,
-					ast_items: normalizeImportedList(category.ast_items),
-					lp_items: normalizeImportedList(category.lp_items),
-					ki_items: normalizeImportedList(category.ki_items)
-				}))
+				kategorien: appData.kategorien
 			};
-			const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+
+			const blob = new Blob(
+				[JSON.stringify(payload, null, 2)],
+				{ type: "application/json" }
+			);
+
 			downloadBlob(blob, "unterlagen-liste.json");
 			showToast("Liste exportiert");
 		}
@@ -1274,108 +1245,70 @@
 			if (!file) return;
 
 			const reader = new FileReader();
-			reader.onload = e => {
+
+			reader.onload = loadEvent => {
 				try {
-					const parsed = JSON.parse(e.target.result);
-					appData = normalizeAppData(parsed);
+					appData = normalizeAppData(JSON.parse(loadEvent.target.result));
 					selectedCategoryIds = appData.active_category_id ? [appData.active_category_id] : [];
-					saveSelectedCategoryIds();
+
 					saveAppData();
-					syncWorkingListsFromCategory();
-					renderCategoryOptions();
-					renderLists();
-					updateSummary();
+					saveSelectedCategoryIds();
+					renderAll();
 					showToast("Liste importiert");
 				} catch {
-					alert("Import fehlgeschlagen. Bitte gültige JSON-Datei wählen.");
+					alert("Import fehlgeschlagen. Bitte eine gültige JSON-Datei auswählen.");
 				} finally {
 					event.target.value = "";
 				}
 			};
+
 			reader.readAsText(file);
 		}
 
-		function clearSelectionsOnly() {
-			appData.kategorien
-				.filter(category => selectedCategoryIds.includes(category.id))
-				.forEach(category => {
-					category.ast_items = category.ast_items.map(item => ({ ...item, selected: false }));
-					category.lp_items = category.lp_items.map(item => ({ ...item, selected: false }));
-					category.ki_items = category.ki_items.map(item => ({ ...item, selected: false }));
-				});
-			syncWorkingListsFromCategory();
-			includeTargets = { applicant: true, partner: true, child: true };
-			partnerGender = "frau";
-			persistWorkingListsToCategory();
-			saveIncludeTargets();
-			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
-			syncIncludeTargetCheckboxes();
-			syncPartnerGenderRadios();
-			renderLists();
-			updateSummary();
-			showToast("Auswahl zurückgesetzt");
-		}
-
 		function resetAllData() {
-			if (!confirm("Wirklich alle Daten löschen?")) return;
+			if (!confirm("Wirklich alle Kategorien und Unterlagen löschen?")) return;
 
 			appData = createEmptyAppData();
 			selectedCategoryIds = [];
-			bulkInput.value = "";
 			includeTargets = { applicant: true, partner: true, child: true };
 			partnerGender = "frau";
+			bulkInput.value = "";
+
 			saveAppData();
 			saveSelectedCategoryIds();
 			saveIncludeTargets();
 			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
-			syncIncludeTargetCheckboxes();
-			syncPartnerGenderRadios();
-			syncWorkingListsFromCategory();
-			renderCategoryOptions();
-			renderLists();
-			updateSummary();
+
+			renderAll();
 			showToast("Alle Daten gelöscht");
 		}
 
 		function downloadBlob(blob, filename) {
 			const url = URL.createObjectURL(blob);
 			const link = document.createElement("a");
+
 			link.href = url;
 			link.download = filename;
+
 			document.body.appendChild(link);
 			link.click();
 			link.remove();
+
 			URL.revokeObjectURL(url);
 		}
 
 		function showToast(message) {
 			toast.textContent = message;
 			toast.classList.add("show");
-			clearTimeout(showToast._timer);
-			showToast._timer = setTimeout(() => {
+
+			clearTimeout(showToast.timer);
+			showToast.timer = setTimeout(() => {
 				toast.classList.remove("show");
 			}, 1800);
 		}
 
-		function escapeHtml(text) {
-			const div = document.createElement("div");
-			div.textContent = String(text ?? "");
-			return div.innerHTML;
-		}
-
-		function escapeJs(text) {
-			return String(text ?? "")
-				.replace(/\\/g, "\\\\")
-				.replace(/'/g, "\\'");
-		}
-
 		initTheme();
-		renderCategoryOptions();
-		syncWorkingListsFromCategory();
-		renderLists();
-		syncIncludeTargetCheckboxes();
-		syncPartnerGenderRadios();
-		updateSummary();
+		renderAll();
 	</script>
 </body>
 </html>
