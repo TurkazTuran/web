@@ -12,7 +12,6 @@
 			src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Regular.ttf") format("truetype");
 			font-weight: 400;
 		}
-
 		@font-face {
 			font-family: "BerlinTypeOffice";
 			src: url("https://raw.githubusercontent.com/TurkazTuran/web/main/fonts/BerlinTypeOffice-Bold.ttf") format("truetype");
@@ -48,15 +47,8 @@
 			--shadow-soft: 0 4px 14px rgba(0, 0, 0, .25);
 		}
 
-		* {
-			box-sizing: border-box;
-			font-family: "BerlinTypeOffice", "Berlin Type Office", Arial, sans-serif;
-		}
-
-		html, body {
-			margin: 0;
-			padding: 0;
-		}
+		* { box-sizing: border-box; font-family: "BerlinTypeOffice","Berlin Type Office",Arial,sans-serif; }
+		html, body { margin: 0; padding: 0; }
 
 		body {
 			min-height: 100vh;
@@ -66,32 +58,14 @@
 			font-size: 14px;
 		}
 
-		.app-shell {
-			max-width: min(1700px, calc(100vw - 24px));
-			margin: 0 auto;
+		.app-shell { max-width: min(1700px, calc(100vw - 24px)); margin: 0 auto; }
+
+		.topbar, .toolbar, .bulk-actions, .summary-actions, .row-actions, .recipient-gender {
+			display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
 		}
 
-		.topbar,
-		.toolbar,
-		.bulk-actions,
-		.summary-actions,
-		.row-actions,
-		.recipient-gender {
-			display: flex;
-			gap: 6px;
-			flex-wrap: wrap;
-			align-items: center;
-		}
-
-		.topbar {
-			justify-content: space-between;
-			margin-bottom: 18px;
-		}
-
-		h2 {
-			margin: 0;
-			font-size: 28px;
-		}
+		.topbar { justify-content: space-between; margin-bottom: 18px; }
+		h2 { margin: 0; font-size: 28px; }
 
 		button, input, select, textarea {
 			font: inherit;
@@ -102,32 +76,15 @@
 			padding: 10px 12px;
 		}
 
-		button {
-			cursor: pointer;
-			font-weight: 700;
-			box-shadow: var(--shadow-soft);
-		}
-
-		button:hover {
-			transform: translateY(-1px);
-			border-color: var(--accent);
-		}
-
-		button.primary,
-		.tab-btn.active {
+		button { cursor: pointer; font-weight: 700; box-shadow: var(--shadow-soft); }
+		button:hover { transform: translateY(-1px); border-color: var(--accent); }
+		button.primary, .tab-btn.active {
 			color: #fff;
 			border-color: transparent;
 			background: linear-gradient(180deg, var(--accent), var(--accent-2));
 		}
-
-		button.ghost {
-			background: transparent;
-			box-shadow: none;
-		}
-
-		button.delete-btn {
-			color: var(--danger);
-		}
+		button.ghost { background: transparent; box-shadow: none; }
+		button.delete-btn { color: var(--danger); }
 
 		input:focus, select:focus, textarea:focus, button:focus {
 			outline: none;
@@ -136,28 +93,18 @@
 		}
 
 		input[type="checkbox"], input[type="radio"] {
-			width: 16px;
-			height: 16px;
-			padding: 0;
-			margin: 0;
-			accent-color: var(--accent);
+			width: 16px; height: 16px; padding: 0; margin: 0; accent-color: var(--accent);
 		}
 
-		.card,
-		.section {
+		.card, .section {
 			background: var(--surface);
 			border: 1px solid var(--border);
 			border-radius: var(--radius);
 			box-shadow: var(--shadow);
 		}
 
-		.view {
-			display: none;
-		}
-
-		.view.active {
-			display: block;
-		}
+		.view { display: none; }
+		.view.active { display: block; }
 
 		.category-panel {
 			display: grid;
@@ -167,23 +114,11 @@
 			margin-bottom: 18px;
 		}
 
-		.category-tools {
-			display: grid;
-			gap: 8px;
-			align-content: start;
-		}
+		.category-tools { display: grid; gap: 8px; align-content: start; }
+		label { display: grid; gap: 6px; font-weight: 700; }
 
-		label {
-			display: grid;
-			gap: 6px;
-			font-weight: 700;
-		}
-
-		.category-add,
-		.inline-add {
-			display: grid;
-			grid-template-columns: 1fr auto;
-			gap: 8px;
+		.category-add, .inline-add {
+			display: grid; grid-template-columns: 1fr auto; gap: 8px;
 		}
 
 		.category-checkbox-list {
@@ -205,17 +140,9 @@
 			cursor: pointer;
 			border-radius: 8px;
 		}
+		.category-checkbox-option:hover { background: var(--surface-2); }
 
-		.category-checkbox-option:hover {
-			background: var(--surface-2);
-		}
-
-		.recipient-panel {
-			display: grid;
-			gap: 8px;
-			align-content: start;
-		}
-
+		.recipient-panel { display: grid; gap: 8px; align-content: start; }
 		.recipient-toggle {
 			display: flex;
 			justify-content: space-between;
@@ -226,12 +153,8 @@
 			border: 1px solid var(--border);
 			border-radius: 10px;
 		}
-
-		.recipient-main,
-		.recipient-gender label {
-			display: inline-flex;
-			align-items: center;
-			gap: 8px;
+		.recipient-main, .recipient-gender label {
+			display: inline-flex; align-items: center; gap: 8px;
 		}
 
 		.section-grid {
@@ -240,10 +163,7 @@
 			gap: 16px;
 		}
 
-		.section {
-			overflow: hidden;
-		}
-
+		.section { overflow: hidden; }
 		.section-title {
 			padding: 10px 16px;
 			background: #a7afbd;
@@ -251,15 +171,9 @@
 			border-bottom: 1px solid #0b0e93;
 			font-weight: 700;
 		}
+		.section-body { padding: 12px; }
 
-		.section-body {
-			padding: 12px;
-		}
-
-		.list-wrap {
-			display: grid;
-			gap: 6px;
-		}
+		.list-wrap { display: grid; gap: 6px; }
 
 		.list-row {
 			display: grid;
@@ -279,8 +193,7 @@
 			word-break: break-word;
 		}
 
-		.item-text a,
-		.result-output a {
+		.item-text a, .result-output a {
 			color: var(--accent);
 			font-weight: 700;
 			text-decoration: underline;
@@ -288,14 +201,9 @@
 		}
 
 		.move-btn {
-			width: 27px;
-			height: 27px;
-			padding: 0;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: 8px;
-			box-shadow: none;
+			width: 27px; height: 27px; padding: 0;
+			display: inline-flex; align-items: center; justify-content: center;
+			border-radius: 8px; box-shadow: none;
 		}
 
 		.selection-category-group {
@@ -304,14 +212,24 @@
 			margin-bottom: 10px;
 		}
 
-		.summary {
-			margin-top: 18px;
-			padding: 16px;
+		.group-header {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 10px 12px;
+			background: #a7afbd;
+			color: #101828;
+			border: 1px solid #0b0e93;
+			border-radius: 10px;
+			font-weight: 700;
+			cursor: pointer;
+			user-select: none;
+			margin-top: 6px;
 		}
+		.group-header:hover { filter: brightness(0.97); }
 
-		.summary h3 {
-			margin: 0 0 8px;
-		}
+		.summary { margin-top: 18px; padding: 16px; }
+		.summary h3 { margin: 0 0 8px; }
 
 		.result-output {
 			min-height: 160px;
@@ -322,15 +240,8 @@
 			line-height: 1.65;
 		}
 
-		.empty-note {
-			color: var(--muted);
-			font-size: 12px;
-		}
-
-		.import-input,
-		.copy-source {
-			display: none;
-		}
+		.empty-note { color: var(--muted); font-size: 12px; }
+		.import-input, .copy-source { display: none; }
 
 		.toast {
 			position: fixed;
@@ -347,21 +258,11 @@
 			transition: .25s;
 			pointer-events: none;
 		}
-
-		.toast.show {
-			opacity: 1;
-			transform: translateY(0);
-		}
+		.toast.show { opacity: 1; transform: translateY(0); }
 
 		@media (max-width: 960px) {
-			.category-panel,
-			.section-grid {
-				grid-template-columns: 1fr;
-			}
-
-			.topbar {
-				align-items: flex-start;
-			}
+			.category-panel, .section-grid { grid-template-columns: 1fr; }
+			.topbar { align-items: flex-start; }
 		}
 	</style>
 </head>
@@ -471,17 +372,17 @@
 			</div>
 
 			<div class="section-grid">
-				<div class="section">
+				<div id="selectionAstSection" class="section">
 					<div class="section-title">Unterlagen Antragsteller</div>
 					<div id="selectionAstList" class="section-body list-wrap"></div>
 				</div>
 
-				<div class="section">
+				<div id="selectionLpSection" class="section">
 					<div class="section-title">Unterlagen Lebenspartner</div>
 					<div id="selectionLpList" class="section-body list-wrap"></div>
 				</div>
 
-				<div class="section">
+				<div id="selectionKiSection" class="section">
 					<div class="section-title">Unterlagen Kind</div>
 					<div id="selectionKiList" class="section-body list-wrap"></div>
 				</div>
@@ -508,12 +409,14 @@
 		const STORAGE_THEME = "unterlagenThemeMode";
 		const STORAGE_INCLUDE_TARGETS = "unterlagenIncludeTargets";
 		const STORAGE_PARTNER_GENDER = "unterlagenPartnerGender";
+		const STORAGE_OPEN_GROUPS = "unterlagenOpenGroups";
 		const FONT_STACK = "'BerlinTypeOffice','Berlin Type Office',Arial,sans-serif";
 
 		let appData = loadAppData();
 		let selectedCategoryIds = loadSelectedCategoryIds();
 		let includeTargets = loadIncludeTargets();
 		let partnerGender = localStorage.getItem(STORAGE_PARTNER_GENDER) === "mann" ? "mann" : "frau";
+		let openGroups = loadOpenGroups();
 
 		const categorySelect = document.getElementById("categorySelect");
 		const categoryHint = document.getElementById("categoryHint");
@@ -531,6 +434,9 @@
 		const selectionAstList = document.getElementById("selectionAstList");
 		const selectionLpList = document.getElementById("selectionLpList");
 		const selectionKiList = document.getElementById("selectionKiList");
+		const selectionAstSection = document.getElementById("selectionAstSection");
+		const selectionLpSection = document.getElementById("selectionLpSection");
+		const selectionKiSection = document.getElementById("selectionKiSection");
 		const selectedText = document.getElementById("selectedText");
 		const toast = document.getElementById("toast");
 		const copySource = document.getElementById("copySource");
@@ -546,9 +452,7 @@
 		}
 
 		function escapeJs(text) {
-			return String(text ?? "")
-				.replace(/\\/g, "\\\\")
-				.replace(/'/g, "\\'");
+			return String(text ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 		}
 
 		function linkifyText(text) {
@@ -561,10 +465,8 @@
 
 		function normalizeImportedList(list) {
 			if (!Array.isArray(list)) return [];
-
 			return list.map(item => {
 				if (!item || typeof item.text !== "string") return null;
-
 				return {
 					id: item.id || makeId(),
 					text: item.text,
@@ -632,16 +534,12 @@
 		function loadSelectedCategoryIds() {
 			try {
 				const stored = JSON.parse(localStorage.getItem(STORAGE_SELECTED_CATEGORY_IDS));
-
 				if (Array.isArray(stored)) {
-					return stored
-						.map(Number)
-						.filter(id => appData.kategorien.some(category => category.id === id));
+					return stored.map(Number).filter(id =>
+						appData.kategorien.some(category => category.id === id)
+					);
 				}
-			} catch {
-				/* Standardwert verwenden */
-			}
-
+			} catch {}
 			return appData.active_category_id ? [appData.active_category_id] : [];
 		}
 
@@ -666,6 +564,71 @@
 			localStorage.setItem(STORAGE_INCLUDE_TARGETS, JSON.stringify(includeTargets));
 		}
 
+		function loadOpenGroups() {
+			try {
+				const raw = JSON.parse(localStorage.getItem(STORAGE_OPEN_GROUPS));
+				return raw && typeof raw === "object" ? raw : {};
+			} catch {
+				return {};
+			}
+		}
+
+		function saveOpenGroups() {
+			localStorage.setItem(STORAGE_OPEN_GROUPS, JSON.stringify(openGroups));
+		}
+
+		function makeGroupKey(target, categoryId, groupTitle) {
+			return `${target}|${categoryId}|${groupTitle}`;
+		}
+
+		function isItemGroupHeader(text) {
+			return /^\s*\d+\.\s+/.test(String(text || "").trim());
+		}
+
+		function splitListIntoGroups(list) {
+			const groups = [];
+			let current = null;
+
+			list.forEach(item => {
+				const txt = String(item?.text || "").trim();
+
+				if (isItemGroupHeader(txt)) {
+					current = { title: txt, items: [] };
+					groups.push(current);
+					return;
+				}
+
+				if (!current) return;
+				current.items.push(item);
+			});
+
+			return groups.filter(group => group.items.length > 0);
+		}
+
+		function toggleSelectionGroup(target, categoryId, groupTitle) {
+			const key = makeGroupKey(target, categoryId, groupTitle);
+			const isCategoryToggle = groupTitle === "__category__";
+			const willOpen = openGroups[key] !== true;
+
+			if (isCategoryToggle) {
+				Object.keys(openGroups).forEach(existingKey => {
+					if (existingKey.startsWith(`${target}|`) && existingKey.endsWith("|__category__")) {
+						openGroups[existingKey] = false;
+					}
+				});
+			} else {
+				Object.keys(openGroups).forEach(existingKey => {
+					if (existingKey.startsWith(`${target}|${categoryId}|`) && !existingKey.endsWith("|__category__")) {
+						openGroups[existingKey] = false;
+					}
+				});
+			}
+
+			openGroups[key] = willOpen;
+			saveOpenGroups();
+			renderAll();
+		}
+
 		function getActiveCategory() {
 			return appData.kategorien.find(category => category.id === appData.active_category_id) || null;
 		}
@@ -675,12 +638,6 @@
 			if (target === "ast") return category.ast_items;
 			if (target === "lp") return category.lp_items;
 			return category.ki_items;
-		}
-
-		function getTargetTitle(target) {
-			if (target === "ast") return "Antragsteller";
-			if (target === "lp") return "Lebenspartner";
-			return "Kind";
 		}
 
 		function getNextCategoryId() {
@@ -695,7 +652,6 @@
 
 			document.getElementById(viewId).classList.add("active");
 			button.classList.add("active");
-
 			renderAll();
 		}
 
@@ -724,9 +680,7 @@
 			`).join("");
 
 			const active = getActiveCategory();
-			categoryHint.textContent = active
-				? `Aktive Kategorie: ${active.id}. ${active.titel}`
-				: "";
+			categoryHint.textContent = active ? `Aktive Kategorie: ${active.id}. ${active.titel}` : "";
 		}
 
 		function renderSelectionCategoryOptions() {
@@ -746,8 +700,7 @@
 				</label>
 			`).join("");
 
-			selectionCategoryHint.textContent =
-				`${selectedCategoryIds.length} von ${appData.kategorien.length} Kategorie(n) ausgewählt.`;
+			selectionCategoryHint.textContent = `${selectedCategoryIds.length} von ${appData.kategorien.length} Kategorie(n) ausgewählt.`;
 		}
 
 		function renderEditableList(target, container) {
@@ -758,7 +711,6 @@
 				container.innerHTML = '<div class="empty-note">Bitte zuerst eine Kategorie erstellen.</div>';
 				return;
 			}
-
 			if (!list.length) {
 				container.innerHTML = '<div class="empty-note">Noch keine Unterlagen vorhanden.</div>';
 				return;
@@ -766,13 +718,10 @@
 
 			container.innerHTML = list.map(item => `
 				<div class="list-row">
-					<input
-						type="checkbox"
+					<input type="checkbox"
 						${item.selected ? "checked" : ""}
 						onchange="toggleItemSelection('${target}', '${escapeJs(item.id)}', this.checked)">
-
 					<div class="item-text">${linkifyText(item.text)}</div>
-
 					<div class="row-actions">
 						<button class="ghost move-btn" title="Eintrag bearbeiten"
 							onclick="editItem('${target}', '${escapeJs(item.id)}')">✎</button>
@@ -800,28 +749,71 @@
 				if (!category) return;
 
 				const list = getList(category, target);
-				content += `<div class="selection-category-group">`;
-				content += `<div class="section-title">${category.id}. ${escapeHtml(category.titel)}</div>`;
+				const groups = splitListIntoGroups(list);
 
-				if (!list.length) {
-					content += '<div class="empty-note">Keine Unterlagen in dieser Kategorie.</div>';
-				} else {
-					content += list.map(item => `
-						<div class="list-row">
-							<input
-								type="checkbox"
-								${item.selected ? "checked" : ""}
-								onchange="toggleCategoryItemSelection('${target}', ${category.id}, '${escapeJs(item.id)}', this.checked)">
-							<div class="item-text">${linkifyText(item.text)}</div>
-							<div></div>
-						</div>
-					`).join("");
+				const categoryKey = makeGroupKey(target, category.id, "__category__");
+				const categoryOpen = openGroups[categoryKey] !== false;
+				const catArrow = categoryOpen ? "▾" : "▸";
+
+				content += `<div class="selection-category-group">`;
+				content += `
+					<div class="group-header" onclick="toggleSelectionGroup('${target}', ${category.id}, '__category__')">
+						<span>${catArrow}</span>
+						<span>${category.id}. ${escapeHtml(category.titel)}</span>
+					</div>
+				`;
+
+				if (categoryOpen) {
+					if (!list.length) {
+						content += '<div class="empty-note">Keine Unterlagen in dieser Kategorie.</div>';
+					} else if (!groups.length) {
+						content += list.map(item => `
+							<div class="list-row">
+								<input type="checkbox"
+									${item.selected ? "checked" : ""}
+									onchange="toggleCategoryItemSelection('${target}', ${category.id}, '${escapeJs(item.id)}', this.checked)">
+								<div class="item-text">${linkifyText(item.text)}</div>
+								<div></div>
+							</div>
+						`).join("");
+					} else {
+						groups.forEach(group => {
+							const key = makeGroupKey(target, category.id, group.title);
+							const isOpen = openGroups[key] === true;
+							const arrow = isOpen ? "▾" : "▸";
+
+							content += `
+								<div class="group-header" onclick="toggleSelectionGroup('${target}', ${category.id}, '${escapeJs(group.title)}')">
+									<span>${arrow}</span>
+									<span>${escapeHtml(group.title)}</span>
+								</div>
+							`;
+
+							if (isOpen) {
+								content += group.items.map(item => `
+									<div class="list-row">
+										<input type="checkbox"
+											${item.selected ? "checked" : ""}
+											onchange="toggleCategoryItemSelection('${target}', ${category.id}, '${escapeJs(item.id)}', this.checked)">
+										<div class="item-text">${linkifyText(item.text)}</div>
+										<div></div>
+									</div>
+								`).join("");
+							}
+						});
+					}
 				}
 
-				content += "</div>";
+				content += `</div>`;
 			});
 
 			container.innerHTML = content;
+		}
+
+		function updateSelectionSectionVisibility() {
+			selectionAstSection.style.display = includeTargets.applicant ? "" : "none";
+			selectionLpSection.style.display = includeTargets.partner ? "" : "none";
+			selectionKiSection.style.display = includeTargets.child ? "" : "none";
 		}
 
 		function renderAll() {
@@ -835,6 +827,7 @@
 			renderSelectionList("ki", selectionKiList);
 			syncIncludeTargetCheckboxes();
 			syncPartnerGenderRadios();
+			updateSelectionSectionVisibility();
 			updateSummary();
 		}
 
@@ -850,7 +843,6 @@
 
 		function addCategory() {
 			const titel = newCategoryInput.value.trim();
-
 			if (!titel) {
 				alert("Bitte einen Kategorienamen eingeben.");
 				return;
@@ -877,7 +869,6 @@
 
 		function editActiveCategory() {
 			const category = getActiveCategory();
-
 			if (!category) {
 				alert("Bitte zuerst eine Kategorie erstellen.");
 				return;
@@ -887,7 +878,6 @@
 			if (title === null) return;
 
 			const cleanedTitle = title.trim();
-
 			if (!cleanedTitle) {
 				alert("Der Kategoriename darf nicht leer sein.");
 				return;
@@ -901,7 +891,6 @@
 
 		function removeActiveCategory() {
 			const category = getActiveCategory();
-
 			if (!category) {
 				alert("Es gibt keine Kategorie zum Löschen.");
 				return;
@@ -918,10 +907,12 @@
 				null;
 
 			selectedCategoryIds = selectedCategoryIds.filter(id => id !== category.id);
-
 			if (!selectedCategoryIds.length && appData.active_category_id) {
 				selectedCategoryIds = [appData.active_category_id];
 			}
+
+			openGroups = {};
+			saveOpenGroups();
 
 			saveAppData();
 			saveSelectedCategoryIds();
@@ -931,17 +922,12 @@
 
 		function addBulkItems() {
 			const category = getActiveCategory();
-
 			if (!category) {
 				alert("Bitte zuerst eine Kategorie erstellen.");
 				return;
 			}
 
-			const lines = bulkInput.value
-				.split(/\r?\n/)
-				.map(line => line.trim())
-				.filter(Boolean);
-
+			const lines = bulkInput.value.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
 			if (!lines.length) {
 				alert("Bitte mindestens eine Unterlage eingeben.");
 				return;
@@ -967,14 +953,12 @@
 		function editItem(target, itemId) {
 			const category = getActiveCategory();
 			const item = getList(category, target).find(entry => entry.id === itemId);
-
 			if (!item) return;
 
 			const value = prompt("Unterlage bearbeiten:", item.text);
 			if (value === null) return;
 
 			const text = value.trim();
-
 			if (!text) {
 				alert("Der Eintrag darf nicht leer sein.");
 				return;
@@ -1027,7 +1011,6 @@
 		function toggleCategoryItemSelection(target, categoryId, itemId, checked) {
 			const category = appData.kategorien.find(entry => entry.id === categoryId);
 			const item = getList(category, target).find(entry => entry.id === itemId);
-
 			if (!item) return;
 
 			item.selected = checked;
@@ -1039,10 +1022,12 @@
 			if (checked && !selectedCategoryIds.includes(categoryId)) {
 				selectedCategoryIds.push(categoryId);
 			}
-
 			if (!checked) {
 				selectedCategoryIds = selectedCategoryIds.filter(id => id !== categoryId);
 			}
+
+			openGroups = {};
+			saveOpenGroups();
 
 			saveSelectedCategoryIds();
 			renderAll();
@@ -1054,9 +1039,8 @@
 				partner: includePartner.checked,
 				child: includeChild.checked
 			};
-
 			saveIncludeTargets();
-			updateSummary();
+			renderAll();
 		}
 
 		function syncIncludeTargetCheckboxes() {
@@ -1078,13 +1062,10 @@
 		}
 
 		function getSectionsForExport() {
-			const selectedCategories = appData.kategorien
-				.filter(category => selectedCategoryIds.includes(category.id));
+			const selectedCategories = appData.kategorien.filter(category => selectedCategoryIds.includes(category.id));
 
 			const selectedItems = target => selectedCategories.flatMap(category =>
-				getList(category, target)
-					.filter(item => item.selected)
-					.map(item => item.text)
+				getList(category, target).filter(item => item.selected).map(item => item.text)
 			);
 
 			const sections = [];
@@ -1092,27 +1073,21 @@
 			const partner = selectedItems("lp");
 			const child = selectedItems("ki");
 
-			if (includeTargets.applicant && applicant.length) {
-				sections.push({ title: "Von Ihnen", items: applicant });
-			}
-
+			if (includeTargets.applicant && applicant.length) sections.push({ title: "Von Ihnen", items: applicant });
 			if (includeTargets.partner && partner.length) {
 				sections.push({
 					title: partnerGender === "frau" ? "Von Ihrer Ehefrau" : "Von Ihrem Ehemann",
 					items: partner
 				});
 			}
-
-			if (includeTargets.child && child.length) {
-				sections.push({ title: "Von Ihrem Kind", items: child });
-			}
+			if (includeTargets.child && child.length) sections.push({ title: "Von Ihrem Kind", items: child });
 
 			return sections;
 		}
 
 		function buildSummaryHtml(forClipboard = false) {
 			const sections = getSectionsForExport();
-			const fontSize = forClipboard ? "11pt" : "14px";
+			const fontSize = forClipboard ? "11pt" : "13px";
 
 			if (!sections.length) {
 				return `<div style="font-family:${FONT_STACK};font-size:${fontSize};">Keine Unterlagen ausgewählt.</div>`;
@@ -1120,35 +1095,30 @@
 
 			let html = `<div style="font-family:${FONT_STACK};font-size:${fontSize};line-height:1.6;">`;
 
-sections.forEach((section, index) => {
-	if (index) html += `<br>`;
+			sections.forEach((section, index) => {
+				if (index) html += `<br>`;
+				html += `<div style="font-weight:700;color:#e10600;">${escapeHtml(section.title)}:</div><br>`;
+				html += `<ul style="margin:0 0 0 40px;padding:0;font-family:${FONT_STACK};font-size:${fontSize};">`;
+				section.items.forEach(item => {
+					html += `<li style="margin:0 0 4px;">${linkifyText(item)}</li>`;
+				});
+				html += `</ul>`;
+			});
 
-	html += `<div style="font-weight:700;color:#e10600;">${escapeHtml(section.title)}:</div><br>`;
-
-	html += `<ul style="margin:0 0 0 40px;padding:0;font-family:${FONT_STACK};font-size:${fontSize};">`;
-	section.items.forEach(item => {
-		html += `<li style="margin:0 0 4px;">${linkifyText(item)}</li>`;
-	});
-	html += `</ul>`;
-});
-
-return html + "</div>";
+			return html + "</div>";
 		}
 
 		function buildSummaryText() {
 			const sections = getSectionsForExport();
-
 			if (!sections.length) return "Keine Unterlagen ausgewählt.";
 
 			const lines = [];
-
 			sections.forEach((section, index) => {
 				if (index) lines.push("");
 				lines.push(`${section.title}:`);
 				lines.push("");
 				section.items.forEach(item => lines.push(`☑ ${item}`));
 			});
-
 			return lines.join("\n");
 		}
 
@@ -1168,17 +1138,13 @@ return html + "</div>";
 							"text/plain": new Blob([textContent], { type: "text/plain" })
 						})
 					]);
-
 					showToast("Ergebnis kopiert");
 					return;
 				}
-			} catch {
-				/* Fallback unten verwenden */
-			}
+			} catch {}
 
 			try {
 				copySource.innerHTML = htmlContent;
-
 				const range = document.createRange();
 				range.selectNodeContents(copySource);
 
@@ -1201,16 +1167,11 @@ return html + "</div>";
 		}
 
 		function clearSelectionsOnly() {
-			appData.kategorien
-				.filter(category => selectedCategoryIds.includes(category.id))
-				.forEach(category => {
-					["ast_items", "lp_items", "ki_items"].forEach(key => {
-						category[key] = category[key].map(item => ({
-							...item,
-							selected: false
-						}));
-					});
+			appData.kategorien.filter(category => selectedCategoryIds.includes(category.id)).forEach(category => {
+				["ast_items", "lp_items", "ki_items"].forEach(key => {
+					category[key] = category[key].map(item => ({ ...item, selected: false }));
 				});
+			});
 
 			includeTargets = { applicant: true, partner: true, child: true };
 			partnerGender = "frau";
@@ -1231,11 +1192,7 @@ return html + "</div>";
 				kategorien: appData.kategorien
 			};
 
-			const blob = new Blob(
-				[JSON.stringify(payload, null, 2)],
-				{ type: "application/json" }
-			);
-
+			const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
 			downloadBlob(blob, "unterlagen-liste.json");
 			showToast("Liste exportiert");
 		}
@@ -1245,11 +1202,13 @@ return html + "</div>";
 			if (!file) return;
 
 			const reader = new FileReader();
-
 			reader.onload = loadEvent => {
 				try {
 					appData = normalizeAppData(JSON.parse(loadEvent.target.result));
 					selectedCategoryIds = appData.active_category_id ? [appData.active_category_id] : [];
+
+					openGroups = {};
+					saveOpenGroups();
 
 					saveAppData();
 					saveSelectedCategoryIds();
@@ -1261,7 +1220,6 @@ return html + "</div>";
 					event.target.value = "";
 				}
 			};
-
 			reader.readAsText(file);
 		}
 
@@ -1272,11 +1230,13 @@ return html + "</div>";
 			selectedCategoryIds = [];
 			includeTargets = { applicant: true, partner: true, child: true };
 			partnerGender = "frau";
+			openGroups = {};
 			bulkInput.value = "";
 
 			saveAppData();
 			saveSelectedCategoryIds();
 			saveIncludeTargets();
+			saveOpenGroups();
 			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
 
 			renderAll();
@@ -1286,14 +1246,11 @@ return html + "</div>";
 		function downloadBlob(blob, filename) {
 			const url = URL.createObjectURL(blob);
 			const link = document.createElement("a");
-
 			link.href = url;
 			link.download = filename;
-
 			document.body.appendChild(link);
 			link.click();
 			link.remove();
-
 			URL.revokeObjectURL(url);
 		}
 
