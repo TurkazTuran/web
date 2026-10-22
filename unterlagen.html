@@ -61,7 +61,7 @@
 		.app-shell { max-width: min(1700px, calc(100vw - 24px)); margin: 0 auto; }
 
 		.topbar, .toolbar, .bulk-actions, .summary-actions, .row-actions, .recipient-gender {
-			display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+			display: flex; gap: 40px; flex-wrap: wrap; align-items: center;
 		}
 
 		.topbar { justify-content: space-between; margin-bottom: 18px; }
@@ -392,7 +392,7 @@
 				<h3>Ausgewählte Unterlagen</h3>
 				<div id="selectedText" class="result-output"></div>
 
-				<div class="summary-actions">
+				<div class="summary-actions" style="margin-top: 20px;">
 					<button class="primary" onclick="copySummary()">Ergebnis kopieren</button>
 					<button class="ghost" onclick="clearSelectionsOnly()">Auswahl zurücksetzen</button>
 				</div>
