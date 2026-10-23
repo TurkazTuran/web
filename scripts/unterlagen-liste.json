@@ -1,127 +1,257 @@
 {
   "version": 6,
-  "exported_at": "2026-10-20T14:11:21.743Z",
-  "active_category_id": 1,
+  "exported_at": "2026-10-21T07:40:30.797Z",
+  "active_category_id": 2,
   "kategorien": [
     {
       "id": 1,
-      "titel": "Lebensunterhalt",
-      "ast_items": [
-        {
-          "id": "64z3uztz4mlc",
-          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
-          "selected": true
-        }
-      ],
-      "lp_items": [
-        {
-          "id": "lubb89f14pgw",
-          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
-          "selected": true
-        }
-      ],
-      "ki_items": []
-    },
-    {
-      "id": 2,
       "titel": "Personaldokumente",
       "ast_items": [
         {
-          "id": "idtpy1q39rc8",
-          "text": "Nationalpass,",
-          "selected": true
-        },
-        {
           "id": "0bzdjire9rc8",
           "text": "Aufenthaltstitel,",
-          "selected": true
+          "selected": false
+        },
+        {
+          "id": "ly5kauufp838",
+          "text": "Aufenthaltskarte,",
+          "selected": false
+        },
+        {
+          "id": "7uhwkyr9p838",
+          "text": "Eheurkunde,",
+          "selected": false
+        },
+        {
+          "id": "2n0qflnwp838",
+          "text": "Eheurkunde mit Übersetzung und Apostille,",
+          "selected": false
+        },
+        {
+          "id": "idtpy1q39rc8",
+          "text": "Nationalpass,",
+          "selected": false
         },
         {
           "id": "t9ob65449rc8",
           "text": "Personalausweis oder Nationalpass,",
-          "selected": true
+          "selected": false
         }
       ],
       "lp_items": [
         {
-          "id": "1hc18ko79uz5",
-          "text": "Nationalpass,",
-          "selected": true
-        },
-        {
-          "id": "auok2qje9uz5",
+          "id": "m3wzr6rzqa8m",
           "text": "Aufenthaltstitel,",
-          "selected": true
+          "selected": false
         },
         {
-          "id": "wau9w8xw9uz5",
+          "id": "qxq27ed7qa8m",
+          "text": "Aufenthaltskarte,",
+          "selected": false
+        },
+        {
+          "id": "x7dtcg77qa8m",
+          "text": "Eheurkunde,",
+          "selected": false
+        },
+        {
+          "id": "ewyyotjiqa8m",
+          "text": "Eheurkunde mit Übersetzung und Apostille,",
+          "selected": false
+        },
+        {
+          "id": "3631aaooqa8m",
+          "text": "Nationalpass,",
+          "selected": false
+        },
+        {
+          "id": "net3y7lzqa8m",
           "text": "Personalausweis oder Nationalpass,",
-          "selected": true
+          "selected": false
         }
       ],
       "ki_items": [
         {
           "id": "ml74jra29ym1",
           "text": "Nationalpass,",
-          "selected": true
+          "selected": false
         },
         {
           "id": "apzq4s829ym1",
           "text": "Aufenthaltstitel,",
-          "selected": true
+          "selected": false
         },
         {
           "id": "16q37r5y9ym1",
           "text": "Personalausweis oder Nationalpass,",
-          "selected": true
+          "selected": false
         }
       ]
     },
     {
-      "id": 3,
-      "titel": "Integration",
+      "id": 2,
+      "titel": "Lebensunterhalt",
       "ast_items": [
         {
-          "id": "ufv26xlv6xa9",
-          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Integrationskurs ,",
-          "selected": true
+          "id": "6qffh6kqiysk",
+          "text": "Arbeitsvertrag,",
+          "selected": false
         },
         {
-          "id": "nq9scb7c6xa9",
-          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Orientierungskurs,",
-          "selected": true
+          "id": "g5zdazauiysk",
+          "text": "aktuelle Arbeitsbescheinigung (nicht älter als 14 Tage),",
+          "selected": false
         },
         {
-          "id": "jo7h80aq6xa9",
-          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Test „Leben in Deutschland“,",
-          "selected": true
+          "id": "pmz54zyiiysk",
+          "text": "Gehaltsnachweise der letzten sechs Monate,",
+          "selected": false
         },
         {
-          "id": "rt2i1j316xa9",
-          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest.",
-          "selected": true
+          "id": "5gzmw5c3iysk",
+          "text": "Krankenversicherungsnachweis,",
+          "selected": false
+        },
+        {
+          "id": "64z3uztz4mlc",
+          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
+          "selected": false
         }
       ],
       "lp_items": [
         {
-          "id": "36x6b0xw71lk",
-          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Integrationskurs ,",
-          "selected": true
+          "id": "fj197a87j8bh",
+          "text": "Arbeitsvertrag,",
+          "selected": false
         },
         {
-          "id": "8ctbvkc171lk",
-          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Orientierungskurs,",
-          "selected": true
+          "id": "ike1uik2j8bh",
+          "text": "aktuelle Arbeitsbescheinigung (nicht älter als 14 Tage),",
+          "selected": false
         },
         {
-          "id": "hrjh58cy71lk",
-          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Test „Leben in Deutschland“,",
-          "selected": true
+          "id": "svds020ej8bh",
+          "text": "Gehaltsnachweise der letzten sechs Monate,",
+          "selected": false
         },
         {
-          "id": "fi24qqwp71lk",
-          "text": "ein Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest.",
-          "selected": true
+          "id": "gr0zm6x5j8bh",
+          "text": "Krankenversicherungsnachweis,",
+          "selected": false
+        },
+        {
+          "id": "lubb89f14pgw",
+          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
+          "selected": false
+        }
+      ],
+      "ki_items": []
+    },
+    {
+      "id": 3,
+      "titel": "Abschluss/Integration/Schule",
+      "ast_items": [
+        {
+          "id": "58d0638biiq9",
+          "text": "Sprachzertifikat A1,",
+          "selected": false
+        },
+        {
+          "id": "labenrcpiiq9",
+          "text": "Sprachzertifikat A2,",
+          "selected": false
+        },
+        {
+          "id": "9kdw41htiiq9",
+          "text": "Sprachzertifikat B1,",
+          "selected": false
+        },
+        {
+          "id": "kpwh9co6iiq9",
+          "text": "Sprachzertifikat B2,",
+          "selected": false
+        },
+        {
+          "id": "lmu3es10iiq9",
+          "text": "Sprachzertifikat C1,",
+          "selected": false
+        },
+        {
+          "id": "bl3jxjdxiiq9",
+          "text": "Sprachzertifikat C2,",
+          "selected": false
+        },
+        {
+          "id": "ufv26xlv6xa9",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Integrationskurs,",
+          "selected": false
+        },
+        {
+          "id": "nq9scb7c6xa9",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Orientierungskurs,",
+          "selected": false
+        },
+        {
+          "id": "jo7h80aq6xa9",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Test „Leben in Deutschland“,",
+          "selected": false
+        },
+        {
+          "id": "rt2i1j316xa9",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest.",
+          "selected": false
+        }
+      ],
+      "lp_items": [
+        {
+          "id": "joj8tm96kty6",
+          "text": "Sprachzertifikat A1,",
+          "selected": false
+        },
+        {
+          "id": "yg4dlfdckty6",
+          "text": "Sprachzertifikat A2,",
+          "selected": false
+        },
+        {
+          "id": "l8kpty4qkty6",
+          "text": "Sprachzertifikat B1,",
+          "selected": false
+        },
+        {
+          "id": "0al2sw7pkty6",
+          "text": "Sprachzertifikat B2,",
+          "selected": false
+        },
+        {
+          "id": "ks07602fkty6",
+          "text": "Sprachzertifikat C1,",
+          "selected": false
+        },
+        {
+          "id": "2yzkwcfukty6",
+          "text": "Sprachzertifikat C2,",
+          "selected": false
+        },
+        {
+          "id": "aqtijhkbkty6",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Integrationskurs,",
+          "selected": false
+        },
+        {
+          "id": "rk6jutuzkty6",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Orientierungskurs,",
+          "selected": false
+        },
+        {
+          "id": "sj9pdf7kkty6",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Test „Leben in Deutschland“,",
+          "selected": false
+        },
+        {
+          "id": "mo3qa8p2kty6",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest,",
+          "selected": false
         }
       ],
       "ki_items": []
