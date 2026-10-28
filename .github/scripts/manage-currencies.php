@@ -46,6 +46,9 @@ function fetchUrl(string $url, int $attempts = 3): array
             ]);
             $body = curl_exec($ch);
             $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($body === false) {
+                fwrite(STDERR, "[curl error " . curl_errno($ch) . "] " . curl_error($ch) . " ");
+            }
             curl_close($ch);
         } else {
             $context = stream_context_create([
