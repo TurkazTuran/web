@@ -41,20 +41,36 @@ for ($offset = 0; $offset < $searchWindow && count($retained) < $daysToKeep; $of
 
     fwrite(STDOUT, "Attempting: {$url} ... ");
 
-    $context = stream_context_create([
-        'http' => [
-            'timeout'       => 15,
-            'ignore_errors' => true,
-            'header'        => "User-Agent: currency-fetch-script/1.0\r\n",
-        ],
-    ]);
-
-    $body = @file_get_contents($url, false, $context);
-
-    // Determine HTTP status code
+    $body = false;
     $code = 0;
-    if (isset($http_response_header[0]) && preg_match('/HTTP\/[^ ]+ (\d{3})/', $http_response_header[0], $m)) {
-        $code = (int)$m[1];
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_CONNECTTIMEOUT => 15,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4,
+            CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; currency-fetch-script/1.0)',
+        ]);
+        $body = curl_exec($ch);
+        $code = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        if ($body === false) {
+            fwrite(STDOUT, '[' . curl_error($ch) . '] ');
+        }
+        curl_close($ch);
+    } else {
+        $context = stream_context_create([
+            'http' => [
+                'timeout'       => 15,
+                'ignore_errors' => true,
+                'header'        => "User-Agent: currency-fetch-script/1.0\r\n",
+            ],
+        ]);
+        $body = @file_get_contents($url, false, $context);
+        if (isset($http_response_header[0]) && preg_match('/HTTP\/[^ ]+ (\d{3})/', $http_response_header[0], $m)) {
+            $code = (int)$m[1];
+        }
     }
 
     if ($code !== 200 || !$body) {
@@ -99,6 +115,11 @@ for ($offset = 0; $offset < $searchWindow && count($retained) < $daysToKeep; $of
 }
 
 if (empty($retained)) {
+    $existing = glob($xmlDir . DIRECTORY_SEPARATOR . '*.xml') ?: [];
+    if (!empty($existing)) {
+        fwrite(STDOUT, "WARNING: No currency XML could be fetched in the last {$searchWindow} days; keeping existing files.\n");
+        exit(0);
+    }
     fwrite(STDERR, "ERROR: No valid currency XML found in the last {$searchWindow} days.\n");
     exit(1);
 }
