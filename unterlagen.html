@@ -752,7 +752,7 @@
 				const groups = splitListIntoGroups(list);
 
 				const categoryKey = makeGroupKey(target, category.id, "__category__");
-				const categoryOpen = openGroups[categoryKey] !== false;
+				const categoryOpen = openGroups[categoryKey] === true;
 				const catArrow = categoryOpen ? "▾" : "▸";
 
 				content += `<div class="selection-category-group">`;
@@ -1175,9 +1175,11 @@
 
 			includeTargets = { applicant: true, partner: true, child: true };
 			partnerGender = "frau";
+			openGroups = {};
 
 			saveAppData();
 			saveIncludeTargets();
+			saveOpenGroups();
 			localStorage.setItem(STORAGE_PARTNER_GENDER, partnerGender);
 
 			renderAll();
