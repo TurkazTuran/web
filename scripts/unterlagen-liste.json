@@ -1,6 +1,6 @@
 {
   "version": 6,
-  "exported_at": "2026-10-21T07:40:30.797Z",
+  "exported_at": "2026-11-10T09:30:32.603Z",
   "active_category_id": 2,
   "kategorien": [
     {
@@ -15,6 +15,11 @@
         {
           "id": "ly5kauufp838",
           "text": "Aufenthaltskarte,",
+          "selected": false
+        },
+        {
+          "id": "iizafzjp2q1l",
+          "text": "Erklärung zum gemeinsamen Wohnsitz (siehe Anhang),",
           "selected": false
         },
         {
@@ -36,6 +41,11 @@
           "id": "t9ob65449rc8",
           "text": "Personalausweis oder Nationalpass,",
           "selected": false
+        },
+        {
+          "id": "zfje6i0n6drc",
+          "text": "Erklärung zur familiären Lebensgemeinschaft (siehe Anhang),",
+          "selected": false
         }
       ],
       "lp_items": [
@@ -47,6 +57,11 @@
         {
           "id": "qxq27ed7qa8m",
           "text": "Aufenthaltskarte,",
+          "selected": false
+        },
+        {
+          "id": "oukq2axx3315",
+          "text": "Erklärung zum gemeinsamen Wohnsitz (siehe Anhang),",
           "selected": false
         },
         {
@@ -68,17 +83,27 @@
           "id": "net3y7lzqa8m",
           "text": "Personalausweis oder Nationalpass,",
           "selected": false
+        },
+        {
+          "id": "dt80c25q6ha6",
+          "text": "Erklärung zur familiären Lebensgemeinschaft (siehe Anhang),",
+          "selected": false
         }
       ],
       "ki_items": [
+        {
+          "id": "apzq4s829ym1",
+          "text": "Aufenthaltstitel,",
+          "selected": false
+        },
         {
           "id": "ml74jra29ym1",
           "text": "Nationalpass,",
           "selected": false
         },
         {
-          "id": "apzq4s829ym1",
-          "text": "Aufenthaltstitel,",
+          "id": "jqlfgqm11erg",
+          "text": "Reiseausweis,",
           "selected": false
         },
         {
@@ -99,7 +124,7 @@
         },
         {
           "id": "g5zdazauiysk",
-          "text": "aktuelle Arbeitsbescheinigung (nicht älter als 14 Tage),",
+          "text": "aktuelle Arbeitgeberbescheinigung über ein ungekündigtes Arbeitsverhältnis (nicht älter als 14 Tage),",
           "selected": false
         },
         {
@@ -114,7 +139,32 @@
         },
         {
           "id": "64z3uztz4mlc",
-          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
+          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online beantragt werden https://www.eservice-drv.de/SelfServiceWeb),",
+          "selected": false
+        },
+        {
+          "id": "xgohgghac9sj",
+          "text": "Mietvertrag/Untermietvertrag,",
+          "selected": false
+        },
+        {
+          "id": "31sveqf6c9sj",
+          "text": "Nachweis aktueller Mietkosten,",
+          "selected": false
+        },
+        {
+          "id": "puvdjt2ovta3",
+          "text": "bei Leistungsbezug: Kopie der aller Seiten des aktuellen Bewilligungsbescheids des Jobcenters oder Sozialamtes,",
+          "selected": false
+        },
+        {
+          "id": "p0cfu7p3hkya",
+          "text": "Rentenbescheid,",
+          "selected": false
+        },
+        {
+          "id": "6smjft8ofdba",
+          "text": "Erklärung zum Beschäftigungsverhältnis,",
           "selected": false
         }
       ],
@@ -126,7 +176,7 @@
         },
         {
           "id": "ike1uik2j8bh",
-          "text": "aktuelle Arbeitsbescheinigung (nicht älter als 14 Tage),",
+          "text": "aktuelle Arbeitgeberbescheinigung über ein ungekündigtes Arbeitsverhältnis (nicht älter als 14 Tage),",
           "selected": false
         },
         {
@@ -141,7 +191,32 @@
         },
         {
           "id": "lubb89f14pgw",
-          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
+          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online beantragt werden https://www.eservice-drv.de/SelfServiceWeb),",
+          "selected": false
+        },
+        {
+          "id": "vdpo83adccrf",
+          "text": "Mietvertrag/Untermietvertrag,",
+          "selected": false
+        },
+        {
+          "id": "8ng7gb65ccrf",
+          "text": "Nachweis aktueller Mietkosten,",
+          "selected": false
+        },
+        {
+          "id": "m4nnrb91vwr7",
+          "text": "bei Leistungsbezug: Kopie der aller Seiten des aktuellen Bewilligungsbescheids des Jobcenters oder Sozialamtes,",
+          "selected": false
+        },
+        {
+          "id": "8r6h3wfwhigc",
+          "text": "Rentenbescheid,",
+          "selected": false
+        },
+        {
+          "id": "oshj756bffph",
+          "text": "Erklärung zum Beschäftigungsverhältnis,",
           "selected": false
         }
       ],
@@ -152,109 +227,160 @@
       "titel": "Abschluss/Integration/Schule",
       "ast_items": [
         {
-          "id": "58d0638biiq9",
+          "id": "6vxrnsbzswcz",
+          "text": "Ausbildungsbescheinigung,",
+          "selected": false
+        },
+        {
+          "id": "zk8pili0swcz",
+          "text": "Ausbildungsvertrag,",
+          "selected": false
+        },
+        {
+          "id": "l07dntneswcz",
+          "text": "Schulzeugnisse der letzten fünf Jahre,",
+          "selected": false
+        },
+        {
+          "id": "ugn2mk37swcz",
           "text": "Sprachzertifikat A1,",
           "selected": false
         },
         {
-          "id": "labenrcpiiq9",
+          "id": "qqeqgc2wswcz",
           "text": "Sprachzertifikat A2,",
           "selected": false
         },
         {
-          "id": "9kdw41htiiq9",
+          "id": "2llvvfkjswcz",
           "text": "Sprachzertifikat B1,",
           "selected": false
         },
         {
-          "id": "kpwh9co6iiq9",
+          "id": "q0m57dclswcz",
           "text": "Sprachzertifikat B2,",
           "selected": false
         },
         {
-          "id": "lmu3es10iiq9",
+          "id": "i54gv9xtswcz",
           "text": "Sprachzertifikat C1,",
           "selected": false
         },
         {
-          "id": "bl3jxjdxiiq9",
+          "id": "5gsxap54swcz",
           "text": "Sprachzertifikat C2,",
           "selected": false
         },
         {
-          "id": "ufv26xlv6xa9",
+          "id": "janjr2tcswcz",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest,",
+          "selected": false
+        },
+        {
+          "id": "9fzsqw3dswcz",
           "text": "Zertifikat über den erfolgreich abgeschlossenen Integrationskurs,",
           "selected": false
         },
         {
-          "id": "nq9scb7c6xa9",
+          "id": "ehd86ao3swcz",
           "text": "Zertifikat über den erfolgreich abgeschlossenen Orientierungskurs,",
           "selected": false
         },
         {
-          "id": "jo7h80aq6xa9",
+          "id": "hc5iv6s0swcz",
           "text": "Zertifikat über den erfolgreich abgeschlossenen Test „Leben in Deutschland“,",
-          "selected": false
-        },
-        {
-          "id": "rt2i1j316xa9",
-          "text": "Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest.",
           "selected": false
         }
       ],
       "lp_items": [
         {
-          "id": "joj8tm96kty6",
+          "id": "htx9g68hsrgb",
+          "text": "Ausbildungsbescheinigung,",
+          "selected": false
+        },
+        {
+          "id": "veqfh5z1srgb",
+          "text": "Ausbildungsvertrag,",
+          "selected": false
+        },
+        {
+          "id": "8boz2oyxsrgb",
+          "text": "Schulzeugnisse der letzten fünf Jahre,",
+          "selected": false
+        },
+        {
+          "id": "m737ugilsrgb",
           "text": "Sprachzertifikat A1,",
           "selected": false
         },
         {
-          "id": "yg4dlfdckty6",
+          "id": "bugl9vqksrgb",
           "text": "Sprachzertifikat A2,",
           "selected": false
         },
         {
-          "id": "l8kpty4qkty6",
+          "id": "t5ritdcnsrgb",
           "text": "Sprachzertifikat B1,",
           "selected": false
         },
         {
-          "id": "0al2sw7pkty6",
+          "id": "ytacmbkjsrgb",
           "text": "Sprachzertifikat B2,",
           "selected": false
         },
         {
-          "id": "ks07602fkty6",
+          "id": "v7y3w84jsrgb",
           "text": "Sprachzertifikat C1,",
           "selected": false
         },
         {
-          "id": "2yzkwcfukty6",
+          "id": "e2bs40glsrgb",
           "text": "Sprachzertifikat C2,",
           "selected": false
         },
         {
-          "id": "aqtijhkbkty6",
+          "id": "jgb2o5j6srgb",
+          "text": "Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest,",
+          "selected": false
+        },
+        {
+          "id": "4x77zlggsrgb",
           "text": "Zertifikat über den erfolgreich abgeschlossenen Integrationskurs,",
           "selected": false
         },
         {
-          "id": "rk6jutuzkty6",
+          "id": "s9o2chgksrgb",
           "text": "Zertifikat über den erfolgreich abgeschlossenen Orientierungskurs,",
           "selected": false
         },
         {
-          "id": "sj9pdf7kkty6",
+          "id": "bci4qyaesrgb",
           "text": "Zertifikat über den erfolgreich abgeschlossenen Test „Leben in Deutschland“,",
-          "selected": false
-        },
-        {
-          "id": "mo3qa8p2kty6",
-          "text": "Zertifikat über den erfolgreich abgeschlossenen Einbürgerungstest,",
           "selected": false
         }
       ],
-      "ki_items": []
+      "ki_items": [
+        {
+          "id": "msemowmfit62",
+          "text": "Ausbildungsvertrag,",
+          "selected": false
+        },
+        {
+          "id": "bfy1uhe3it62",
+          "text": "Ausbildungsbescheinigung,",
+          "selected": false
+        },
+        {
+          "id": "j6h7d07009cj",
+          "text": "aktuelle Schulbescheinigung,",
+          "selected": false
+        },
+        {
+          "id": "1b9cuxw4it62",
+          "text": "Schulzeugnisse der letzten fünf Jahre,",
+          "selected": false
+        }
+      ]
     }
   ]
 }
