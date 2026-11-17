@@ -171,6 +171,22 @@
 			border-bottom: 1px solid #0b0e93;
 			font-weight: 700;
 		}
+		button.section-title {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			border: 0;
+			border-bottom: 1px solid #0b0e93;
+			border-radius: 0;
+			box-shadow: none;
+			text-align: left;
+		}
+		button.section-title:hover {
+			transform: none;
+			filter: brightness(.97);
+		}
+		.section-body[hidden] { display: none; }
 		.section-body { padding: 12px; }
 
 		.list-wrap { display: grid; gap: 6px; }
@@ -184,6 +200,16 @@
 			background: var(--surface-2);
 			border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
 			border-radius: 10px;
+		}
+
+		.selection-item-row {
+			cursor: pointer;
+		}
+		.selection-item-row:hover { background: color-mix(in srgb, var(--surface-2) 78%, var(--accent)); }
+		.selection-item-row:focus-visible {
+			outline: none;
+			border-color: var(--accent);
+			box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
 		}
 
 		.item-text {
@@ -319,17 +345,26 @@
 
 			<div class="section-grid">
 				<div class="section">
-					<div class="section-title">Unterlagen Antragsteller</div>
+					<button class="section-title" type="button" aria-expanded="true" aria-controls="astList"
+						onclick="toggleInputList(this, 'astList')">
+						<span>Unterlagen Antragsteller</span><span class="collapse-arrow" aria-hidden="true">▾</span>
+					</button>
 					<div id="astList" class="section-body list-wrap"></div>
 				</div>
 
 				<div class="section">
-					<div class="section-title">Unterlagen Lebenspartner</div>
+					<button class="section-title" type="button" aria-expanded="true" aria-controls="lpList"
+						onclick="toggleInputList(this, 'lpList')">
+						<span>Unterlagen Lebenspartner</span><span class="collapse-arrow" aria-hidden="true">▾</span>
+					</button>
 					<div id="lpList" class="section-body list-wrap"></div>
 				</div>
 
 				<div class="section">
-					<div class="section-title">Unterlagen Kind</div>
+					<button class="section-title" type="button" aria-expanded="true" aria-controls="kiList"
+						onclick="toggleInputList(this, 'kiList')">
+						<span>Unterlagen Kind</span><span class="collapse-arrow" aria-hidden="true">▾</span>
+					</button>
 					<div id="kiList" class="section-body list-wrap"></div>
 				</div>
 			</div>
@@ -629,6 +664,20 @@
 			renderAll();
 		}
 
+		function toggleSelectionItemRow(event, target, categoryId, itemId) {
+			if (event.target.closest("a, button, input")) return;
+
+			const checkbox = event.currentTarget.querySelector('input[type="checkbox"]');
+			checkbox.checked = !checkbox.checked;
+			toggleCategoryItemSelection(target, categoryId, itemId, checkbox.checked);
+		}
+
+		function onSelectionItemRowKeydown(event, target, categoryId, itemId) {
+			if (event.key !== "Enter" && event.key !== " ") return;
+			event.preventDefault();
+			toggleSelectionItemRow(event, target, categoryId, itemId);
+		}
+
 		function getActiveCategory() {
 			return appData.kategorien.find(category => category.id === appData.active_category_id) || null;
 		}
@@ -653,6 +702,14 @@
 			document.getElementById(viewId).classList.add("active");
 			button.classList.add("active");
 			renderAll();
+		}
+
+		function toggleInputList(button, listId) {
+			const list = document.getElementById(listId);
+			const willCollapse = button.getAttribute("aria-expanded") === "true";
+			button.setAttribute("aria-expanded", String(!willCollapse));
+			list.hidden = willCollapse;
+			button.querySelector(".collapse-arrow").textContent = willCollapse ? "▸" : "▾";
 		}
 
 		function initTheme() {
@@ -768,7 +825,12 @@
 						content += '<div class="empty-note">Keine Unterlagen in dieser Kategorie.</div>';
 					} else if (!groups.length) {
 						content += list.map(item => `
-							<div class="list-row">
+							<div class="list-row selection-item-row"
+								role="checkbox"
+								aria-checked="${item.selected ? "true" : "false"}"
+								tabindex="0"
+								onclick="toggleSelectionItemRow(event, '${target}', ${category.id}, '${escapeJs(item.id)}')"
+								onkeydown="onSelectionItemRowKeydown(event, '${target}', ${category.id}, '${escapeJs(item.id)}')">
 								<input type="checkbox"
 									${item.selected ? "checked" : ""}
 									onchange="toggleCategoryItemSelection('${target}', ${category.id}, '${escapeJs(item.id)}', this.checked)">
@@ -791,7 +853,12 @@
 
 							if (isOpen) {
 								content += group.items.map(item => `
-									<div class="list-row">
+									<div class="list-row selection-item-row"
+										role="checkbox"
+										aria-checked="${item.selected ? "true" : "false"}"
+										tabindex="0"
+										onclick="toggleSelectionItemRow(event, '${target}', ${category.id}, '${escapeJs(item.id)}')"
+										onkeydown="onSelectionItemRowKeydown(event, '${target}', ${category.id}, '${escapeJs(item.id)}')">
 										<input type="checkbox"
 											${item.selected ? "checked" : ""}
 											onchange="toggleCategoryItemSelection('${target}', ${category.id}, '${escapeJs(item.id)}', this.checked)">
