@@ -1,7 +1,7 @@
 {
   "version": 6,
-  "exported_at": "2026-11-10T09:30:32.603Z",
-  "active_category_id": 2,
+  "exported_at": "2026-11-17T08:56:23.461Z",
+  "active_category_id": 1,
   "kategorien": [
     {
       "id": 1,
@@ -19,7 +19,7 @@
         },
         {
           "id": "iizafzjp2q1l",
-          "text": "Erklärung zum gemeinsamen Wohnsitz (siehe Anhang),",
+          "text": "Erklärung zum gemeinsamen Wohnsitz (siehe Anhang)",
           "selected": false
         },
         {
@@ -61,7 +61,7 @@
         },
         {
           "id": "oukq2axx3315",
-          "text": "Erklärung zum gemeinsamen Wohnsitz (siehe Anhang),",
+          "text": "Erklärung zum gemeinsamen Wohnsitz (siehe Anhang)",
           "selected": false
         },
         {
@@ -124,7 +124,7 @@
         },
         {
           "id": "g5zdazauiysk",
-          "text": "aktuelle Arbeitgeberbescheinigung über ein ungekündigtes Arbeitsverhältnis (nicht älter als 14 Tage),",
+          "text": "aktuelle Arbeitsbescheinigung (nicht älter als 14 Tage),",
           "selected": false
         },
         {
@@ -139,7 +139,7 @@
         },
         {
           "id": "64z3uztz4mlc",
-          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online beantragt werden https://www.eservice-drv.de/SelfServiceWeb),",
+          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
           "selected": false
         },
         {
@@ -164,7 +164,7 @@
         },
         {
           "id": "6smjft8ofdba",
-          "text": "Erklärung zum Beschäftigungsverhältnis,",
+          "text": "Erklärung zum Beschäftigungsverhältnis (siehe Anhang),",
           "selected": false
         }
       ],
@@ -176,7 +176,7 @@
         },
         {
           "id": "ike1uik2j8bh",
-          "text": "aktuelle Arbeitgeberbescheinigung über ein ungekündigtes Arbeitsverhältnis (nicht älter als 14 Tage),",
+          "text": "aktuelle Arbeitsbescheinigung (nicht älter als 14 Tage),",
           "selected": false
         },
         {
@@ -191,7 +191,7 @@
         },
         {
           "id": "lubb89f14pgw",
-          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online beantragt werden https://www.eservice-drv.de/SelfServiceWeb),",
+          "text": "aktueller Rentenversicherungsverlauf der DRV (kann online unter https://www.eservice-drv.de/SelfServiceWeb/ beantragt werden)",
           "selected": false
         },
         {
@@ -216,7 +216,7 @@
         },
         {
           "id": "oshj756bffph",
-          "text": "Erklärung zum Beschäftigungsverhältnis,",
+          "text": "Erklärung zum Beschäftigungsverhältnis (siehe Anhang),",
           "selected": false
         }
       ],
